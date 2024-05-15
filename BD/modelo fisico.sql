@@ -2,16 +2,6 @@ create schema ucshub;
 
 use ucshub;
 
-create table user(
-	id int primary key auto_increment,
-	email varchar(80) unique not null,
-	password char(32),
-	verified_email boolean not null default false,
-	created_at datetime not null default NOW(),
-	verified_at datetime
-	
-);
-
 create table knowledge_area(
 	id int primary key auto_increment,
 	name int not null,	
@@ -55,7 +45,6 @@ create table person(
 	knowledge_area_id int,
 	instituition_id int,	
 	address_id int,
-	user_id int,
 	type tinyint not null,
 	titulation tinyint,
 	/* admin, researcher, student */
@@ -63,9 +52,22 @@ create table person(
 	
 	CONSTRAINT person_address_address_id FOREIGN KEY (address_id) REFERENCES address(id),
 	CONSTRAINT person_knowledge_area_id FOREIGN KEY (knowledge_area_id) REFERENCES knowledge_area(id),
-	CONSTRAINT person_instituition_id FOREIGN KEY (instituition_id) REFERENCES instituition(id),
-	CONSTRAINT person_user_id FOREIGN KEY (user_id) REFERENCES user(id)
+	CONSTRAINT person_instituition_id FOREIGN KEY (instituition_id) REFERENCES instituition(id)
 	
+	
+);
+
+
+create table user(
+	id int primary key auto_increment,
+	email varchar(80) unique not null,
+	password char(32),
+	verified_email boolean not null default false,
+	created_at datetime not null default NOW(),
+	verified_at datetime,
+	person_id int,	
+	
+	CONSTRAINT user_person_id FOREIGN KEY (person_id) REFERENCES person(id)	
 	
 );
 

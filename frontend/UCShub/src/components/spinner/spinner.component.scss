@@ -1,0 +1,24 @@
+.loader-container{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(83, 83, 83, 0.7);
+    z-index: 9998;
+  }
+  
+  .mat-mdc-progress-spinner {
+    position: relative;
+    margin: 3px;
+    left: calc(50% - 15px);
+    // right: 50%;
+    top: calc(50% - 15px);
+    // bottom: 50%;
+    z-index: 9999;
+  }
+  
+  .mat-mdc-progress-spinner {
+     --mdc-circular-progress-active-indicator-color: white; 
+    }

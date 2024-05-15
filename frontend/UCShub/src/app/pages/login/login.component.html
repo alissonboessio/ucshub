@@ -1,0 +1,37 @@
+
+<container-center width="350" height="590">
+
+    <div class="login-content">
+
+        <img src="assets/logo.png" class="logo-img">  
+
+        <form class="login-fields" (ngSubmit)="onSubmit()" [formGroup]="formulario">
+        
+              <mat-form-field appearance="outline">
+                <mat-label>Digite seu email</mat-label>
+                <input matInput formControlName="email" id="email">
+                @if (formulario.invalid) {<mat-error>{{getErrorMessage("email", "E-mail")}}</mat-error>}
+              </mat-form-field>
+        
+        
+              <mat-form-field appearance="outline">
+                <mat-label>Digite sua senha</mat-label>
+                <input matInput [type]="hideSenha ? 'password' : 'text'" formControlName="password">
+                <button mat-icon-button matSuffix (click)="hideSenha = !hideSenha" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hideSenha" type="button">
+                  <mat-icon style="color: #716f6f;">{{hideSenha ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                @if (formulario.invalid) {<mat-error>{{getErrorMessage("password", "Senha")}}</mat-error>}
+              </mat-form-field>
+        
+            <button mat-stroked-button color="success">
+              Acessar
+            </button>    
+        </form>
+
+    </div>
+
+        
+</container-center>
+
+<app-spinner [loading]="isLoading"></app-spinner>

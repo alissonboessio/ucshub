@@ -1,0 +1,74 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+  .menu-icon{
+    color: #545454;
+    background-color: transparent;
+    width: 48px; 
+    height: 48px
+  }
+
+  .under-buttons{
+    color: #545454;
+    background-color: transparent;
+    font-size: large;
+  }
+
+  .app{
+    overflow-x: hidden;
+    height: 100vh;
+  }
+
+  .mat-toolbar{     
+    width: 100%;
+
+  &.mat-primary {
+    background: transparent;
+    color: #545454;    
+  }
+}
+
+button.mat-menu-item {
+  color: #545454;
+}
+
+.mat-menu-item .mat-icon {
+  color: #545454;
+}
+
+.login{
+  background-color: #545454;
+}
+
+.logo{
+  padding-top: 4px;
+}
+
+.userLogado{
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  line-height: 18px;
+  margin-right: 16px;
+}
+
+button{
+  opacity: 0.75;
+
+  &.selected
+  {
+    opacity: 1;
+    border-radius: 0;
+    border-bottom: 2px solid #f7a81c;
+  }
+}
+
+mat-toolbar{
+  position: sticky;
+  position: -webkit-sticky; /* For macOS/iOS Safari */
+  top: 0; /* Sets the sticky toolbar to be on top */
+  z-index: 1000 !important; /* Ensure that your app's content doesn't overlap the toolbar */
+  overflow: hidden;
+  background-color: white !important;
+}

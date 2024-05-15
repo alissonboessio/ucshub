@@ -1,0 +1,32 @@
+<mat-toolbar style="overflow: hidden;"  color="primary" *ngIf="showMenu">
+    <mat-toolbar-row style="border-bottom: 1px solid #d4d4d4;">
+      <div class="logo" routerLink="">
+        <img src="./assets/logo-bar.png" style="height: 60px;">
+        <!-- <img src="./assets/crm-img.png" style="height: 60px;"> -->
+      </div>
+      <span class="example-spacer"></span>
+      <div class="userLogado">
+        <span style="font-size: 18px; line-height: 18px;">Olá {{ loggedUser?.Person?.name }}, bem vindo!</span>
+      </div>
+      <button mat-icon-button class="menu-icon" aria-label="menu button" [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </mat-toolbar-row>
+      
+    <mat-menu #menu="matMenu" class="menu">
+      <!-- <button mat-menu-item routerLink="/representantes">
+        <mat-icon>person_outlined</mat-icon>
+        <span>Representantes</span>
+      </button>       -->
+      <button mat-menu-item (click)="handleLogout()">
+        <mat-icon style="color: #ff6666;">logout</mat-icon>
+        <span style="color: #ff6666">Sair</span>
+      </button>
+    </mat-menu>
+  
+  </mat-toolbar>
+
+
+<div style="margin-left: 5%; margin-right: 5%;" [ngClass]="{'login': showMenu == false}">
+    <router-outlet></router-outlet>
+</div>

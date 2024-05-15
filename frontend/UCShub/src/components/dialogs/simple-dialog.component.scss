@@ -1,0 +1,21 @@
+.cancelConfirmButtons{
+    display: flex;
+    justify-content: right;
+    align-items: right;
+    gap: 5px;
+  
+    .cancelButton{
+      background-color: white !important;
+      color: #545454;
+      border-radius: 10px;
+      border: 1px solid #545454 !important;
+    }
+  
+    .confirmButton{
+      background-color: #ff6666 !important;
+      color: white;
+      border-radius: 10px;
+      border: 1px solid #fe4949 !important;
+  
+    }
+  }
