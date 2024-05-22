@@ -1,0 +1,26 @@
+<div class="card"[style.height.px]="height" [style.width.px]="width">
+    
+<div class="card-content">
+
+    <div class="top-row">
+        
+        @if(topContent){
+            <span [style.font-size.px]="topContent.contentSize">
+                {{ topContent?.content }}
+            </span>
+        }
+
+        @if(IconName){
+            <mat-icon [style.font-size.px]="topContent?.contentSize" [style.height.px]="topContent?.contentSize" [style.width.px]="topContent?.contentSize">{{ IconName }}</mat-icon>
+        }
+
+    </div>   
+    
+    @if(bottomContent){
+        <span [style.font-size.px]="bottomContent.contentSize">
+            {{ bottomContent?.content }}
+        </span>
+    }
+</div>
+    
+</div>

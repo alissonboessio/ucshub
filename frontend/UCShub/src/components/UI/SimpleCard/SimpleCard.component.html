@@ -1,0 +1,18 @@
+<div class="card"[style.height.px]="height" [style.width.px]="width">
+    
+<div class="card-content" >
+
+    @if(topContent){
+        <span [style.font-size.px]="topContent.contentSize">
+            {{ topContent?.content }}
+        </span>
+    }
+    
+    @if(bottomContent){
+        <span [style.font-size.px]="bottomContent.contentSize">
+            {{ bottomContent?.content }}
+        </span>
+    }
+</div>
+    
+</div>

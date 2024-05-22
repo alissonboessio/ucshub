@@ -1,4 +1,6 @@
-<mat-toolbar style="overflow: hidden;"  color="primary" *ngIf="showMenu">
+
+@if(showMenu){
+  <mat-toolbar style="overflow: hidden;"  color="primary">
     <mat-toolbar-row style="border-bottom: 1px solid #d4d4d4;">
       <div class="logo" routerLink="">
         <img src="./assets/logo-bar.png" style="height: 60px;">
@@ -24,9 +26,11 @@
       </button>
     </mat-menu>
   
-  </mat-toolbar>
+</mat-toolbar>
+}
 
 
-<div style="margin-left: 5%; margin-right: 5%;" [ngClass]="{'login': showMenu == false}">
+
+<div [ngClass]="{'login': showMenu == false}" style="height: calc(100% - 64px); overflow-x: hidden; background-color: white;">
     <router-outlet></router-outlet>
 </div>
