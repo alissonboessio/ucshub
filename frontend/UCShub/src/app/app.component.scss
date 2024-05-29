@@ -45,22 +45,32 @@ button.mat-menu-item {
   padding-top: 4px;
 }
 
-.userLogado{
+.left-buttons{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   text-align: right;
+  align-items: center;
+  gap: 16px;
+  font-size: 24px;
+  line-height: 24px;
+
+
+}
+
+.userName{
+  font-size: 18px; 
   line-height: 18px;
-  margin-right: 16px;
+  margin-left: 16px;
 }
 
 button{
-  opacity: 0.75;
+  //opacity: 0.75;
 
   &.selected
   {
     opacity: 1;
     border-radius: 0;
-    border-bottom: 2px solid #f7a81c;
+    border-bottom: 2px solid #044be3;
   }
 }
 
@@ -71,4 +81,9 @@ mat-toolbar{
   z-index: 1000 !important; /* Ensure that your app's content doesn't overlap the toolbar */
   overflow: hidden;
   background-color: white !important;
+}
+
+.grey{
+  color: black !important;
+  border-radius: 16px !important;
 }

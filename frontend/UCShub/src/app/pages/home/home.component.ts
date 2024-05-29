@@ -4,7 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import { ApiService } from '../../api/api.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SimpleCardComponent } from '../../../components/UI/SimpleCard/SimpleCard.component';
 import { SimpleCardInterface } from '../../../components/UI/SimpleCard/SimpleCardInterface';
 import { IconCardInterface } from '../../../components/UI/IconCard/IconCardInterface';
@@ -13,7 +13,7 @@ import { IconCardComponent } from '../../../components/UI/IconCard/IconCard.comp
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [MatInputModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule, SimpleCardComponent, IconCardComponent],
+  imports: [MatInputModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule, SimpleCardComponent, IconCardComponent, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -38,6 +38,10 @@ export class HomeComponent {
   topContentIconCard4: IconCardInterface = { content: "289", contentSize: "58"}
   bottomContentIconCard4: IconCardInterface = { content: "Pesquisadores Cadastrados", contentSize: "28"}
   IconCard4: string = "person"
+
+  filterProductions(){    
+    this.router.navigateByUrl("/list-production")
+  }
 
 
 }

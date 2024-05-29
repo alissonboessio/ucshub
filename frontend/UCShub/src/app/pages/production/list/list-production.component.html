@@ -1,0 +1,18 @@
+<div>
+  
+@if(productionsTableColumns){
+    <material-table
+    [tableData]="filteredProductions"
+    [tableColumns]="productionsTableColumns"
+    (rowClick)="openProduction($event)"
+    [isPageable]="true"
+    [paginationSizes]="[10,50,100]"
+    [defaultPageSize]="10"
+    (sort)="sortData($event)"
+    >
+    </material-table>
+}
+
+    
+
+</div>

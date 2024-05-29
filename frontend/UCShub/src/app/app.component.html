@@ -6,13 +6,26 @@
         <img src="./assets/logo-bar.png" style="height: 60px;">
         <!-- <img src="./assets/crm-img.png" style="height: 60px;"> -->
       </div>
+      <span class="userName">Olá {{ loggedUser?.Person?.name }}, bem vindo!</span>
       <span class="example-spacer"></span>
-      <div class="userLogado">
-        <span style="font-size: 18px; line-height: 18px;">Olá {{ loggedUser?.Person?.name }}, bem vindo!</span>
+      <div class="left-buttons">
+        <button mat-stroked-button class="grey" routerLink="/production" routerLinkActive="selected">
+          <mat-icon>search</mat-icon>
+          Pesquisa Avançada
+        </button> 
+        <button mat-stroked-button class="grey" routerLink="/atendimentos" routerLinkActive="selected">
+          <mat-icon>attach_money</mat-icon>
+          Cadastrar Recursos
+        </button> 
+        <button mat-stroked-button class="grey" routerLink="/atendimentos" routerLinkActive="selected">
+          <mat-icon>upload_file</mat-icon>
+          Cadastrar Produção
+        </button> 
+        <button mat-icon-button class="menu-icon" aria-label="menu button" [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+        </button>
       </div>
-      <button mat-icon-button class="menu-icon" aria-label="menu button" [matMenuTriggerFor]="menu">
-        <mat-icon>menu</mat-icon>
-      </button>
+      
     </mat-toolbar-row>
       
     <mat-menu #menu="matMenu" class="menu">
@@ -28,8 +41,6 @@
   
 </mat-toolbar>
 }
-
-
 
 <div [ngClass]="{'login': showMenu == false}" style="height: calc(100% - 64px); overflow-x: hidden; background-color: white;">
     <router-outlet></router-outlet>

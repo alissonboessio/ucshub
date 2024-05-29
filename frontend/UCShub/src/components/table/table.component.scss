@@ -1,0 +1,198 @@
+table {
+  margin-top: 8px;
+    width: 100%;
+  }
+  
+  th, td {
+    padding: 10px !important;
+
+    &.action{
+        width: 0;
+        padding: 0 !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important ;
+    }
+
+  }
+  
+  mat-form-field {
+    width: 40%;
+  }
+  
+  .text-right {
+    text-align: right !important;
+  }
+
+  .mat-row:hover {
+    cursor: pointer;
+    background: #b4b4b433 !important;
+  }
+
+.hybrid-button{  
+    background-color: #F7A81C;
+    color: white;
+    border-radius: 15px;
+
+    &:hover{
+      background-color: #ffbb47;
+    }
+
+}
+
+  .mat-icon{
+    color: #0000008a;
+    
+    &.rowActionIcon1{
+        color: #f8b53e
+    }
+    
+    &.Edicao{
+      background-color: #9b9b9b;
+      color: transparent;
+
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: .5px solid #808080;
+    
+              /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #9b9b9b;
+
+    }
+    &.Edicao:hover{
+      background-color: #adadad;
+      color: transparent;
+      /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #adadad;
+
+
+    }
+
+    &.Aceito{
+      background-color: #ffa707;
+      color: transparent;
+
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: .5px solid #e69807;
+    
+              /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #ffa707;
+
+    }
+    &.Aceito:hover{
+      background-color: #f5b53d;
+      color: transparent;
+      /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #f5b53d;
+
+
+    }
+
+    &.Remarcado{
+      background-color: #ffa707;
+      color: transparent;
+
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: .5px solid #e69807;
+    
+              /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #ffa707;
+
+    }
+    &.Remarcado:hover{
+      background-color: #f7c976;
+      color: transparent;
+      /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #f7c976;
+
+
+    }
+
+    &.Aberto{
+      background-color: #fbe83a;
+      color: transparent;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: .5px solid #c9b92d;
+    
+              /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #fbe83a;
+
+    }
+    &.Aberto:hover{
+      background-color: #f8efbb;
+      color: transparent;
+      /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #f8efbb;
+
+
+    }
+    &.Encaminhado{
+      background-color: #1E92F4;
+      color: transparent;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: .5px solid #177dcf;
+    
+              /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #1E92F4;
+
+    }
+    &.Encaminhado:hover{
+      background-color: #34a2fc;
+      color: transparent;
+      /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #34a2fc;
+
+
+    }
+    &.Finalizado{
+      background-color: #00cc00;
+      color: transparent;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: .5px solid #009900;
+    
+              /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #00cc00;
+
+    }
+    &.Finalizado:hover{
+      background-color: #00ff00;
+      color: transparent;
+      /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px          1px        #00ff00;
+
+
+    }
+    &.Cancelado{
+      background-color: #ff6666;
+      color: transparent;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: .5px solid #cc5050;
+    
+              /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px           1px        #ff6666;
+
+    }
+    &.Cancelado:hover{
+      background-color: #fa7c7c;
+      color: transparent;
+      /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 1px          1px         10px           1px        #fa7c7c;
+
+
+    }
+ 
+  }
+
+  

@@ -4,7 +4,7 @@
 
     <section class="main-section">
 
-        <mat-form-field appearance="outline" class="search-field">
+        <mat-form-field appearance="outline" class="search-field" (keyup.enter)="filterProductions()">
             <mat-label>Pesquisar</mat-label>
             <input matInput [formControl]="searchField" id="searchField">
             <mat-icon matPrefix>search</mat-icon>

@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NavigationStart, Router, RouterOutlet } from '@angular/router';
+import { NavigationStart, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { StorageService } from './db/storage.service';
 import { User } from './models/User';
@@ -16,7 +16,7 @@ import { MatMenuModule } from '@angular/material/menu';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, LoginComponent, MatButtonModule, MatIconModule, MatToolbarModule, MatMenuModule],
+  imports: [CommonModule, RouterOutlet, LoginComponent, MatButtonModule, MatIconModule, MatToolbarModule, MatMenuModule, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
