@@ -1,37 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { TableModule } from '../../../../components/table/table.module';
 import { Sort } from '@angular/material/sort';
 import { Production } from '../../../models/Production';
 import { TableColumn } from '../../../../components/table/tableColumn';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-list-production',
   standalone: true,
-  imports: [TableModule],
+  imports: [TableModule, MatInputModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule],
   templateUrl: './list-production.component.html',
-  styleUrl: './list-production.component.scss'
+  styleUrl: './list-production.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class ListProductionComponent {
 
+
+  productions = new Array<Production>();
   filteredProductions = new Array<Production>();
   productionsTableColumns! : TableColumn[];
 
+  searchField = new FormControl();
+
   ngOnInit(){
-    this.filteredProductions.push(new Production())
-    this.filteredProductions.push(new Production())
-    this.filteredProductions.push(new Production())
-    this.filteredProductions.push(new Production())
+    // this.filteredProductions.push(new Production())
+    // this.filteredProductions.push(new Production())
+    // this.filteredProductions.push(new Production())
+    // this.filteredProductions.push(new Production())
 
     this.initColumnsTabs()
   }
 
   sortData(sortParameters: Sort) {
-    // const keyName = sortParameters.active;
-    // if (sortParameters.direction === 'asc') {
-    //   this.filteredProductions = this.filteredProductions.sort((a: Production | string, b: Production| string) => a[keyName] > b[keyName] ? 1 : a[keyName] < b[keyName] ? -1 : 0);
-    // } else if (sortParameters.direction === 'desc') {
-    //   this.filteredProductions = this.filteredProductions.sort((a: Production| string, b: Production| string) => b[keyName] > a[keyName] ? 1 : b[keyName] < a[keyName] ? -1 : 0);
-    // } 
+    const keyName = sortParameters.active;
+    if (sortParameters.direction === 'asc') {
+      this.filteredProductions = this.filteredProductions.sort((a: any, b: any) => a[keyName] > b[keyName] ? 1 : a[keyName] < b[keyName] ? -1 : 0);
+    } else if (sortParameters.direction === 'desc') {
+      this.filteredProductions = this.filteredProductions.sort((a: any, b: any) => b[keyName] > a[keyName] ? 1 : b[keyName] < a[keyName] ? -1 : 0);
+    } 
     return this.filteredProductions = this.filteredProductions;
     
   }
@@ -43,29 +52,28 @@ export class ListProductionComponent {
   initColumnsTabs(): void {
     this.productionsTableColumns = [
       {
-        name: 'N°',
-        dataKey: 'codigo'
+        name: 'Título',
+        dataKey: 'codigo',
+        isSortable: true
       },
       {
-        name: 'Descrição',
+        name: 'Pesquisadores',
         dataKey: 'descricao',
         isSortable: true
       },
       {
-        name: 'Unidade',
+        name: 'Data',
         dataKey: 'unidade',
+        isSortable: true
       },
       {
-        name: 'Estoque',
+        name: 'Tipo',
         dataKey: 'estoque',
         isSortable: true
       },
       {
-        name: 'Preço de Venda',
-        dataKey: 'preco',
-        isSortable: true,
-        pipe: 'currency',
-        pipeFormat: '.2-2'
+        name: 'Instituições',
+        dataKey: 'preco'
       }
     ];
 
@@ -74,5 +82,15 @@ export class ListProductionComponent {
 
   }
 
+  filterProductions(){   
+    
+    this.filteredProductions = this.productions.filter(p => {
+      p.title.includes(this.searchField.value()) ||
+      p.Authors.some(a => a.name.includes(this.searchField.value())) ||
+      p.Project.Instituiton.name.includes(this.searchField.value())
+    });
+
+    // this.router.navigateByUrl("/list-production")
+  }
 
 }

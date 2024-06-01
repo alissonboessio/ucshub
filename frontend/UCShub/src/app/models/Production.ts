@@ -1,3 +1,4 @@
+import { Person } from "./Person";
 import { Project } from "./Project";
 
 export class Production{
@@ -10,5 +11,6 @@ export class Production{
     created_at: Date | null = null;
 
     Project: Project = new Project();
+    Authors: Array<Person> = new Array<Person>();
 
 }

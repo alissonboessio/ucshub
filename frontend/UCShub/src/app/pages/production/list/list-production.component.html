@@ -1,18 +1,25 @@
-<div>
-  
-@if(productionsTableColumns){
-    <material-table
-    [tableData]="filteredProductions"
-    [tableColumns]="productionsTableColumns"
-    (rowClick)="openProduction($event)"
-    [isPageable]="true"
-    [paginationSizes]="[10,50,100]"
-    [defaultPageSize]="10"
-    (sort)="sortData($event)"
-    >
-    </material-table>
-}
 
+
+<main class="main-list-prods">
+    <h2>Produções</h2>
+
+    <mat-form-field appearance="outline" class="search-field" (keyup.enter)="filterProductions()">
+        <mat-label>Título / Pesquisador / Área / Instituição</mat-label>
+        <input matInput [formControl]="searchField" id="searchField">
+        <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>    
+
+    <material-table
+        [tableData]="filteredProductions"
+        [tableColumns]="productionsTableColumns"
+        (rowClick)="openProduction($event)"
+        [isPageable]="true"
+        [paginationSizes]="[10,50,100]"
+        [defaultPageSize]="10"
+        (sort)="sortData($event)"
+        >
+    </material-table>    
     
 
-</div>
+</main>
+  
