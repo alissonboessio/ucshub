@@ -1,0 +1,12 @@
+D:\prog\ucshub\backend\UcsHubAPI.Model\bin\Debug\net8.0\UcsHubAPI.Model.deps.json
+D:\prog\ucshub\backend\UcsHubAPI.Model\bin\Debug\net8.0\UcsHubAPI.Model.dll
+D:\prog\ucshub\backend\UcsHubAPI.Model\bin\Debug\net8.0\UcsHubAPI.Model.pdb
+D:\prog\ucshub\backend\UcsHubAPI.Model\obj\Debug\net8.0\UcsHubAPI.Model.GeneratedMSBuildEditorConfig.editorconfig
+D:\prog\ucshub\backend\UcsHubAPI.Model\obj\Debug\net8.0\UcsHubAPI.Model.AssemblyInfoInputs.cache
+D:\prog\ucshub\backend\UcsHubAPI.Model\obj\Debug\net8.0\UcsHubAPI.Model.AssemblyInfo.cs
+D:\prog\ucshub\backend\UcsHubAPI.Model\obj\Debug\net8.0\UcsHubAPI.Model.csproj.CoreCompileInputs.cache
+D:\prog\ucshub\backend\UcsHubAPI.Model\obj\Debug\net8.0\UcsHubAPI.Model.sourcelink.json
+D:\prog\ucshub\backend\UcsHubAPI.Model\obj\Debug\net8.0\UcsHubAPI.Model.dll
+D:\prog\ucshub\backend\UcsHubAPI.Model\obj\Debug\net8.0\refint\UcsHubAPI.Model.dll
+D:\prog\ucshub\backend\UcsHubAPI.Model\obj\Debug\net8.0\UcsHubAPI.Model.pdb
+D:\prog\ucshub\backend\UcsHubAPI.Model\obj\Debug\net8.0\ref\UcsHubAPI.Model.dll
