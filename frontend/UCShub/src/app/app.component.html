@@ -1,47 +1,51 @@
-
-@if(showMenu){
-  <mat-toolbar style="overflow: hidden;"  color="primary">
-    <mat-toolbar-row style="border-bottom: 1px solid #d4d4d4;">
-      <div class="logo" routerLink="">
-        <img src="./assets/logo-bar.png" style="height: 60px;">
-        <!-- <img src="./assets/crm-img.png" style="height: 60px;"> -->
-      </div>
-      <span class="userName">Olá {{ loggedUser?.Person?.name }}, bem vindo!</span>
-      <span class="example-spacer"></span>
-      <div class="left-buttons">
-        <button mat-stroked-button class="grey" routerLink="/production" routerLinkActive="selected">
-          <mat-icon>search</mat-icon>
-          Pesquisa Avançada
-        </button> 
-        <button mat-stroked-button class="grey" routerLink="/atendimentos" routerLinkActive="selected">
-          <mat-icon>attach_money</mat-icon>
-          Cadastrar Recursos
-        </button> 
-        <button mat-stroked-button class="grey" routerLink="/atendimentos" routerLinkActive="selected">
-          <mat-icon>upload_file</mat-icon>
-          Cadastrar Produção
-        </button> 
-        <button mat-icon-button class="menu-icon" aria-label="menu button" [matMenuTriggerFor]="menu">
-          <mat-icon>menu</mat-icon>
-        </button>
-      </div>
-      
-    </mat-toolbar-row>
-      
-    <mat-menu #menu="matMenu" class="menu">
-      <!-- <button mat-menu-item routerLink="/representantes">
-        <mat-icon>person_outlined</mat-icon>
-        <span>Representantes</span>
-      </button>       -->
-      <button mat-menu-item (click)="handleLogout()">
-        <mat-icon style="color: #ff6666;">logout</mat-icon>
-        <span style="color: #ff6666">Sair</span>
+<mat-toolbar style="overflow: hidden;" color="primary" *ngIf="showMenu">
+  <mat-toolbar-row style="border-bottom: 1px solid #d4d4d4;">
+    <div class="logo" routerLink="">
+      <img src="./assets/logo-bar.png" style="height: 60px;">
+    </div>
+    <span class="userName">Olá {{ loggedUser?.Person?.name }}, bem vindo!</span>
+    <span class="example-spacer"></span>
+    <div class="nav-buttons">
+      <button mat-stroked-button class="grey" routerLink="/advanced_search" routerLinkActive="selected">
+        <mat-icon>search</mat-icon>
+        Pesquisa Avançada
       </button>
-    </mat-menu>
-  
-</mat-toolbar>
-}
+      <button mat-stroked-button class="grey" routerLink="/resources" routerLinkActive="selected">
+        <mat-icon>attach_money</mat-icon>
+        Cadastrar Recursos
+      </button>
+      <button mat-stroked-button class="grey" routerLink="/production" routerLinkActive="selected">
+        <mat-icon>upload_file</mat-icon>
+        Cadastrar Produção
+      </button>
+      <button mat-icon-button class="menu-icon" aria-label="menu button" [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar-row>
 
-<div [ngClass]="{'login': showMenu == false}" style="height: calc(100% - 64px); overflow-x: hidden; background-color: white;">
-    <router-outlet></router-outlet>
+  <mat-menu #menu="matMenu" class="menu">
+    <div class="buttons-media-query">
+      <button mat-menu-item routerLink="/advanced_search">
+        <mat-icon>search</mat-icon>
+        Pesquisa Avançada
+      </button>
+      <button mat-menu-item routerLink="/resources">
+        <mat-icon>attach_money</mat-icon>
+        Cadastrar Recursos
+      </button>
+      <button mat-menu-item routerLink="/production">
+        <mat-icon>upload_file</mat-icon>
+        Cadastrar Produção
+      </button>
+    </div>
+    <button mat-menu-item (click)="handleLogout()">
+      <mat-icon style="color: #ff6666;">logout</mat-icon>
+      <span style="color: #ff6666">Sair</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<div [ngClass]="{'login': !showMenu}" style="height: calc(100% - 64px); overflow-x: hidden; background-color: white;">
+  <router-outlet></router-outlet>
 </div>

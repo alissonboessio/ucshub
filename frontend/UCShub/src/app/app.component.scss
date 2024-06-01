@@ -1,32 +1,32 @@
 .example-spacer {
-    flex: 1 1 auto;
-  }
+  flex: 1 1 auto;
+}
 
-  .menu-icon{
-    color: #545454;
-    background-color: transparent;
-    width: 48px; 
-    height: 48px
-  }
+.menu-icon {
+  color: #545454;
+  background-color: transparent;
+  width: 48px;
+  height: 48px;
+}
 
-  .under-buttons{
-    color: #545454;
-    background-color: transparent;
-    font-size: large;
-  }
+.under-buttons {
+  color: #545454;
+  background-color: transparent;
+  font-size: large;
+}
 
-  .app{
-    overflow-x: hidden;
-    height: 100vh;
-  }
+.app {
+  overflow-x: hidden;
+  height: 100vh;
+}
 
-  .mat-toolbar{     
-    width: 100%;
+.mat-toolbar {
+  width: 100%;
+}
 
-  &.mat-primary {
-    background: transparent;
-    color: #545454;    
-  }
+.mat-toolbar.mat-primary {
+  background: transparent;
+  color: #545454;
 }
 
 button.mat-menu-item {
@@ -37,15 +37,15 @@ button.mat-menu-item {
   color: #545454;
 }
 
-.login{
+.login {
   background-color: #545454;
 }
 
-.logo{
+.logo {
   padding-top: 4px;
 }
 
-.left-buttons{
+.nav-buttons {
   display: flex;
   flex-direction: row;
   text-align: right;
@@ -53,28 +53,23 @@ button.mat-menu-item {
   gap: 16px;
   font-size: 24px;
   line-height: 24px;
-
-
 }
 
-.userName{
-  font-size: 18px; 
+.userName {
+  font-size: 18px;
   line-height: 18px;
   margin-left: 16px;
 }
 
-button{
-  //opacity: 0.75;
-
-  &.selected
-  {
+button {
+  &.selected {
     opacity: 1;
     border-radius: 0;
     border-bottom: 2px solid #044be3;
   }
 }
 
-mat-toolbar{
+mat-toolbar {
   position: sticky;
   position: -webkit-sticky; /* For macOS/iOS Safari */
   top: 0; /* Sets the sticky toolbar to be on top */
@@ -83,7 +78,29 @@ mat-toolbar{
   background-color: white !important;
 }
 
-.grey{
+.grey {
   color: black !important;
   border-radius: 16px !important;
+}
+
+@media (max-width: 1220px) {
+  .buttons-media-query {
+    display: block;
+  }
+  .nav-buttons > button:not(:last-child) {
+    display: none;
+  }
+}
+
+@media (min-width: 1221px) {
+  .buttons-media-query {
+    display: none;
+  }
+  .nav-buttons {
+    display: flex;
+  }
+}
+
+.buttons-media-query {
+  /* Add any default styles if necessary */
 }
