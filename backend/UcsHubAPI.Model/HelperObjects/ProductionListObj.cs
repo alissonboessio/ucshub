@@ -5,17 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 using UcsHubAPI.Model.Enumerations;
 
-namespace UcsHubAPI.Model.Models
+namespace UcsHubAPI.Model.HelperObjects
 {
-    public class ProductionModel
+    public class ProductionListObj
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
         public DateTime DateCreated { get; set; }
         public ProductionTypeEnum Type { get; set; }
-        public ProjectModel Project { get; set; }
-        public int ProjectId { get; set; }
+        public List<string> people { get; set; }
 
+        public ProductionListObj()
+        {
+            people = new List<string>();
+        }
     }
 }

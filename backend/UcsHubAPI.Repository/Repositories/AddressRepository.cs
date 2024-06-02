@@ -1,12 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using UcsHubAPI.Model.Enumerations;
 using UcsHubAPI.Model.Models;
+using UcsHubAPI.Shared;
 
 namespace UcsHubAPI.Repository.Repositories
 {
@@ -28,49 +24,51 @@ namespace UcsHubAPI.Repository.Repositories
 
         public AddressModel GetById(int id)
         {
-            
             AddressModel address = null;
 
             string query = $"SELECT * FROM {this.Schema} WHERE id = @id";
 
-            using (SqlConnection connection = new SqlConnection(ConnString))
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
+                MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@id", id);
                 connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.Read())
+                using (MySqlDataReader reader = command.ExecuteReader())
                 {
-                    address = new AddressModel
+                    if (reader.Read())
                     {
-                        Id = Convert.ToInt32(reader["Id"]),
-                        CountryCode = Convert.ToInt32(reader["CountryCode"]),
-                        State = reader["State"].ToString(),
-                        City = reader["City"].ToString(),
-                        District = reader["District"].ToString(),
-                        Street = reader["Street"].ToString(),
-                        Num = reader["Num"].ToString(),
-                        ZipCode = reader["ZipCode"].ToString()
-                    };
+                        address = new AddressModel
+                        {
+                            Id = reader.GetInt32("id"),
+                            CountryCode = reader.GetInt32("country_code"),
+                            State = reader.GetStringH("state"),
+                            City = reader.GetStringH("city"),
+                            District = reader.GetStringH("district"),
+                            Street = reader.GetStringH("street"),
+                            Num = reader.GetStringH("num"),
+                            ZipCode = reader.GetStringH("zip_code")
+                        };
+                    }
                 }
             }
 
             return address;
         }
 
-        public bool Add(AddressModel user)
-        {
-            throw new NotImplementedException();
-        }
-        public bool Update(AddressModel user)
-        {
-            throw new NotImplementedException();
-        }
-        public bool Delete(AddressModel user)
+        public bool Add(AddressModel address)
         {
             throw new NotImplementedException();
         }
 
+        public bool Update(AddressModel address)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool Delete(AddressModel address)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
+using MySql.Data.MySqlClient;
 using UcsHubAPI.Model.Models;
+using UcsHubAPI.Shared;
 
 namespace UcsHubAPI.Repository.Repositories
 {
@@ -27,24 +29,24 @@ namespace UcsHubAPI.Repository.Repositories
         {
             string query = $"SELECT * FROM {this.Schema} WHERE email = @email AND password = @password";
 
-            using (SqlConnection connection = new SqlConnection(ConnString))
+            using (MySqlConnection  connection = new MySqlConnection (ConnString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
+                MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@email", email);
                 command.Parameters.AddWithValue("@password", password);
 
                 connection.Open();
 
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         UserModel user = new UserModel
                         {
-                            Id = Convert.ToInt32(reader["id"]),
-                            Email = reader["email"].ToString(),
-                            VerifiedEmail = Convert.ToBoolean(reader["verified_email"]),
-                            VerifiedAt = Convert.ToDateTime(reader["verified_at"]),
+                            Id = reader.GetInt32("id"),
+                            Email = reader.GetStringH("email"),
+                            VerifiedEmail = (bool)reader.GetBooleanH("verified_email", false),
+                            VerifiedAt = reader.GetDateTimeH("verified_at"),
                             
                         };
 

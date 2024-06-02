@@ -1,11 +1,9 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using MySql.Data.MySqlClient;
+using System.Data;
 using UcsHubAPI.Model.Enumerations;
 using UcsHubAPI.Model.Models;
+using UcsHubAPI.Shared;
 
 namespace UcsHubAPI.Repository.Repositories
 {
@@ -32,25 +30,26 @@ namespace UcsHubAPI.Repository.Repositories
 
             string query = $"SELECT * FROM {this.Schema} WHERE id = @id";
 
-            using (SqlConnection connection = new SqlConnection(ConnString))
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
+                MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@id", id);
                 connection.Open();
 
-                SqlDataReader reader = command.ExecuteReader();
+                MySqlDataReader reader = command.ExecuteReader();
                 if (reader.Read())
                 {
                     project = new ProjectModel
                     {
-                        Id = Convert.ToInt32(reader["Id"]),
-                        Title = reader["Title"].ToString(),
-                        Description = reader["Description"].ToString(),
-                        Status = (ProjectStatusEnum)Convert.ToInt32(reader["Status"]),
-                        Type = (ProjectTypeEnum)Convert.ToInt32(reader["Type"]),
-                        CreatedAt = Convert.ToDateTime(reader["CreatedAt"]),
-                        EndedAt = (DateTime?)Convert.ToDateTime(reader["EndedAt"]),
-                        InstitutionId = Convert.ToInt32(reader["InstitutionId"])
+                        Id = reader.GetInt32("id"),
+                        Title = reader.GetStringH("title"),
+                        Description = reader.GetStringH("description"),
+                        Status = (Model.Enumerations.ProjectStatusEnum)Enum.ToObject(typeof(Model.Enumerations.ProjectStatusEnum), reader.GetByteH("type", 0)!),
+                        Type = (Model.Enumerations.ProjectTypeEnum)Enum.ToObject(typeof(Model.Enumerations.ProjectTypeEnum), reader.GetByteH("type", 0)!),
+
+                        CreatedAt = reader.GetDateTime("created_at"),
+                        EndedAt = reader.GetDateTimeH("ended_at"),
+                        InstitutionId = reader.GetInt32("instituition_id")
                     };
                 }
             }

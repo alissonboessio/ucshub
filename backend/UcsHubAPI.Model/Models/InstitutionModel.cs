@@ -14,6 +14,6 @@ namespace UcsHubAPI.Model.Models
         public string Document { get; set; }
         public DateTime CreatedAt { get; set; }
         public AddressModel Address { get; set; }
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
     }
 }

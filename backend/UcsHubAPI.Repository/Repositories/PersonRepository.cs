@@ -1,5 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
+﻿
+using MySql.Data.MySqlClient;
+using System.Data;
 using UcsHubAPI.Model.Models;
+using UcsHubAPI.Shared;
 
 namespace UcsHubAPI.Repository.Repositories
 {
@@ -22,31 +25,30 @@ namespace UcsHubAPI.Repository.Repositories
         {
             string query = $"SELECT * FROM {this.Schema} WHERE id = @id";
 
-            using (SqlConnection connection = new SqlConnection(ConnString))
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
+                MySqlCommand command = new MySqlCommand(query, connection);
                 command.Parameters.AddWithValue("@id", id);
 
                 connection.Open();
 
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         PersonModel person = new PersonModel
                         {
-                            Id = Convert.ToInt32(reader["id"]),
-                            Name = reader["name"].ToString(),
-                            BirthDate = Convert.ToDateTime(reader["birth_date"]),
-                            Phone = reader["phone"].ToString(),
-                            LattesId = reader["LattesId"].ToString(),
-                            Type = (Model.Enumerations.PersonTypeEnum)reader["type"],
-                            Titulation = (Model.Enumerations.TitulationEnum)reader["titulation"]
+                            Id = reader.GetInt32("id"),
+                            Name = reader.GetStringH("name"),
+                            BirthDate = reader.GetDateTime("birth_date"),
+                            Phone = reader.GetStringH("phone"),
+                            LattesId = reader.GetStringH("lattes_id"),
+                            Type = (Model.Enumerations.PersonTypeEnum)Enum.ToObject(typeof(Model.Enumerations.PersonTypeEnum), reader.GetByteH("type", 0)!),
+                            Titulation = (Model.Enumerations.TitulationEnum)Enum.ToObject(typeof(Model.Enumerations.TitulationEnum), reader.GetByteH("titulation", 0)!)
                         };
 
                         return person;
                     }
-                    
                 }
             }
 

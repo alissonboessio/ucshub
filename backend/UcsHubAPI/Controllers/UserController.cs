@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using UcsHubAPI.Response;
+using UcsHubAPI.Response.Responses;
 using UcsHubAPI.Service.Services;
 
 namespace UcsHubAPI.Controllers
@@ -20,11 +22,16 @@ namespace UcsHubAPI.Controllers
         }
   
         [HttpGet("Login")]
-        public IActionResult GetByNamePassword()
+        [Produces(typeof(BaseResponse))]
+        public IActionResult Login()
         {            
-            _userService.GetAll();
 
-            return Ok();
+            BaseResponse resp = new BaseResponse();
+
+            resp.Success = true;
+            resp.Message = "Logado com sucesso";
+
+            return Ok(resp);
         }
 
     }

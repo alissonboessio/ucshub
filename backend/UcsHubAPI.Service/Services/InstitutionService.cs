@@ -28,7 +28,12 @@ namespace UcsHubAPI.Service.Services
 
             AddressService addressService = new AddressService((IOptions<AppSettings>)_appSettings);
 
-            institution.Address = addressService.GetById(institution.AddressId);
+            if(institution.AddressId != null)
+            {
+                institution.Address = addressService.GetById((int)institution.AddressId);
+
+            }
+
 
             return institution;
 

@@ -5,10 +5,10 @@ namespace UcsHubAPI.Model.Enumerations
 {
     public enum ProductionTypeEnum
     {
-        [Description("Cientifica")]
-        cientific,
+        [Description("Técnica")]
+        technic,
 
-        [Description("Academica")]
+        [Description("Acadêmica")]
         academic,
                 
     }
