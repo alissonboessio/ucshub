@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\UcsHubAPI.Model\UcsHubAPI.Model.csproj" />
-    <ProjectReference Include="..\UcsHubAPI.Shared\UcsHubAPI.Shared.csproj" />
-  </ItemGroup>
-
 </Project>

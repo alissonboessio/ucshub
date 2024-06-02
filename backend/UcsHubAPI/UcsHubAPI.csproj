@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UcsHubAPI.Service\UcsHubAPI.Service.csproj" />
+    <ProjectReference Include="..\UcsHubAPI.Shared\UcsHubAPI.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\UcsHubAPI.Model\UcsHubAPI.Model.csproj" />
     <ProjectReference Include="..\UcsHubAPI.Repository\UcsHubAPI.Repository.csproj" />
+    <ProjectReference Include="..\UcsHubAPI.Shared\UcsHubAPI.Shared.csproj" />
   </ItemGroup>
 
 </Project>

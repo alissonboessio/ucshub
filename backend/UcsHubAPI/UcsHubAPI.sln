@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI", "UcsHubAPI.csproj", "{FF84E1DD-6A9F-49A4-B014-BCCFFB80F89A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UcsHubAPI", "UcsHubAPI.csproj", "{FF84E1DD-6A9F-49A4-B014-BCCFFB80F89A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI.Repository", "..\UcsHubAPI.Repository\UcsHubAPI.Repository.csproj", "{2185AE8D-1D4F-41E6-8BFB-925BB82EB95F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UcsHubAPI.Repository", "..\UcsHubAPI.Repository\UcsHubAPI.Repository.csproj", "{2185AE8D-1D4F-41E6-8BFB-925BB82EB95F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI.Service", "..\UcsHubAPI.Service\UcsHubAPI.Service.csproj", "{DA7AD02A-E318-4517-B025-6930B6A62524}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UcsHubAPI.Service", "..\UcsHubAPI.Service\UcsHubAPI.Service.csproj", "{DA7AD02A-E318-4517-B025-6930B6A62524}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI.Model", "..\UcsHubAPI.Model\UcsHubAPI.Model.csproj", "{D803D029-0B9C-425A-AB04-99825A0D806D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UcsHubAPI.Model", "..\UcsHubAPI.Model\UcsHubAPI.Model.csproj", "{D803D029-0B9C-425A-AB04-99825A0D806D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI.Shared", "..\UcsHubAPI.Shared\UcsHubAPI.Shared.csproj", "{D34701CC-0784-4221-ACF0-CC73F03E9AA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI.Request", "..\UcsHubAPI.Request\UcsHubAPI.Request.csproj", "{578C21F3-7B60-4224-BF07-6C8EA87ECEA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI.Response", "..\UcsHubAPI.Response\UcsHubAPI.Response.csproj", "{A6FD5497-E4A1-4B90-B550-49314F28FEF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{D803D029-0B9C-425A-AB04-99825A0D806D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D803D029-0B9C-425A-AB04-99825A0D806D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D803D029-0B9C-425A-AB04-99825A0D806D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D34701CC-0784-4221-ACF0-CC73F03E9AA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D34701CC-0784-4221-ACF0-CC73F03E9AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D34701CC-0784-4221-ACF0-CC73F03E9AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D34701CC-0784-4221-ACF0-CC73F03E9AA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{578C21F3-7B60-4224-BF07-6C8EA87ECEA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{578C21F3-7B60-4224-BF07-6C8EA87ECEA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{578C21F3-7B60-4224-BF07-6C8EA87ECEA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{578C21F3-7B60-4224-BF07-6C8EA87ECEA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6FD5497-E4A1-4B90-B550-49314F28FEF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6FD5497-E4A1-4B90-B550-49314F28FEF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6FD5497-E4A1-4B90-B550-49314F28FEF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6FD5497-E4A1-4B90-B550-49314F28FEF1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,15 +1,15 @@
-﻿using UcsHubAPI;
+﻿using Microsoft.Extensions.Options;
 
 namespace UcsHubAPI.Service
 {
     public class BaseService
     {
-        //protected readonly ConfigSettings _configSettings;
+        protected readonly AppSettings _appSettings;
 
-        //protected BaseService(IOptions<ConfigSettings> configSettings)
-        //{
-        //    _configSettings = configSettings.Value;
-        //}
+        protected BaseService(IOptions<AppSettings> appSettings)
+        {
+            _appSettings = appSettings.Value;
+        }
 
     }
 }
