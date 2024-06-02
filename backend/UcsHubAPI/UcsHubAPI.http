@@ -1,6 +1,0 @@
-@UcsHubAPI_HostAddress = http://localhost:5206
-
-GET {{UcsHubAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -8,6 +8,7 @@ namespace UcsHubAPI.Repository
 {
     public interface IRepository<T>
     {
+        public string Schema { get; }
         IEnumerable<T> GetAll();
         T GetById(int id);
         bool Add(T entity);

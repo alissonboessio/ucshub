@@ -8,21 +8,21 @@ namespace UcsHubAPI.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    public class UserController : ControllerBase
+    public class ProductionController : ControllerBase
     {
         private readonly AppSettings _appSettings;
-        private readonly UserService _userService;
+        private readonly ProductionService _ProductionService;
 
-        public UserController(IOptions<AppSettings> appSettings)
+        public ProductionController(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
-            _userService = new UserService(appSettings);
+            _ProductionService = new ProductionService(appSettings);
         }
   
-        [HttpGet("Login")]
-        public IActionResult GetByNamePassword()
+        [HttpGet("list_all")]
+        public IActionResult ListAll()
         {            
-            _userService.GetAll();
+            _ProductionService.GetAll();
 
             return Ok();
         }
