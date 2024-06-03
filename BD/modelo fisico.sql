@@ -80,7 +80,7 @@ create table project(
 	description varchar(256) not null,
 	status tinyint not null,
 	type tinyint not null,
-	created_at datetime not null,
+	created_at datetime not null default CURRENT_TIMESTAMP,
 	ended_at datetime,	
 
 	instituition_id int not null,		
@@ -93,7 +93,8 @@ create table production(
 	id int primary key auto_increment,
 	title varchar(80) not null,
 	description varchar(256) not null,
-	
+	created_at datetime not null default CURRENT_TIMESTAMP,
+
 	type tinyint not null,
 	project_id int not null,		
 	
