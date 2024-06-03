@@ -23,7 +23,7 @@ table {
     text-align: right !important;
   }
 
-  .mat-row:hover {
+  .mat-mdc-row:hover {
     cursor: pointer;
     background: #b4b4b433 !important;
   }
@@ -37,6 +37,10 @@ table {
       background-color: #ffbb47;
     }
 
+}
+.mat-mdc-text-field-wrapper{
+  padding-right: 16px !important;
+  padding-left: 16px !important;
 }
 
   .mat-icon{

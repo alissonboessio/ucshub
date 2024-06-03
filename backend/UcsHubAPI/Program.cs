@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Demo API", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "UCSHub API", Version = "v1" });
     c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -53,6 +53,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(builder => builder
+     .AllowAnyOrigin()
+     .AllowAnyMethod()
+     .AllowAnyHeader());
 
 app.UseHttpsRedirection();
 

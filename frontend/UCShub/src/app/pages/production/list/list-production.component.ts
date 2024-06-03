@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, inject } from '@angular/core';
 import { TableModule } from '../../../../components/table/table.module';
 import { Sort } from '@angular/material/sort';
 import { Production } from '../../../models/Production';
@@ -7,6 +7,9 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { ApiService } from '../../../api/api.service';
+import { ProductionListObj } from '../../../models/HelperObjects/ProductionListObj';
+import Enum_ProductionType from '../../../models/enumerations/Enum_ProductionType.json';
 
 @Component({
   selector: 'app-list-production',
@@ -18,14 +21,24 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class ListProductionComponent {
 
+  api: ApiService = inject(ApiService);
 
-  productions = new Array<Production>();
-  filteredProductions = new Array<Production>();
+  productions = new Array<ProductionListObj>();
+  filteredProductions = new Array<ProductionListObj>();
   productionsTableColumns! : TableColumn[];
 
   searchField = new FormControl();
 
   ngOnInit(){
+
+    this.api.ListProductionsSimple().subscribe(async resp => {
+      if(resp.success){
+        this.productions = resp.productions ?? [];
+        this.filterProductions();
+      }
+            
+    })
+
     // this.filteredProductions.push(new Production())
     // this.filteredProductions.push(new Production())
     // this.filteredProductions.push(new Production())
@@ -53,28 +66,31 @@ export class ListProductionComponent {
     this.productionsTableColumns = [
       {
         name: 'Título',
-        dataKey: 'codigo',
+        dataKey: 'title',
         isSortable: true
       },
       {
         name: 'Pesquisadores',
-        dataKey: 'descricao',
+        dataKey: 'people',
         isSortable: true
       },
       {
         name: 'Data',
-        dataKey: 'unidade',
-        isSortable: true
+        dataKey: 'dateCreated',
+        isSortable: true,
+        pipe: 'date'
       },
       {
         name: 'Tipo',
-        dataKey: 'estoque',
-        isSortable: true
+        dataKey: 'type',
+        isSortable: true,
+        enumColumn: true,
+        enumValue: Enum_ProductionType
       },
-      {
-        name: 'Instituições',
-        dataKey: 'preco'
-      }
+      // {
+      //   name: 'Instituições',
+      //   dataKey: 'preco'
+      // }
     ];
 
     // this.rowActionIcon2 = { iconName: 'edit_document', toolTip: 'Editar Produto', show: true }
@@ -83,12 +99,18 @@ export class ListProductionComponent {
   }
 
   filterProductions(){   
+    console.log(this.productions);
     
     this.filteredProductions = this.productions.filter(p => {
-      p.title.includes(this.searchField.value()) ||
-      p.Authors.some(a => a.name.includes(this.searchField.value())) ||
-      p.Project.Instituiton.name.includes(this.searchField.value())
+      p.title.includes(this.searchField.value)
+      // p.people.some(a => a.includes(this.searchField.value))
     });
+
+
+    this.filteredProductions = this.productions
+
+    console.log(this.filteredProductions);
+    
 
     // this.router.navigateByUrl("/list-production")
   }

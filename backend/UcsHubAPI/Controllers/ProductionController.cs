@@ -55,7 +55,7 @@ namespace UcsHubAPI.Controllers
             }
             else
             {
-                return NoContent();
+                return Ok(resp); // possibilidade de ser um NoContent
             }
             
             

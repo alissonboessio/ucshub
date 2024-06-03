@@ -20,13 +20,13 @@ export class DataPropertyGetterPipe implements PipeTransform {
         }
 
         let retColumn = object ? object[keyName!] : null;
-
+        
         if (checkConcat && tableColumn.concatData) {
             const tableColumnOriginal = tableColumn.dataKey
 
             tableColumn.dataKey = tableColumn.concatDataKey
             retColumn += tableColumn.concatChar + this.transform(originalObject, tableColumn, false)
-
+                        
             tableColumn.dataKey = tableColumnOriginal
         }
 

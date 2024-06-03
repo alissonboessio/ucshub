@@ -47,22 +47,17 @@ export class LoginComponent {
       this.isLoading = true
      
 
-      if(u.email == "teste@teste.com" && u.password === "12345"){
+      this.api.Login(u).subscribe(async resp => {
 
-        u.Person = new Person();
-        u.Person.name = "{nome usuario}"
+        if (resp && resp.success){
+          this.storage.SaveLoggedUser(resp.user)
+          this.storage.SaveAuth(this.api.getAuth(u.email, u.password))
+          this.router.navigate(['home']);
+          this.isLoading = false
+        }
 
-        this.storage.SaveLoggedUser(u)
-        this.storage.SaveAuth(this.api.getAuth(u.email, u.password))
-        this.router.navigate(['home']);
         this.isLoading = false
-
-      }else{
-        console.log("errou!");
-        this.isLoading = false
-        
-      }
-      
+      })
     }
 
   }

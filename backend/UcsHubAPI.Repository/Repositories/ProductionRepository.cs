@@ -71,22 +71,22 @@ namespace UcsHubAPI.Repository.Repositories
                     {
                         Id = reader.GetInt32("id"),
                         Title = reader.GetStringH("title"),
-                        DateCreated = reader.GetDateTime("date_created"),
+                        DateCreated = reader.GetDateTime("created_at"),
                         Type = (Model.Enumerations.ProductionTypeEnum)Enum.ToObject(typeof(Model.Enumerations.ProductionTypeEnum), reader.GetByteH("type", 0)!),
                     };
 
 
                     using (MySqlConnection connectionP = new MySqlConnection(ConnString))
                     {
-                        MySqlCommand commandP = new MySqlCommand(queryP, connection);
+                        MySqlCommand commandP = new MySqlCommand(queryP, connectionP);
                         commandP.Parameters.AddWithValue("@id", production.Id);
 
-                        connection.Open();
+                        connectionP.Open();
 
-                        MySqlDataReader readerP = command.ExecuteReader();
-                        while (reader.Read())
+                        MySqlDataReader readerP = commandP.ExecuteReader();
+                        while (readerP.Read())
                         {
-                            production.people.Add(reader["name"].ToString());
+                            production.people.Add(readerP.GetStringH("name"));
                         }
                     }
 

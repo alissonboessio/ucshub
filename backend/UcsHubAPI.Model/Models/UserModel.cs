@@ -13,5 +13,6 @@ namespace UcsHubAPI.Model.Models
         public bool VerifiedEmail { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? VerifiedAt { get; set; }
+
     }
 }
