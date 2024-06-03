@@ -4,7 +4,7 @@ use ucshub;
 
 create table knowledge_area(
 	id int primary key auto_increment,
-	name int not null,	
+	name varchar(120) not null,	
 	cod_cnpq varchar(8),
 	knowledge_subarea_id int,	
 	
