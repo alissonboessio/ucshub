@@ -34,15 +34,11 @@ export class ListProductionComponent {
     this.api.ListProductionsSimple().subscribe(async resp => {
       if(resp.success){
         this.productions = resp.productions ?? [];
-        this.filterProductions();
+        this.filteredProductions = this.productions;
       }
             
     })
 
-    // this.filteredProductions.push(new Production())
-    // this.filteredProductions.push(new Production())
-    // this.filteredProductions.push(new Production())
-    // this.filteredProductions.push(new Production())
 
     this.initColumnsTabs()
   }
@@ -99,20 +95,32 @@ export class ListProductionComponent {
   }
 
   filterProductions(){   
-    console.log(this.productions);
-    
-    this.filteredProductions = this.productions.filter(p => {
-      p.title.includes(this.searchField.value)
-      // p.people.some(a => a.includes(this.searchField.value))
-    });
 
+    this.filteredProductions = []
 
-    this.filteredProductions = this.productions
+    this.productions.map(p => {
+        if (
+            this.StringContains(p.title, this.searchField.value)
+        ) {
+            this.filteredProductions.push(p);
+        }
+    })
 
-    console.log(this.filteredProductions);
-    
+  }
 
-    // this.router.navigateByUrl("/list-production")
+  public StringContains(str1: any , str2 : any, ignoreCase = true) {
+    if ((str1 === null && str2 === null) || (str1 === "" && str2 === "")) {
+      return true;
+    }
+    if (str1 != null && str2 != null) {
+      if (ignoreCase) {
+        return (str1.toLowerCase().indexOf(str2.toLowerCase())) !== -1;
+      } else {
+        return (str1.indexOf(str2.toLowerCase())) !== -1;
+      }
+    }
+
+    return false;
   }
 
 }
