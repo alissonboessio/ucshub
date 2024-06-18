@@ -9,8 +9,18 @@
     flex-direction: column;
     padding-left: 8px;
     padding-right: 8px;
-    margin-top: 35%;
+    margin-top: auto;
     row-gap: 16px;
+    
+    span{
+      text-align: center;
+      margin-top: -6px;
+      font-size: 13px;
+    }
+
+    a{
+      color: #044be3;
+    }
 }
 
 .logo-img{

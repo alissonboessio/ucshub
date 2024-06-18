@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Registrar-se</h1>
+<div mat-dialog-content>
+    @if (formSign) {
+        <form #signupForm="ngForm" class="form-signup"[formGroup]="formSign">
+            <mat-form-field appearance="outline">
+              <mat-label>Nome</mat-label>
+              <input matInput formControlName="name" name="name">
+              @if (formSign.invalid) {<mat-error>{{getErrorMessage("name", "Nome")}}</mat-error>}
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" name="email" email>
+              @if (formSign.invalid) {<mat-error>{{getErrorMessage("email", "E-mail")}}</mat-error>}
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Senha</mat-label>
+              <input matInput formControlName="password" name="password" type="password">
+              @if (formSign.invalid) {<mat-error>{{getErrorMessage("password", "Senha")}}</mat-error>}
+            </mat-form-field>
+          </form>
+    }
+  
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="close()" color="success">Cancelar</button>
+  <button mat-button (click)="register()" [disabled]="!signupForm.form.valid">Registrar</button>
+</div>

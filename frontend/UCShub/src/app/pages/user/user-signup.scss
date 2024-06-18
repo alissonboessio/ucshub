@@ -1,0 +1,15 @@
+.form-signup{
+  display: flex;
+  flex-direction: column;
+  
+}
+
+
+.mat-mdc-dialog-actions{
+  margin-left: auto;
+  justify-content: end;
+}
+
+.mdc-dialog__content>:first-child{
+  margin-top: 32px;
+}

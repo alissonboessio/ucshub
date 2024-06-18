@@ -13,19 +13,28 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../api/api.service';
 import { User } from '../../models/User';
 import { Person } from '../../models/Person';
+import { MatDialog } from '@angular/material/dialog';
+import { SignupDialog } from '../user/user-signup';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [MatFormFieldModule, MatIconModule, ReactiveFormsModule, ContainerCenterComponent, MatButtonModule, MatInputModule, SpinnerComponent],
+  imports: [MatFormFieldModule, 
+    MatIconModule, 
+    ReactiveFormsModule, 
+    ContainerCenterComponent, 
+    MatButtonModule, 
+    MatInputModule, 
+    SpinnerComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 
-  storage: StorageService = inject(StorageService)
-  api: ApiService = inject(ApiService)
+  storage: StorageService = inject(StorageService);
+  api: ApiService = inject(ApiService);
   router: Router = new Router();
+  dialog: MatDialog = inject(MatDialog);
 
   hideSenha: boolean = true;
   isLoading: boolean = false;
@@ -62,6 +71,20 @@ export class LoginComponent {
 
   }
 
+  abrirSignup(){
+    const dialogRef = this.dialog.open(SignupDialog, {
+      data: this.formulario.value,
+      disableClose: true,
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+
+//enviar para back
+
+      this.formulario = result;
+    });
+  }
 
   getErrorMessage(campoName: string, campo: string) {
     return FormValidations.getErrorMessage(campoName, campo, this.formulario);
