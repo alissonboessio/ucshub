@@ -1,1 +1,75 @@
-<p>production works!</p>
+<container-overflow
+    title="Cadastro de Produção"
+>
+<form [formGroup]="form">
+  
+    <div class="line" style="gap: 12px;">
+
+        <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Título</mat-label>
+            <input matInput formControlName="title" id="title">
+            @if (form.invalid) {<mat-error>{{getErrorMessage("title", "Título")}}</mat-error>}
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 250px;">
+            <mat-label>Tipo</mat-label>
+            <mat-select formControlName="type" id="type">
+                @for (type of formattedEnumTypes; track $index) {
+                    <mat-option [value]="type">
+                        {{ enumTypes[type] }}
+                    </mat-option>
+                }
+                
+            </mat-select>
+            @if (form.invalid) {<mat-error>{{getErrorMessage("title", "Tipo", true)}}</mat-error>}
+        </mat-form-field> 
+
+        <mat-form-field appearance="outline" formGroupName="Project" style="width: 500px;">
+            <mat-label>Selecione o projeto</mat-label>
+            <mat-select formControlName="id" id="id">
+                @for (project of projects; track $index) {
+                    <mat-option [value]="project.id">
+                        {{ project.title }}
+                    </mat-option>
+                }
+                
+            </mat-select>             
+            @if (form.invalid) {<mat-error>{{getErrorMessage("Project.id", "Projeto")}}</mat-error>}
+        </mat-form-field> 
+
+    </div>
+ 
+  
+    <mat-form-field appearance="outline">
+        <mat-label>Descrição</mat-label>
+        <textarea matInput formControlName="description" 
+            id="description" 
+            maxlength="512" 
+            rows="5" 
+            style="resize: none; overflow-y: hidden;"></textarea>
+        @if (form.invalid) {<mat-error>{{getErrorMessage("description", "Descrição")}}</mat-error>}
+    </mat-form-field>
+  
+  
+    <!-- <div formArrayName="Authors">
+      <div *ngFor="let author of form.get('Authors')?.controls; let i=index" [formGroupName]="i">
+        <label for="authorName">Author Name</label>
+        <input id="authorName" type="text" formControlName="name">
+      </div>
+    </div> -->
+  
+    <div class="align-bottom align-right">
+         <cancel-confirm
+            cancelLabel="Cancelar"
+            confirmLabel="Confirmar"
+            (cancelClick)="cancelar()"
+            (confirmClick)="onSubmit()"
+        >
+        </cancel-confirm>
+    </div>
+
+   
+
+  </form>
+
+</container-overflow>
