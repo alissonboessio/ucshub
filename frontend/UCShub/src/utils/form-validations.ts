@@ -218,13 +218,13 @@ import {
   
     }
   
-    static getErrorMessage(campoName: string, campo: string, formulario: any) {
+    static getErrorMessage(campoName: string, campo: string, formulario: any, small: boolean = false) {
       let campoErro = formulario.get(campoName);
   
       if (campoErro?.errors) {
         if (campoErro?.errors['required']) {
   
-          return campo + ' é campo obrigatório';
+          return campo + (small ? ' é obrigatório' : ' é campo obrigatório');
         }
         if (campoErro?.errors['email']) {
   

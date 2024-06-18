@@ -71,6 +71,9 @@ export class ApiService {
     //#region User Endpoints
 
     Login(Usuario: User): Observable<UserResponse> {
+
+        console.log(this.getHeaders(Usuario.email, Usuario.password).pipe(tap(console.log)));
+        
         return this.getHeaders(Usuario.email, Usuario.password).pipe(
             mergeMap(headers => {
                 return this.http.get<UserResponse>(environment.api_url + '/User/Login', { headers: headers })

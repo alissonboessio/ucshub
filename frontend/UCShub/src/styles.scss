@@ -13,3 +13,46 @@ input, button, select, textarea, optgroup, option {
 .mat-mdc-outlined-button:not(:disabled) {
     color: #044be3 !important; 
 }
+
+:root {
+    --height-menu: 94px;
+    --base-color: #545454;
+    --attention-color: #044be3;
+    --shadow-color: #b4b4b4;
+}
+
+.center-vertical {
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .align-right {
+    margin-left: auto;
+  }
+  
+  .align-left {
+    margin-right: auto;
+  }
+  
+  .align-bottom {
+    margin-top: auto;
+  }
+  
+  .align-top {
+    margin-bottom: auto;
+    
+  }
+
+  .line {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .hide-scroll-y{
+    overflow-y: hidden;
+  }
+  
+  .hide-scroll-x{
+    overflow-x: hidden;
+  }
+  

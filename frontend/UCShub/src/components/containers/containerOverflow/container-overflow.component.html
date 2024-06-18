@@ -1,0 +1,29 @@
+<div class="ContainerOverflow__fundo scroll-y">
+
+    <div class="ContainerOverflow__container" (disabled)=disabled>
+
+        <div class="ContainerOverflow__container-title">
+
+            <div class="ContainerOverflow__title line">
+
+                <div class="center-vertical">{{ titleIcon }}</div>
+
+                <div class="center-vertical">{{ title }}</div>
+
+                <div class='line align-right'>
+                    @if (botoesMenuSuperior) {
+                        <!-- mostrar botoes -->
+                    }
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <div class="ContainerOverflow__pagina hide-scroll-x">
+            <ng-content></ng-content>
+        </div>
+
+    </div>
+</div>
