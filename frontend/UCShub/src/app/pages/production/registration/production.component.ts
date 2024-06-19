@@ -1,7 +1,9 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { ContainerOverflowComponent } from '../../../../components/containers/containerOverflow/container-overflow.component';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Production } from '../../../models/Production';
+import { Titulation } from '../../../models/enumerations/Enum_Titulation';
+import { PersonType } from '../../../models/enumerations/Enum_PersonType';
 import { Person } from '../../../models/Person';
 import { CommonModule } from '@angular/common';
 import { Project } from '../../../models/Project';
@@ -11,7 +13,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import Enum_ProductionType from '../../../models/enumerations/Enum_ProductionType.json';
 import {MatSelectModule} from '@angular/material/select';
-import { CancelConfirmComponent } from '../../../../components/buttons/cancel-confirm.component';
+import { CancelConfirmComponent } from '../../../../components/buttons/cancel-confirm/cancel-confirm.component';
+import { OutlineButtonComponent } from '../../../../components/buttons/outline-button/outline-button.component';
+import {MatCardModule} from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { ListDialogComponent } from '../../../../components/dialogs/list-dialog/list-dialog.component';
+import { ListDialogInterface } from '../../../../components/dialogs/list-dialog/list-dialogInterface';
 
 @Component({
   selector: 'app-production',
@@ -22,13 +29,16 @@ import { CancelConfirmComponent } from '../../../../components/buttons/cancel-co
     CommonModule, 
     MatFormFieldModule, 
     MatInputModule,
-    CancelConfirmComponent ],
+    CancelConfirmComponent,
+    OutlineButtonComponent,
+    MatCardModule ],
   templateUrl: './production.component.html',
   styleUrl: './production.component.scss'
 })
 export class ProductionComponent {
 
     public form!: FormGroup; 
+    dialog: MatDialog = inject(MatDialog);
     formBuilder: FormBuilder = new FormBuilder();
     public production : Production = new Production();
     enumTypes: any = Enum_ProductionType;
@@ -45,7 +55,25 @@ export class ProductionComponent {
         Instituiton: new Instituiton,
         Productions: [],
         ResourceRequest: [],
-        Authors: []
+        Authors: [{
+          id: 1,
+          name: "Alisson",
+          birth_date:  null,
+          phone:  '',
+          lattes_id:  '',
+          type: PersonType.Aluno,
+          titulation: Titulation.Graduação
+        },
+        {
+          id: 2,
+          name: "Gustavo",
+          birth_date:  null,
+          phone:  '',
+          lattes_id:  '',
+          type: PersonType.Aluno,
+          titulation: Titulation.Graduação
+        }
+      ]
       },
       {
         id: 2, title: 'Projeto 1 teste 123',
@@ -57,10 +85,22 @@ export class ProductionComponent {
         Instituiton: new Instituiton,
         Productions: [],
         ResourceRequest: [],
-        Authors: []
+        Authors: [
+          {
+            id: 2,
+            name: "Gustavo",
+            birth_date:  null,
+            phone:  '',
+            lattes_id:  '',
+            type: PersonType.Aluno,
+            titulation: Titulation.Graduação
+          }
+        ]
       }
     ];
 
+    selectedAuthors: Person[] = [];
+    selectedAuthorsProduction: Person[] = [];
 
     ngOnInit(): void {
       this.form = this.formBuilder.group({
@@ -78,28 +118,72 @@ export class ProductionComponent {
 
       this.formattedEnumTypes = Object.keys(this.enumTypes);
 
+      this.form.get('Project.id')?.valueChanges.subscribe((selectedProjectId) => {
+        this.onProjectSelected(selectedProjectId);
+      });
+
     }
 
     createAuthorGroup(author: Person): FormGroup {
       return this.formBuilder.group({
-        // Initialize Author form group based on Person class properties
+        id: [author.id, Validators.required],
+        name: [author.name, Validators.required]
       });
     }
+    
+    onProjectSelected(projectId: number): void {
+      const selectedProject = this.projects.find(project => project.id === projectId);
+      if (selectedProject) {
+        this.selectedAuthors = selectedProject.Authors;
+  
+        this.form.patchValue({
+          Project: {
+            title: selectedProject.title
+          }
+        });
+  
+        const authorsFormArray = this.form.get('Authors') as FormArray;
+        authorsFormArray.clear();
+        selectedProject.Authors.forEach(author => {
+          authorsFormArray.push(this.createAuthorGroup(author));
+        });
+      }
+    }
 
-
-    onSubmit(): void {
+    onSubmit(): void {      
       if (FormValidations.checkValidity(this.form)){
         const formValue = this.form.value;
-        console.log(formValue);
-      }else{
-        console.log(this.form);
-        
       }
     }
 
     cancelar(): void {
         const formValue = this.form.value;
-        console.log(formValue, "cncelado");
+    }
+
+    openAuthorSelectionDialog(): void {
+
+      let dialogData: ListDialogInterface = {
+        dialogList: this.projects.find(project => project.id === this.form.get('Project.id')?.value)?.Authors || [],
+        cancelButtonLabel: "Cancelar",
+        confirmButtonLabel: "Confimar",
+        dialogHeader: "Selecione os Autores",
+        callbackConfirm: (selectedAuthors: Person[] | null) => this.handleSelectedAuthor(selectedAuthors),
+      };           
+      
+      const dialogRef = this.dialog.open(ListDialogComponent, {
+        width: '400px',
+        disableClose: true,
+        data: dialogData 
+      });
+  
+    }
+
+    handleSelectedAuthor(selectedAuthors : Person[] | null){
+      if (selectedAuthors) {
+        this.selectedAuthorsProduction = selectedAuthors
+
+
+      }
     }
 
     getErrorMessage(campoName: string, campo: string, small: boolean = false) {

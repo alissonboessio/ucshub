@@ -38,9 +38,9 @@
         </mat-form-field> 
 
     </div>
- 
-  
-    <mat-form-field appearance="outline">
+   
+
+    <mat-form-field appearance="outline" style="width: 100%;">
         <mat-label>Descrição</mat-label>
         <textarea matInput formControlName="description" 
             id="description" 
@@ -49,22 +49,27 @@
             style="resize: none; overflow-y: hidden;"></textarea>
         @if (form.invalid) {<mat-error>{{getErrorMessage("description", "Descrição")}}</mat-error>}
     </mat-form-field>
-  
-  
-    <!-- <div formArrayName="Authors">
-      <div *ngFor="let author of form.get('Authors')?.controls; let i=index" [formGroupName]="i">
-        <label for="authorName">Author Name</label>
-        <input id="authorName" type="text" formControlName="name">
+
+    <div style="display: flex; flex-direction: column;">
+        <span style="font-size: 18px;">Autores</span>
+        <mat-card appearance="outlined" class="authors-card" style="display: flex; flex-direction: column;">
+            @for (author of selectedAuthorsProduction; track $index) {
+                <div>
+                    {{author.name}}
+                </div>
+            }
+          </mat-card>
+
+        <outline-button [disabled]="form.get('Project.id')?.invalid ? true : false" (onClick)="openAuthorSelectionDialog()"></outline-button>
       </div>
-    </div> -->
   
-    <div class="align-bottom align-right">
-         <cancel-confirm
-            cancelLabel="Cancelar"
-            confirmLabel="Confirmar"
-            (cancelClick)="cancelar()"
-            (confirmClick)="onSubmit()"
-        >
+        <div class="align-bottom align-right">
+            <cancel-confirm
+                cancelLabel="Cancelar"
+                confirmLabel="Confirmar"
+                (cancelClick)="cancelar()"
+                (confirmClick)="onSubmit()"
+            >
         </cancel-confirm>
     </div>
 

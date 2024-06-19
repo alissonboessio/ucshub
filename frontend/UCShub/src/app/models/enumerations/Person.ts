@@ -1,7 +1,4 @@
 
-import { Titulation } from "./enumerations/Enum_Titulation";
-import { PersonType } from "./enumerations/Enum_PersonType";
-
 export class Person{
     id: number = 0;
     name: string = '';
@@ -9,7 +6,8 @@ export class Person{
     phone: string = '';
     lattes_id: string = '';
     type: PersonType = PersonType.Aluno;
-    titulation: Titulation = Titulation.Graduação; 
+    titulation: string = ''; // enumeration (to-do)
+
 
     // to-do vincular knowledge_area_id, instituition_id, address_id
 

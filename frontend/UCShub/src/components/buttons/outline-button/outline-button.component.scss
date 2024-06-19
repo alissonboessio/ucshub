@@ -1,0 +1,15 @@
+
+.button
+{
+  background-color: white !important;
+  color: var(--attention-color);
+  border-radius: 10px;
+  border: 1px solid var(--attention-color) !important;
+
+}
+
+.button:hover{
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.586) !important;
+  animation-duration: 0.7s;
+}
