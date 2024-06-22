@@ -79,10 +79,10 @@ export class LoginComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
+      if(result){
+        this.formulario.patchValue(result);
+      }
 
-//enviar para back
-
-      this.formulario = result;
     });
   }
 

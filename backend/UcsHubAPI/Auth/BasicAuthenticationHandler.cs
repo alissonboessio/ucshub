@@ -66,7 +66,7 @@ namespace UcsHubAPI.Auth
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Email),
-                new Claim(ClaimTypes.Role, user.Type.GetDescription())
+                //new Claim(ClaimTypes.Role, user.Person?.Type.GetDescription())
             };
 
             var identity = new ClaimsIdentity(claims, "Basic");

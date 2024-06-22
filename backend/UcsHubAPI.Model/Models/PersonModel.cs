@@ -19,5 +19,19 @@ namespace UcsHubAPI.Model.Models
         //public int AddressId { get; set; }
         public PersonTypeEnum Type { get; set; }
         public TitulationEnum Titulation { get; set; }
+
+        public PersonModel()
+        {
+            
+        }
+
+        public PersonModel(string name)
+        {
+            this.Name = name;
+        }
+        public PersonModel(int id)
+        {
+            this.Id = id;
+        }
     }
 }

@@ -56,3 +56,18 @@ input, button, select, textarea, optgroup, option {
     overflow-x: hidden;
   }
   
+  .mdc-checkbox .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background,
+.mdc-checkbox .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background {
+  border-color: var(--base-color) !important ; /* Border color for checked/indeterminate state */
+  background-color: var(--base-color) !important; /* Background color for checked/indeterminate state */
+}
+
+.mdc-checkbox .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__checkmark,
+.mdc-checkbox .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
+  color: #ffffff !important; /* Checkmark color */
+}
+
+.mdc-checkbox .mdc-checkbox__native-control:checked ~ .mdc-checkbox__background .mdc-checkbox__mixedmark,
+.mdc-checkbox .mdc-checkbox__native-control:indeterminate ~ .mdc-checkbox__background .mdc-checkbox__mixedmark {
+  background-color: #ffffff !important; /* Indeterminate mark color */
+}

@@ -3,7 +3,7 @@
     <div class="logo" routerLink="">
       <img src="./assets/logo-bar.png" style="height: 60px;">
     </div>
-    <span class="userName">Olá {{ loggedUser?.name }}, bem vindo!</span>
+    <span class="userName">Olá {{ loggedUser?.person?.name }}, bem vindo!</span>
     <span class="example-spacer"></span>
     <div class="nav-buttons">
       <button mat-stroked-button class="grey"  routerLinkActive="selected" routerLink="/advanced_search">

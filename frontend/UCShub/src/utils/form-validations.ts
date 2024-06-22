@@ -3,6 +3,7 @@ import {
     FormArray,
     FormControl,
     FormGroup,
+    ValidationErrors,
     ValidatorFn,
   } from '@angular/forms';
   
@@ -193,6 +194,15 @@ import {
       return null;
     }
   
+  
+    static ucsEmail() {
+      return (control: AbstractControl): ValidationErrors | null => {
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@ucs\.br$/;
+        const valid = emailPattern.test(control.value);
+        return valid ? null : { 'ucsEmail': true} ;
+      };
+    }
+  
     static validaDataNascimento(dataForm: FormControl) {
   
       let hoje: Date = new Date();
@@ -201,6 +211,13 @@ import {
         return { "dataNascimentoInvalido": true };
       }
       return null;
+    }
+
+
+    static validaUCSmail(email: string): boolean {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@ucs\.br$/;
+
+      return emailPattern.test(email);
     }
   
     static DDD(formData: FormControl) {
@@ -255,6 +272,9 @@ import {
         }
         if (campoErro?.errors['dddInvalido']) {
           return 'DDD inválido';
+        }
+        if (campoErro?.errors['ucsEmail']) {
+          return 'Formato esperado: email@ucs.br';
         }
         if (campoErro?.errors['mask']) { //cuidar com outras mascaras no sistema.
           return 'Formato inválido';

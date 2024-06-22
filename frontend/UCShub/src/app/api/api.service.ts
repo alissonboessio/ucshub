@@ -1,7 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { from, Observable, of } from 'rxjs';
 import { catchError, concatMap, mergeMap, take, tap } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 import { Md5 } from 'ts-md5';
 import { StorageService } from "../db/storage.service";
@@ -81,6 +81,19 @@ export class ApiService {
         );
     }
 
+    SignUp(Usuario: User): Observable<UserResponse> {
+        
+        Usuario.password = Md5.hashStr(Usuario.password)
+
+        return this.getHeaders(Usuario.email, Usuario.password).pipe(
+            mergeMap(headers => {
+                return this.http.post<UserResponse>(environment.api_url + '/User/register',  Usuario, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<UserResponse>('SignUp'))
+        );
+    }
+
     //#endregion
 
     //#region Productions Endpoints
@@ -98,14 +111,15 @@ export class ApiService {
     //#endregion
 
     private handleError<T>(operation = 'operation', result?: T, showError: boolean = true) {
-        return (error: any): Observable<T> => {
+        return (error: HttpErrorResponse): Observable<T> => {
 
-            if (error.status === 401 && operation === 'Login') {
+            if (error.status === 401) {
                 this.openSnackBar("Usuário ou senha Incorretos!")       
 
-            }
+            }else{
+                this.openSnackBar(error.error)
 
-            // console.error(`${operation} failed: ${JSON.stringify(error)}`);          
+            }
 
             return of(result as T);
         };

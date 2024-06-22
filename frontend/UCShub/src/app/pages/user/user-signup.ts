@@ -1,4 +1,4 @@
-import {Component, Inject, ViewEncapsulation} from '@angular/core';
+import {Component, inject, Inject, ViewEncapsulation} from '@angular/core';
 import {
   MatDialog,
   MAT_DIALOG_DATA,
@@ -14,6 +14,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { User } from '../../models/User';
 import { FormValidations } from '../../../utils/form-validations';
+import { ApiService } from '../../api/api.service';
+import { CancelConfirmComponent } from '../../../components/buttons/cancel-confirm/cancel-confirm.component';
 
 @Component({
   selector: 'user-signup',
@@ -30,6 +32,7 @@ import { FormValidations } from '../../../utils/form-validations';
     MatDialogContent,
     MatDialogActions,
     MatDialogClose,
+    CancelConfirmComponent
   ],
   encapsulation: ViewEncapsulation.None
 })
@@ -37,14 +40,15 @@ export class SignupDialog {
 
   formSign!: FormGroup;
   formBuilder: FormBuilder = new FormBuilder();
+  api: ApiService = inject(ApiService);
 
   constructor(
     public dialogRef: MatDialogRef<SignupDialog>,
     @Inject(MAT_DIALOG_DATA) public data: User,
   ) {
     this.formSign = this.formBuilder.group({
-      name: [data.name, [Validators.required]],
-      email: [data.email, [Validators.required, Validators.email]],
+      name: [data.person?.name, [Validators.required]],
+      email: [data.email, [Validators.required, FormValidations.ucsEmail()]],
       password: [data.password, Validators.required]
     })
 
@@ -54,10 +58,23 @@ export class SignupDialog {
     this.dialogRef.close();
   }
 
-  register(): void {
+  register(): void {    
+    if (FormValidations.checkValidity(this.formSign) && FormValidations.validaUCSmail(this.formSign.get("email")!.value)){
 
-    if (FormValidations.checkValidity(this.formSign)){
-      this.dialogRef.close(this.formSign.value);
+      const pwdTemp = this.formSign.get("password")!.value;
+
+      this.api.SignUp(this.formSign.value).subscribe(async resp => {
+        if (resp){
+          this.api.openSnackBar("Sucesso!")
+          this.formSign.get("password")?.setValue(pwdTemp);
+
+          this.dialogRef.close(this.formSign.value);
+
+        }
+
+
+      });
+
 
     }
 
