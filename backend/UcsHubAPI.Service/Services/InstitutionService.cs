@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UcsHubAPI.Model.HelperObjects;
 using UcsHubAPI.Model.Models;
 using UcsHubAPI.Repository.Repositories;
+using UcsHubAPI.Response.Responses;
 
 namespace UcsHubAPI.Service.Services
 {
@@ -36,6 +38,23 @@ namespace UcsHubAPI.Service.Services
 
 
             return institution;
+
+        }
+
+        public ListInstituitionResponse GetAllSimple()
+        {
+            ListInstituitionResponse response = new ListInstituitionResponse();
+            InstitutionRepository institutionRepository = new InstitutionRepository(_appSettings.ConnString);
+            List<InstitutionModel> institutions = null;
+   
+            institutions = (List<InstitutionModel>)institutionRepository.GetAll();
+
+
+            response.Success = true;
+            response.Message = "Encontrados";
+            response.Institutions = institutions;
+
+            return response;
 
         }
 

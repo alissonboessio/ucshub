@@ -17,13 +17,23 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'list-production',
+        path: 'list-productions',
         loadComponent: () => import('./pages/production/list/list-production.component').then(m => m.ListProductionComponent),
         canActivate: [AuthGuard]
       },
       {
         path: 'production',
         loadComponent: () => import('./pages/production/registration/production.component').then(m => m.ProductionComponent),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'project',
+        loadComponent: () => import('./pages/project/registration/project.component').then(m => m.ProjectComponent),
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'list-projects',
+        loadComponent: () => import('./pages/project/list/list-projects.component').then(m => m.ListProjectsComponent),
         canActivate: [AuthGuard]
       },
 ];

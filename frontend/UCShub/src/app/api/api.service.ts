@@ -10,6 +10,9 @@ import { BaseResponse } from "./Responses/BaseResponse";
 import { UserResponse } from "./Responses/UserResponse";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ProductionListObjResponse } from "./Responses/ProductionListObjResponse";
+import { InstitutionListResponse } from "./Responses/InstitutionListResponse";
+import { ProjectResponse } from "./Responses/ProjectResponse";
+import { Project } from "../models/Project";
 
 @Injectable({
     providedIn: 'root'
@@ -98,13 +101,49 @@ export class ApiService {
 
     //#region Productions Endpoints
 
-    ListProductionsSimple(): Observable<ProductionListObjResponse> {
+    ListProductionsSimple(filter : string | null): Observable<ProductionListObjResponse> {
+
+        let url = `/Production/get_all_list`;
+
+        filter ? url += `${filter}` : "";
+
         return this.getHeaders().pipe(
             mergeMap(headers => {
-                return this.http.get<ProductionListObjResponse>(environment.api_url + '/Production/get_all_list', { headers: headers })
+                return this.http.get<ProductionListObjResponse>(environment.api_url + url, { headers: headers })
             }),
             take(1),
             catchError(this.handleError<ProductionListObjResponse>('ListProductionsSimple'))
+        );
+    }
+
+    //#endregion
+
+    //#region Projects Endpoints
+
+    UpdateProject(project: Project): Observable<ProjectResponse> {       
+        
+        console.log({'Project' : project});
+        
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.post<ProjectResponse>(environment.api_url + '/Project/update', {'Project' : project}, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<ProjectResponse>('UpdateProject'))
+        );
+    }
+
+    //#endregion
+
+    //#region Institution Endpoints
+
+    ListInstitutionsSimple(): Observable<InstitutionListResponse> {
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.get<InstitutionListResponse>(environment.api_url + `/Institution/get_all`, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<InstitutionListResponse>('ListInstitutionsSimple'))
         );
     }
 
@@ -125,8 +164,12 @@ export class ApiService {
         };
     }
 
-    openSnackBar(msg:string) {
-        this._snackBar.open(msg, undefined, {
+    openSnackBar(msg: string) {
+        if (!msg) {
+            return;
+        }
+
+        this._snackBar.open(msg.substring(0, 50), undefined, {
             duration: 3 * 1000,
             verticalPosition: "top",
             horizontalPosition: "right"

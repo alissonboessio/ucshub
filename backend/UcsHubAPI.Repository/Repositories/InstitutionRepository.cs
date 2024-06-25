@@ -17,10 +17,38 @@ namespace UcsHubAPI.Repository.Repositories
             this.ConnString = ConnString;
         }
 
+
         public IEnumerable<InstitutionModel> GetAll()
         {
-            throw new NotImplementedException();
+            List<InstitutionModel> institutions = new List<InstitutionModel>();
+
+            string query = $"SELECT * FROM {this.Schema}";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                connection.Open();
+
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    InstitutionModel institution = new InstitutionModel
+                    {
+                        Id = reader.GetInt32("id"),
+                        Name = reader.GetStringH("name"),
+                        Document = reader.GetStringH("document"),
+                        CreatedAt = (DateTime)reader.GetDateTimeH("created_at")!,
+                        AddressId = reader.GetIntH("address_id")
+                    };
+
+                    institutions.Add(institution);
+
+                }
+            }
+
+            return institutions;
         }
+
 
         public InstitutionModel GetById(int id)
         {

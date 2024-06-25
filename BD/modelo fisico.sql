@@ -23,7 +23,7 @@ create table address(
 
 );
 
-create table instituition(
+create table institution(
 	id int primary key auto_increment,
 	name varchar(80) not null,
 	document varchar(50),
@@ -52,7 +52,7 @@ create table person(
 	
 	CONSTRAINT person_address_address_id FOREIGN KEY (address_id) REFERENCES address(id),
 	CONSTRAINT person_knowledge_area_id FOREIGN KEY (knowledge_area_id) REFERENCES knowledge_area(id),
-	CONSTRAINT person_instituition_id FOREIGN KEY (instituition_id) REFERENCES instituition(id)
+	CONSTRAINT person_instituition_id FOREIGN KEY (instituition_id) REFERENCES institution(id)
 	
 	
 );
@@ -85,7 +85,7 @@ create table project(
 
 	instituition_id int not null,		
 	
-	CONSTRAINT project_instituition_id FOREIGN KEY (instituition_id) REFERENCES instituition(id)
+	CONSTRAINT project_instituition_id FOREIGN KEY (instituition_id) REFERENCES institution(id)
 	
 );
 
@@ -135,7 +135,7 @@ create table resource_request(
 	instituition_id int not null,		
 
 	CONSTRAINT resource_request_project_id FOREIGN KEY (project_id) REFERENCES project(id),	
-	CONSTRAINT resource_request_instituition_id FOREIGN KEY (instituition_id) REFERENCES instituition(id),
+	CONSTRAINT resource_request_instituition_id FOREIGN KEY (instituition_id) REFERENCES institution(id),
 	CONSTRAINT resource_request_person_id FOREIGN KEY (person_id) REFERENCES person(id)
 	
 

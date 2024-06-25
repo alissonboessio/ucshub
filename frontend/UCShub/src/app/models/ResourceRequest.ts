@@ -1,4 +1,4 @@
-import { Instituiton } from "./Instituition";
+import { Institution } from "./Institution";
 import { Person } from "./Person";
 import { Project } from "./Project";
 
@@ -12,7 +12,7 @@ export class ResourceRequest{
 
     Project: Project = new Project();
     Person: Person = new Person();
-    Instituiton: Instituiton = new Instituiton();
+    Institution: Institution = new Institution();
 
 
 }

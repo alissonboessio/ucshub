@@ -6,7 +6,7 @@ export class Production{
     title: string = '';
     description: string = '';
     
-    type: string = ''; // enumeration (to-do)
+    type: string = '';
 
     created_at: Date | null = null;
 

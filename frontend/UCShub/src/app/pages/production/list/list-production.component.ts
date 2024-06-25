@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ApiService } from '../../../api/api.service';
 import { ProductionListObj } from '../../../models/HelperObjects/ProductionListObj';
 import Enum_ProductionType from '../../../models/enumerations/Enum_ProductionType.json';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-list-production',
@@ -21,6 +22,8 @@ import Enum_ProductionType from '../../../models/enumerations/Enum_ProductionTyp
 })
 export class ListProductionComponent {
 
+  filter : string | null = "";
+
   api: ApiService = inject(ApiService);
 
   productions = new Array<ProductionListObj>();
@@ -28,19 +31,26 @@ export class ListProductionComponent {
   productionsTableColumns! : TableColumn[];
 
   searchField = new FormControl();
+  private route = inject(ActivatedRoute);
 
   ngOnInit(){
+    this.route.queryParams.subscribe(params => {
+      this.buildFilter(params['person'], 'person');
 
-    this.api.ListProductionsSimple().subscribe(async resp => {
-      if(resp.success){
-        this.productions = resp.productions ?? [];
-        this.filteredProductions = this.productions;
-      }
-            
-    })
+      this.api.ListProductionsSimple(this.filter).subscribe(async resp => {
+        if (resp && resp.success) {
+          this.productions = resp.productions ?? [];
+          this.filteredProductions = this.productions;
+        }
+      });
+    });
 
 
     this.initColumnsTabs()
+  }
+
+  buildFilter(filter: string, queryParam: string){
+    this.filter += `?${queryParam}=filter`;
   }
 
   sortData(sortParameters: Sort) {

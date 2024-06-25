@@ -1,7 +1,7 @@
 import { Address } from "./Address";
 import { Project } from "./Project";
 
-export class Instituiton{
+export class Institution{
     id: number = 0;
     name: string = '';
     document: string = '';

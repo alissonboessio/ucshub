@@ -1,3 +1,4 @@
+import { PersonType } from "./Enum_PersonType";
 
 export class Person{
     id: number = 0;

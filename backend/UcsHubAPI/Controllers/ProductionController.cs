@@ -38,25 +38,27 @@ namespace UcsHubAPI.Controllers
         }
         [HttpGet("get_all_list")]
         [Produces(typeof(ProductionListObjResponse))]
-        public IActionResult ListAllSimple()
+        public IActionResult ListAllSimple([FromQuery] string person_id = null, [FromQuery] string title = null)
         {
 
-            ProductionListObjResponse resp = _ProductionService.GetAllSimple();
-
-            if (!resp.Success)
+            try
             {
-                return BadRequest(resp);
-                
-            }
-
-            if (resp.Productions.Any())
-            {
+                ProductionListObjResponse resp = _ProductionService.GetAllSimple(person_id, title);
                 return Ok(resp);
+
             }
-            else
+            catch (HttpRequestException ex)
             {
-                return Ok(resp);
+                if (ex.StatusCode.HasValue)
+                {
+                    return StatusCode((int)ex.StatusCode.Value, ex.Message);
+                }
+                else
+                {
+                    return BadRequest(ex.Message);
+                }
             }
+
             
             
         }

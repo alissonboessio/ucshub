@@ -7,7 +7,7 @@ import { PersonType } from '../../../models/enumerations/Enum_PersonType';
 import { Person } from '../../../models/Person';
 import { CommonModule } from '@angular/common';
 import { Project } from '../../../models/Project';
-import { Instituiton } from '../../../models/Instituition';
+import { Institution } from '../../../models/Institution';
 import { FormValidations } from '../../../../utils/form-validations';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -45,58 +45,7 @@ export class ProductionComponent {
     formattedEnumTypes! : string[] | null;
 
     projects: Project[] = [
-      {
-        id: 1, title: 'Projeto 2 teste 122343',
-        description: null,
-        status: null,
-        type: null,
-        created_at: null,
-        ended_at: null,
-        Instituiton: new Instituiton,
-        Productions: [],
-        ResourceRequest: [],
-        Authors: [{
-          id: 1,
-          name: "Alisson",
-          birth_date:  null,
-          phone:  '',
-          lattes_id:  '',
-          type: PersonType.Aluno,
-          titulation: Titulation.Graduação
-        },
-        {
-          id: 2,
-          name: "Gustavo",
-          birth_date:  null,
-          phone:  '',
-          lattes_id:  '',
-          type: PersonType.Aluno,
-          titulation: Titulation.Graduação
-        }
-      ]
-      },
-      {
-        id: 2, title: 'Projeto 1 teste 123',
-        description: null,
-        status: null,
-        type: null,
-        created_at: null,
-        ended_at: null,
-        Instituiton: new Instituiton,
-        Productions: [],
-        ResourceRequest: [],
-        Authors: [
-          {
-            id: 2,
-            name: "Gustavo",
-            birth_date:  null,
-            phone:  '',
-            lattes_id:  '',
-            type: PersonType.Aluno,
-            titulation: Titulation.Graduação
-          }
-        ]
-      }
+    
     ];
 
     selectedAuthors: Person[] = [];

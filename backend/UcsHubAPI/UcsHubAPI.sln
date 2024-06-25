@@ -11,11 +11,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UcsHubAPI.Service", "..\Ucs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UcsHubAPI.Model", "..\UcsHubAPI.Model\UcsHubAPI.Model.csproj", "{D803D029-0B9C-425A-AB04-99825A0D806D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI.Shared", "..\UcsHubAPI.Shared\UcsHubAPI.Shared.csproj", "{D34701CC-0784-4221-ACF0-CC73F03E9AA1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UcsHubAPI.Shared", "..\UcsHubAPI.Shared\UcsHubAPI.Shared.csproj", "{D34701CC-0784-4221-ACF0-CC73F03E9AA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI.Request", "..\UcsHubAPI.Request\UcsHubAPI.Request.csproj", "{578C21F3-7B60-4224-BF07-6C8EA87ECEA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UcsHubAPI.Request", "..\UcsHubAPI.Request\UcsHubAPI.Request.csproj", "{578C21F3-7B60-4224-BF07-6C8EA87ECEA7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D803D029-0B9C-425A-AB04-99825A0D806D} = {D803D029-0B9C-425A-AB04-99825A0D806D}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UcsHubAPI.Response", "..\UcsHubAPI.Response\UcsHubAPI.Response.csproj", "{A6FD5497-E4A1-4B90-B550-49314F28FEF1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UcsHubAPI.Response", "..\UcsHubAPI.Response\UcsHubAPI.Response.csproj", "{A6FD5497-E4A1-4B90-B550-49314F28FEF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

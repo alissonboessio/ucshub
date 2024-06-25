@@ -41,12 +41,33 @@ namespace UcsHubAPI.Service.Services
 
         }
         
-        public ProductionListObjResponse GetAllSimple()
+        public ProductionListObjResponse GetAllSimple(string person_id = null, string title = null)
         {
             ProductionListObjResponse response = new ProductionListObjResponse();
-
             ProductionRepository productionRepository = new ProductionRepository(_appSettings.ConnString);
-            List<ProductionListObj> productions = (List<ProductionListObj>)productionRepository.GetAllSimple();
+            List<ProductionListObj> productions = null;
+            if (!string.IsNullOrEmpty(person_id) || !string.IsNullOrEmpty(title))
+            {
+
+                if (Int32.TryParse(person_id, out int id))
+                {
+                    PersonModel Person = new PersonRepository(_appSettings.ConnString).GetById(id);
+                    productions = (List<ProductionListObj>)productionRepository.GetAllSimpleFiltered(Person);
+
+                }
+                else
+                {
+                    throw new HttpRequestException("Filtro formatado errado!", null, System.Net.HttpStatusCode.BadRequest);
+                }
+
+                
+            }
+            else
+            {
+                productions = (List<ProductionListObj>)productionRepository.GetAllSimple();
+
+            }
+
 
             response.Success = true;
             response.Message = "Encontrados";

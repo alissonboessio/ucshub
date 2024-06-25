@@ -97,6 +97,62 @@ namespace UcsHubAPI.Repository.Repositories
 
             return productions;
         }
+        
+        // to-do title filter
+        public IEnumerable<ProductionListObj> GetAllSimpleFiltered(PersonModel Person = null)
+        {
+            List<ProductionListObj> productions = new List<ProductionListObj>();
+
+            string query = $"SELECT id, title, created_at, type FROM {this.Schema}";
+
+            string queryP = $"SELECT name FROM {this.Schema} INNER JOIN " +
+                $"person_production on production_id = {this.Schema}.id INNER JOIN " +
+                $"person on person.id = person_id @personFilter";
+
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                connection.Open();
+
+                if (Person != null)
+                {
+                    command.Parameters.AddWithValue("@personFilter", $"WHERE person_id = ${Person.Id}");
+                }
+
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    ProductionListObj production = new ProductionListObj
+                    {
+                        Id = reader.GetInt32("id"),
+                        Title = reader.GetStringH("title"),
+                        DateCreated = reader.GetDateTime("created_at"),
+                        Type = (Model.Enumerations.ProductionTypeEnum)Enum.ToObject(typeof(Model.Enumerations.ProductionTypeEnum), reader.GetByteH("type", 0)!),
+                    };
+
+
+                    using (MySqlConnection connectionP = new MySqlConnection(ConnString))
+                    {
+                        MySqlCommand commandP = new MySqlCommand(queryP, connectionP);
+                        commandP.Parameters.AddWithValue("@id", production.Id);
+
+                        connectionP.Open();
+
+                        MySqlDataReader readerP = commandP.ExecuteReader();
+                        while (readerP.Read())
+                        {
+                            production.people.Add(readerP.GetStringH("name"));
+                        }
+                    }
+
+                    productions.Add(production);
+
+                }
+            }
+
+            return productions;
+        }
 
         public ProductionModel GetById(int id)
         {

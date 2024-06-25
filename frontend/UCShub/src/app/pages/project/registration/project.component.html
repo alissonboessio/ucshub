@@ -1,5 +1,5 @@
 <container-overflow
-    title="Cadastro de Produção"
+    title="Cadastro de Projeto"
 >
 <form [formGroup]="form">
   
@@ -11,31 +11,31 @@
             @if (form.invalid) {<mat-error>{{getErrorMessage("title", "Título")}}</mat-error>}
         </mat-form-field>
 
-        <mat-form-field appearance="outline" style="width: 250px;">
-            <mat-label>Tipo</mat-label>
-            <mat-select formControlName="type" id="type">
-                @for (type of formattedEnumTypes; track $index) {
-                    <mat-option [value]="type">
-                        {{ enumTypes[type] }}
-                    </mat-option>
-                }
-                
-            </mat-select>
-            @if (form.invalid) {<mat-error>{{getErrorMessage("type", "Tipo", true)}}</mat-error>}
-        </mat-form-field> 
-
-        <mat-form-field appearance="outline" formGroupName="Project" style="width: 500px;">
-            <mat-label>Selecione o projeto</mat-label>
+        <mat-form-field appearance="outline" formGroupName="Institution" style="width: 500px;">
+            <mat-label>Selecione a Instituição</mat-label>
             <mat-select formControlName="id" id="id">
-                @for (project of projects; track $index) {
-                    <mat-option [value]="project.id">
-                        {{ project.title }}
+                @for (inst of institutions; track $index) {
+                    <mat-option [value]="inst.id">
+                        {{ inst.name }}
                     </mat-option>
                 }
                 
             </mat-select>             
-            @if (form.invalid) {<mat-error>{{getErrorMessage("Project.id", "Projeto")}}</mat-error>}
+            @if (form.invalid) {<mat-error>{{getErrorMessage("Institution.id", "Intituição")}}</mat-error>}
         </mat-form-field> 
+
+        <mat-form-field appearance="outline" style="width: 250px;">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status" id="status">
+                @for (status of formattedEnumStatus; track $index) {
+                    <mat-option [value]="status">
+                        {{ enumStatus[status] }}
+                    </mat-option>
+                }
+                
+            </mat-select>
+            @if (form.invalid) {<mat-error>{{getErrorMessage("status", "Status", true)}}</mat-error>}
+        </mat-form-field>
 
     </div>
    
@@ -53,14 +53,14 @@
     <div style="display: flex; flex-direction: column;">
         <span style="font-size: 18px;">Autores</span>
         <mat-card appearance="outlined" class="authors-card" style="display: flex; flex-direction: column;">
-            @for (author of selectedAuthorsProduction; track $index) {
+            @for (author of selectedAuthors; track $index) {
                 <div>
-                    {{author.name}}
+                    {{author.name | titlecase}}
                 </div>
             }
           </mat-card>
 
-        <outline-button [disabled]="form.get('Project.id')?.invalid ? true : false" (onClick)="openAuthorSelectionDialog()"></outline-button>
+        <outline-button (onClick)="openAuthorSelectionDialog()"></outline-button>
       </div>
   
         <div class="align-bottom align-right">
