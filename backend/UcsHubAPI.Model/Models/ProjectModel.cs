@@ -21,6 +21,8 @@ namespace UcsHubAPI.Model.Models
         public List<PersonModel> Authors { get; set; }
         //public List<ResourceRequests> Resources { get; set; }
         public int? InstitutionId { get; set; }
+        public List<ProductionModel>? Productions { get; set; }
+
 
     }
 }

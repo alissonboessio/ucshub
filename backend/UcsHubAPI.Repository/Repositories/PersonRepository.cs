@@ -18,7 +18,39 @@ namespace UcsHubAPI.Repository.Repositories
 
         public IEnumerable<PersonModel> GetAll()
         {
-            throw new NotImplementedException();
+            string query = $"SELECT * FROM {this.Schema}";
+
+            List<PersonModel> people = new List<PersonModel>();
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                connection.Open();
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var person = new PersonModel
+                        {
+                            Id = reader.GetInt32("id"),
+                            Name = reader.GetStringH("name"),
+                            BirthDate = reader.GetDateTimeH("birth_date"),
+                            Phone = reader.GetStringH("phone"),
+                            LattesId = reader.GetStringH("lattes_id"),
+                            KnowledgeAreaId = reader.GetIntH("knowledge_area_id"),
+                            InstitutionId = reader.GetIntH("instituition_id"),
+                            //AddressId = reader.IsDBNull(reader.GetOrdinal("address_id")) ? (int?)null : reader.GetInt32("address_id"),
+                            Type = (Model.Enumerations.PersonTypeEnum)reader.GetByte("type"),
+                            Titulation = (Model.Enumerations.TitulationEnum)reader.GetByte("titulation")
+                        };
+
+                        people.Add(person);
+                    }
+                }
+            }
+
+            return people;
         }
         
         public PersonModel GetById(int id)

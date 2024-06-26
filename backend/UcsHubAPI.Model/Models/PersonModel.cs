@@ -12,10 +12,12 @@ namespace UcsHubAPI.Model.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime? BirthDate { get; set; }
-        public string Phone { get; set; }
-        public string LattesId { get; set; }
-        //public int KnowledgeAreaId { get; set; }
-        //public int InstitutionId { get; set; }
+        public string? Phone { get; set; }
+        public string? LattesId { get; set; }
+        public int? KnowledgeAreaId { get; set; }
+        public InstitutionModel? Institution { get; set; }
+        public KnowledgeAreaModel? KnowledgeArea { get; set; }
+        public int? InstitutionId { get; set; }
         //public int AddressId { get; set; }
         public PersonTypeEnum Type { get; set; }
         public TitulationEnum Titulation { get; set; }

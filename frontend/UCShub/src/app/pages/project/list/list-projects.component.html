@@ -1,1 +1,34 @@
-<p>list-projects works!</p>
+
+
+<main class="main-list-prods">
+    <div style="display: flex; flex-direction: row;">
+        <h2>{{ title }}</h2>
+        <div style="display: flex; align-items: center; margin-left: auto;">
+            <outline-button (onClick)="addProject()"></outline-button>
+
+        </div>
+    </div>
+    
+
+    <mat-form-field appearance="outline" class="search-field" (keyup.enter)="filterProjects()">
+        <mat-label>Título </mat-label>
+        <input matInput [formControl]="searchField" id="searchField">
+        <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>    
+
+    <material-table
+        [tableData]="filteredProjects"
+        [tableColumns]="projectsTableColumns"
+        (rowClick)="openProject($event)"
+        [isPageable]="true"
+        [rowActionIcon3]="rowAction3"
+        (rowAction3)="deleteProject($event)"
+        [paginationSizes]="[10,50,100]"
+        [defaultPageSize]="10"
+        (sort)="sortData($event)"
+        >
+    </material-table>    
+    
+
+</main>
+  

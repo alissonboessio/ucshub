@@ -39,7 +39,7 @@ namespace UcsHubAPI.Service.Services
 
             return response;
 
-        }
+        }        
         
         public ProductionListObjResponse GetAllSimple(string person_id = null, string title = null)
         {

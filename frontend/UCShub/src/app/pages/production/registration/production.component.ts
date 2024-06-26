@@ -19,6 +19,10 @@ import {MatCardModule} from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { ListDialogComponent } from '../../../../components/dialogs/list-dialog/list-dialog.component';
 import { ListDialogInterface } from '../../../../components/dialogs/list-dialog/list-dialogInterface';
+import { Router } from '@angular/router';
+import { StorageService } from '../../../db/storage.service';
+import { User } from '../../../models/User';
+import { ApiService } from '../../../api/api.service';
 
 @Component({
   selector: 'app-production',
@@ -44,9 +48,11 @@ export class ProductionComponent {
     enumTypes: any = Enum_ProductionType;
     formattedEnumTypes! : string[] | null;
 
-    projects: Project[] = [
-    
-    ];
+    projects: Project[] = [];
+    private router = inject(Router);
+    private storage = inject(StorageService);
+    loggedUser : User | null = null;
+    api: ApiService = inject(ApiService);
 
     selectedAuthors: Person[] = [];
     selectedAuthorsProduction: Person[] = [];
@@ -70,6 +76,10 @@ export class ProductionComponent {
       this.form.get('Project.id')?.valueChanges.subscribe((selectedProjectId) => {
         this.onProjectSelected(selectedProjectId);
       });
+
+      
+    this.getLoggedUser();
+    
 
     }
 
@@ -104,9 +114,23 @@ export class ProductionComponent {
         const formValue = this.form.value;
       }
     }
-
+    getLoggedUser(){
+      this.storage.GetLoggedUserAsync().then(resp => {
+        this.loggedUser = resp;
+        this.getProjects();
+      })   
+      
+    }
+    getProjects(){
+      this.api.ListProjectsSimple("person_id:" + this.loggedUser?.person?.id).subscribe(async resp => {
+        if (resp && resp.success) {
+          this.projects = resp.projects ?? [];
+          
+        }
+      });
+    }
     cancelar(): void {
-        const formValue = this.form.value;
+      this.router.navigate(['/list-productions'], { queryParams: { person: this.loggedUser?.person?.id } });       
     }
 
     openAuthorSelectionDialog(): void {

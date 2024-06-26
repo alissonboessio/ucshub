@@ -4,6 +4,7 @@ using Org.BouncyCastle.Ocsp;
 using System.Data;
 using System.Transactions;
 using UcsHubAPI.Model.Enumerations;
+using UcsHubAPI.Model.HelperObjects;
 using UcsHubAPI.Model.Models;
 using UcsHubAPI.Shared;
 
@@ -23,6 +24,62 @@ namespace UcsHubAPI.Repository.Repositories
         public IEnumerable<ProjectModel> GetAll()
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<ProjectsListObj> GetAllSimpleFiltered(PersonModel Person = null)
+        {
+            List<ProjectsListObj> projectsList = new List<ProjectsListObj>();
+
+            string query = $"SELECT p.id, p.title, p.created_at, pp.person_id, pe.name FROM {this.Schema} p " +
+                           "JOIN person_project pp ON p.id = pp.project_id " +
+                           "LEFT JOIN person pe ON pp.person_id = pe.id ";
+
+            if (Person != null)
+            {
+                query += " WHERE pp.person_id = @personId";
+            }
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                connection.Open();
+
+                if (Person != null)
+                {
+                    command.Parameters.AddWithValue("@personId", Person.Id);
+                }
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    Dictionary<int, ProjectsListObj> projectsDict = new Dictionary<int, ProjectsListObj>();
+
+                    while (reader.Read())
+                    {
+                        int projectId = reader.GetInt32("id");
+                        string personName = reader.GetStringH("name");
+
+                        if (!projectsDict.ContainsKey(projectId))
+                        {
+                            ProjectsListObj project = new ProjectsListObj
+                            {
+                                Id = projectId,
+                                Title = reader.GetStringH("title"),
+                                DateCreated = reader.GetDateTime("created_at")
+                            };
+                            projectsDict.Add(projectId, project);
+                        }
+
+                        if (!string.IsNullOrEmpty(personName))
+                        {
+                            projectsDict[projectId].people.Add(personName);
+                        }
+                    }
+
+                    projectsList = new List<ProjectsListObj>(projectsDict.Values);
+                }
+            }
+
+            return projectsList;
         }
 
         public ProjectModel GetById(int id)
@@ -136,7 +193,8 @@ namespace UcsHubAPI.Repository.Repositories
                 command.Parameters.AddWithValue("@Title", project.Title);
                 command.Parameters.AddWithValue("@Description", project.Description);
                 command.Parameters.AddWithValue("@Status", project.Status);
-                command.Parameters.AddWithValue("@Type", project.Type);
+                //command.Parameters.AddWithValue("@Type", project.Type);
+                command.Parameters.AddWithValue("@Type", 0);
                 command.Parameters.AddWithValue("@EndedAt", project.EndedAt);
                 command.Parameters.AddWithValue("@InstituitionId", project.Institution.Id);
                 command.Parameters.AddWithValue("@Id", project.Id);
@@ -147,9 +205,19 @@ namespace UcsHubAPI.Repository.Repositories
             }
         }
 
-        public bool Delete(ProjectModel user)
+        public bool Delete(ProjectModel project)
         {
-            throw new NotImplementedException();
+            string query = $"DELETE FROM {this.Schema} WHERE id = @id";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@id", project.Id);
+
+                connection.Open();
+                return command.ExecuteNonQuery() > 0;
+
+            }
         }
 
         public bool UpdateAuthors(List<PersonModel> authors, ProjectModel project)

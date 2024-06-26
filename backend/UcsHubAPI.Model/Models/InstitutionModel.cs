@@ -11,8 +11,8 @@ namespace UcsHubAPI.Model.Models
     public class InstitutionModel
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public string Document { get; set; }
+        public string? Name { get; set; }
+        public string? Document { get; set; }
         public DateTime CreatedAt { get; set; }
         [JsonIgnore]
         public AddressModel? Address { get; set; }

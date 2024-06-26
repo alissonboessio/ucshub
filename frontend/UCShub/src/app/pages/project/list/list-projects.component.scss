@@ -1,0 +1,17 @@
+.main-list-prods{
+    margin-right: 10%;
+    margin-left: 10%;
+
+}
+
+.main-list-prods > h2{
+    font-weight: 500;
+}
+
+.main-list-prods > mat-form-field{
+    width: 100%;
+}
+
+.mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-shape: 43px !important;
+}

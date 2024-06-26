@@ -11,40 +11,25 @@ namespace UcsHubAPI.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    public class ProductionController : ControllerBase
+    public class PersonController : ControllerBase
     {
         private readonly AppSettings _appSettings;
-        private readonly ProductionService _ProductionService;
+        private readonly PersonService _PersonService;
 
-        public ProductionController(IOptions<AppSettings> appSettings)
+        public PersonController(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
-            _ProductionService = new ProductionService(appSettings);
+            _PersonService = new PersonService(appSettings);
         }
   
-        //[HttpGet("list_all")]
-        //public IActionResult ListAll()
-        //{
-
-        //    ListProductionResponse resp = _ProductionService.GetAll();
-
-        //    if (resp.Success)
-        //    {
-        //        return Ok(resp);
-        //    }
-
-        //    return BadRequest(resp);
-            
-        //}
-        
-        [HttpGet("get_all_list")]
-        [Produces(typeof(ProductionListObjResponse))]
-        public IActionResult ListAllSimple([FromQuery] string person_id = null, [FromQuery] string title = null)
+    
+        [HttpGet("get_all")]
+        [Produces(typeof(ListPersonResponse))]
+        public IActionResult GetAll()
         {
-
             try
             {
-                ProductionListObjResponse resp = _ProductionService.GetAllSimple(person_id, title);
+                ListPersonResponse resp = _PersonService.GetAll();
                 return Ok(resp);
 
             }

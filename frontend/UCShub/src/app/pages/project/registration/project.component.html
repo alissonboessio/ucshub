@@ -50,18 +50,19 @@
         @if (form.invalid) {<mat-error>{{getErrorMessage("description", "Descrição")}}</mat-error>}
     </mat-form-field>
 
-    <div style="display: flex; flex-direction: column;">
         <span style="font-size: 18px;">Autores</span>
-        <mat-card appearance="outlined" class="authors-card" style="display: flex; flex-direction: column;">
-            @for (author of selectedAuthors; track $index) {
-                <div>
-                    {{author.name | titlecase}}
-                </div>
-            }
-          </mat-card>
+            <material-table
+            [tableData]="selectedAuthors"
+            [tableColumns]="authorsColumns"
+            (rowClick)="openAuthor($event)"
+            [isPageable]="false"
+            [isSortable]="false"
+            [rowActionIcon3]="rowAction3"
+            (rowAction3)="deleteAuthor($event)"
+            >
+        </material-table>           
 
         <outline-button (onClick)="openAuthorSelectionDialog()"></outline-button>
-      </div>
   
         <div class="align-bottom align-right">
             <cancel-confirm

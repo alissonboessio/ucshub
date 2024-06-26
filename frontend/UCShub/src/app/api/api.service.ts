@@ -13,6 +13,8 @@ import { ProductionListObjResponse } from "./Responses/ProductionListObjResponse
 import { InstitutionListResponse } from "./Responses/InstitutionListResponse";
 import { ProjectResponse } from "./Responses/ProjectResponse";
 import { Project } from "../models/Project";
+import { PeopleListResponse } from "./Responses/PeopleListResponse";
+import { ProjectListObjResponse } from "./Responses/ProjectListObjResponse";
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +38,7 @@ export class ApiService {
     }
 
     
-    getHeaders(usuario?: string, senha?: string): Observable<HttpHeaders> {
+    getHeaders(usuario?: string, senha?: string): Observable<HttpHeaders> {        
         return new Observable(observer => {
             if (usuario && senha) {
                 observer.next(new HttpHeaders({
@@ -105,7 +107,7 @@ export class ApiService {
 
         let url = `/Production/get_all_list`;
 
-        filter ? url += `${filter}` : "";
+        url += filter ? `${filter}` : "";
 
         return this.getHeaders().pipe(
             mergeMap(headers => {
@@ -120,10 +122,7 @@ export class ApiService {
 
     //#region Projects Endpoints
 
-    UpdateProject(project: Project): Observable<ProjectResponse> {       
-        
-        console.log({'Project' : project});
-        
+    UpdateProject(project: Project): Observable<ProjectResponse> { 
         return this.getHeaders().pipe(
             mergeMap(headers => {
                 return this.http.post<ProjectResponse>(environment.api_url + '/Project/update', {'Project' : project}, { headers: headers })
@@ -132,6 +131,43 @@ export class ApiService {
             catchError(this.handleError<ProjectResponse>('UpdateProject'))
         );
     }
+
+    GetProjectById(id: number): Observable<ProjectResponse | any> {              
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.get<ProjectResponse>(environment.api_url + `/Project/get_by_id/${id}`, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<ProjectResponse>('GetProjectById'))
+        );
+    }
+
+    DeleteProject(id: number): Observable<BaseResponse> {              
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.delete<BaseResponse>(environment.api_url + `/Project/delete/${id}`, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<BaseResponse>('DeleteProject'))
+        );
+    }
+
+    
+    ListProjectsSimple(filter : string | null): Observable<ProjectListObjResponse> {
+
+        let url = `/Project/get_all_list`;
+
+        url += filter ? `${filter}` : "";
+        
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.get<ProjectListObjResponse>(environment.api_url + url, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<ProjectListObjResponse>('ListProjectsSimple'))
+        );
+    }
+
 
     //#endregion
 
@@ -144,6 +180,20 @@ export class ApiService {
             }),
             take(1),
             catchError(this.handleError<InstitutionListResponse>('ListInstitutionsSimple'))
+        );
+    }
+
+    //#endregion
+
+    //#region Person Endpoints
+
+    ListPeopleSimple(): Observable<PeopleListResponse> {
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.get<PeopleListResponse>(environment.api_url + `/Person/get_all`, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<PeopleListResponse>('ListPeopleSimple'))
         );
     }
 

@@ -25,8 +25,7 @@ export class StorageService {
     return await this._storage?.getItem("Auth");
   }
 
-  public async ObterAuthAsync(): Promise<string | undefined | null> {
-
+  public async ObterAuthAsync(): Promise<string | undefined | null> {    
     let auth = await this._storage?.getItem("Auth");
     return auth;
   }

@@ -10,17 +10,19 @@ import { MatInputModule } from '@angular/material/input';
 import { ApiService } from '../../../api/api.service';
 import { ProductionListObj } from '../../../models/HelperObjects/ProductionListObj';
 import Enum_ProductionType from '../../../models/enumerations/Enum_ProductionType.json';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { OutlineButtonComponent } from '../../../../components/buttons/outline-button/outline-button.component';
 
 @Component({
   selector: 'app-list-production',
   standalone: true,
-  imports: [TableModule, MatInputModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule],
+  imports: [TableModule, MatInputModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule, OutlineButtonComponent],
   templateUrl: './list-production.component.html',
   styleUrl: './list-production.component.scss',
   encapsulation: ViewEncapsulation.None
 })
 export class ListProductionComponent {
+  title = 'Produções';
 
   filter : string | null = "";
 
@@ -32,6 +34,7 @@ export class ListProductionComponent {
 
   searchField = new FormControl();
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
 
   ngOnInit(){
     this.route.queryParams.subscribe(params => {
@@ -41,6 +44,7 @@ export class ListProductionComponent {
         if (resp && resp.success) {
           this.productions = resp.productions ?? [];
           this.filteredProductions = this.productions;
+          this.title = "Minhas Produções"
         }
       });
     });
@@ -53,6 +57,16 @@ export class ListProductionComponent {
     this.filter += `?${queryParam}=filter`;
   }
 
+  openProduction(row: any){
+    this.router.navigateByUrl(`production/${row.id}`)
+  }
+   
+   
+  addProduction(){
+    this.router.navigateByUrl(`production`)
+  }
+   
+
   sortData(sortParameters: Sort) {
     const keyName = sortParameters.active;
     if (sortParameters.direction === 'asc') {
@@ -64,10 +78,6 @@ export class ListProductionComponent {
     
   }
   
-  openProduction(event: Event){
-
-  }
-
   initColumnsTabs(): void {
     this.productionsTableColumns = [
       {

@@ -6,9 +6,9 @@ create table knowledge_area(
 	id int primary key auto_increment,
 	name varchar(120) not null,	
 	cod_cnpq varchar(8),
-	knowledge_subarea_id int,	
+	knowledge_parentarea_id int,	
 	
-	CONSTRAINT knowledge_subarea_id FOREIGN KEY (knowledge_subarea_id) REFERENCES knowledge_area(id)
+	CONSTRAINT knowledge_parentarea_id FOREIGN KEY (knowledge_parentarea_id) REFERENCES knowledge_area(id)
 );
 
 create table address(
@@ -98,7 +98,7 @@ create table production(
 	type tinyint not null,
 	project_id int not null,		
 	
-	CONSTRAINT production_project_id FOREIGN KEY (project_id) REFERENCES project(id)
+	CONSTRAINT production_project_id FOREIGN KEY (project_id) REFERENCES project(id) ON UPDATE CASCADE ON DELETE CASCADE
 	
 	
 
@@ -109,8 +109,8 @@ create table person_production(
 	person_id int not null,		
 	production_id int not null,	
 	
-	CONSTRAINT person_production_person_id FOREIGN KEY (person_id) REFERENCES person(id),
-	CONSTRAINT person_production_production_id FOREIGN KEY (production_id) REFERENCES production(id)
+	CONSTRAINT person_production_person_id FOREIGN KEY (person_id) REFERENCES person(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT person_production_production_id FOREIGN KEY (production_id) REFERENCES production(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 create table person_project(
@@ -118,8 +118,8 @@ create table person_project(
 	person_id int not null,		
 	project_id int not null,	
 	
-	CONSTRAINT person_project_person_id FOREIGN KEY (person_id) REFERENCES person(id),
-	CONSTRAINT person_project_project_id FOREIGN KEY (project_id) REFERENCES project(id)
+	CONSTRAINT person_project_person_id FOREIGN KEY (person_id) REFERENCES person(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	CONSTRAINT person_project_project_id FOREIGN KEY (project_id) REFERENCES project(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
