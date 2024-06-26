@@ -81,5 +81,62 @@ namespace UcsHubAPI.Controllers
             
         }
 
+
+        [HttpGet("get_by_id/{id}")]
+        [Produces(typeof(ProductionResponse))]
+        public IActionResult GetById(int id)
+        {
+
+            try
+            {
+                ProductionResponse resp = new ProductionResponse();
+                resp.production = _ProductionService.GetById(id);
+
+                resp.Success = true;
+                resp.Message = "Encontrado!";
+
+                return Ok(resp);
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode.HasValue)
+                {
+                    return StatusCode((int)ex.StatusCode.Value, ex.Message);
+                }
+                else
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+
+        }
+
+        [HttpDelete("delete/{id}")]
+        [Produces(typeof(BaseResponse))]
+        public IActionResult Delete(int id)
+        {
+
+            try
+            {
+                BaseResponse resp = new BaseResponse();
+
+                resp.Success = _ProductionService.Delete(id);
+                resp.Message = "Deletado!";
+
+                return Ok(resp);
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode.HasValue)
+                {
+                    return StatusCode((int)ex.StatusCode.Value, ex.Message);
+                }
+                else
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+
+        }
     }
 }

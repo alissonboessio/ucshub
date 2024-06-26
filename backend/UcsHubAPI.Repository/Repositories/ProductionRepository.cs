@@ -216,17 +216,17 @@ namespace UcsHubAPI.Repository.Repositories
                                 Id = reader.GetInt32("project_id"),
                                 Title = reader.GetStringH("project_title")
                             },
-                            Authors = new List<PersonModel>()
+                            Authors = new List<PersonModel>(),
+                            ProjectId = reader.GetInt32("project_id")
                         };
                     }
 
                     if (reader.GetIntH("person_id") != null)
                     {
-                        production.Authors.Add(new PersonModel
-                        {
-                            Id = reader.GetInt32("person_id"),
-                            Name = reader.GetStringH("person_name")
-                        });
+                        PersonRepository personRepo = new PersonRepository(ConnString);
+
+                        production.Authors.Add(personRepo.GetById(reader.GetInt32("person_id")));
+                       
                     }
                 }
 
@@ -318,10 +318,21 @@ namespace UcsHubAPI.Repository.Repositories
                 AddAuthorForProduction(connection, productionId, author.Id);
             }
         }
-        public bool Delete(ProductionModel user)
+        public bool Delete(ProductionModel prod)
         {
-            throw new NotImplementedException();
+            string query = $"DELETE FROM {this.Schema} WHERE id = @id";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@id", prod.Id);
+
+                connection.Open();
+                return command.ExecuteNonQuery() > 0;
+
+            }
         }
+
 
     }
 }

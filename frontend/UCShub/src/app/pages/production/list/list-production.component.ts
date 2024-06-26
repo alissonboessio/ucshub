@@ -12,6 +12,7 @@ import { ProductionListObj } from '../../../models/HelperObjects/ProductionListO
 import Enum_ProductionType from '../../../models/enumerations/Enum_ProductionType.json';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OutlineButtonComponent } from '../../../../components/buttons/outline-button/outline-button.component';
+import { TableIconColumn } from '../../../../components/table/tableIconColumn';
 
 @Component({
   selector: 'app-list-production',
@@ -23,7 +24,7 @@ import { OutlineButtonComponent } from '../../../../components/buttons/outline-b
 })
 export class ListProductionComponent {
   title = 'Produções';
-
+  editing: boolean = false;
   filter : string | null = "";
 
   api: ApiService = inject(ApiService);
@@ -36,6 +37,7 @@ export class ListProductionComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
+  rowAction3: TableIconColumn = { iconName: 'delete', toolTip: 'Excluir Produção', show: true }
   ngOnInit(){
     this.route.queryParams.subscribe(params => {
       this.buildFilter(params['person'], 'person');
@@ -45,6 +47,7 @@ export class ListProductionComponent {
           this.productions = resp.productions ?? [];
           this.filteredProductions = this.productions;
           this.title = "Minhas Produções"
+          this.editing = true
         }
       });
     });
@@ -61,7 +64,20 @@ export class ListProductionComponent {
     this.router.navigateByUrl(`production/${row.id}`)
   }
    
-   
+  deleteProduction(row: any){
+
+    this.api.DeleteProduction(row.id).subscribe(async resp => {
+      if (resp && resp.success) {
+        this.api.openSnackBar("Excluído!")
+        this.api.ListProductionsSimple(this.filter).subscribe(async resp => {
+          if (resp && resp.success) {
+            this.productions = resp.productions ?? [];
+            this.filteredProductions = this.productions;
+          }
+        });
+      }
+    });
+  }
   addProduction(){
     this.router.navigateByUrl(`production`)
   }

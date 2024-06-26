@@ -9,15 +9,16 @@
 }
 
 .search-field{
-    width: 818px;
+    width: 791px;
     margin-left: auto;
     margin-right: auto;
+
+    ::ng-deep .mdc-text-field--outlined  {
+        --mdc-outlined-text-field-container-shape: 43px !important;
+      }
+    
 }
 
-
-.mdc-text-field--outlined {
-    --mdc-outlined-text-field-container-shape: 43px !important;
-  }
 
 .main-section{
     display: flex;

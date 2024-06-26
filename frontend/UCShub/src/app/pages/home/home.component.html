@@ -4,7 +4,7 @@
 
     <section class="main-section">
 
-        <mat-form-field appearance="outline" class="search-field" (keyup.enter)="filterProductions()">
+        <mat-form-field appearance="outline" class="search-field " (keyup.enter)="filterProductions()">
             <mat-label>Pesquisar</mat-label>
             <input matInput [formControl]="searchField" id="searchField">
             <mat-icon matPrefix>search</mat-icon>
@@ -12,13 +12,13 @@
 
         <div class="cards">
             <div class="left-cards">
-                <icon-card width="352" height="120" [topContent]="topContentIconCard3" [bottomContent]="bottomContentIconCard3" [IconName]="IconCard3"></icon-card>
+                <icon-card width="inherit" height="120px" [topContent]="topContentIconCard3" [bottomContent]="bottomContentIconCard3" [IconName]="IconCard3"></icon-card>
                 <div class="bottom-cards">            
-                    <simple-card width="150" height="70" [topContent]="topContentProd1" [bottomContent]="bottomContentProd1"></simple-card>
-                    <simple-card width="150" height="70" [topContent]="topContentProd2" [bottomContent]="bottomContentProd2"></simple-card>
+                    <simple-card width="150px" height="inherit" [topContent]="topContentProd1" [bottomContent]="bottomContentProd1"></simple-card>
+                    <simple-card width="150px" height="inherit" [topContent]="topContentProd2" [bottomContent]="bottomContentProd2"></simple-card>
                 </div>
             </div>
-            <icon-card width="352" height="250" [topContent]="topContentIconCard4" [bottomContent]="bottomContentIconCard4" [IconName]="IconCard4"></icon-card>
+            <icon-card width="352px" height="250px" [topContent]="topContentIconCard4" [bottomContent]="bottomContentIconCard4" [IconName]="IconCard4"></icon-card>
         </div>
         
     </section>

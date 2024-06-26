@@ -19,7 +19,7 @@ import {MatCardModule} from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { ListDialogComponent } from '../../../../components/dialogs/list-dialog/list-dialog.component';
 import { ListDialogInterface } from '../../../../components/dialogs/list-dialog/list-dialogInterface';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StorageService } from '../../../db/storage.service';
 import { User } from '../../../models/User';
 import { ApiService } from '../../../api/api.service';
@@ -58,6 +58,8 @@ export class ProductionComponent {
     private storage = inject(StorageService);
     loggedUser : User | null = null;
     api: ApiService = inject(ApiService);
+    private route = inject(ActivatedRoute);
+
     rowAction3: TableIconColumn = { iconName: 'delete', toolTip: 'Excluir Autor', show: true }
 
     selectedAuthors: Person[] = [];
@@ -89,10 +91,31 @@ export class ProductionComponent {
         type: [this.production.type, [Validators.required]],
         created_at: [this.production.created_at],
         Project: this.formBuilder.group({
-          id: [this.production.Project.id, [Validators.required]],
-          title: [this.production.Project.title],
+          id: [this.production?.Project?.id, [Validators.required]],
+          title: [this.production?.Project?.title],
         }),
         Authors: this.formBuilder.array(this.production.Authors.map(author => this.createAuthorGroup(author)))
+      });
+
+      this.route.paramMap.subscribe(params => {
+        const id = params.get('id');
+        if (id) {
+          this.api.GetProductionById(+id).subscribe(resp => {
+            if (resp && resp.success) {
+              this.production.id = resp.production.id;
+              this.production.title = resp.production.title;
+              this.production.description = resp.production.description;
+              this.production.type = resp.production.type;
+              this.production.Authors = resp.production.authors;
+              this.production.Project = resp.production.project;
+              this.production.created_at = resp.production.created_at;
+              this.editing = true;
+              this.updateForm(this.production);
+            }else{
+              this.router.navigateByUrl("project")
+            }
+          });
+        }
       });
 
       this.formattedEnumTypes = Object.keys(this.enumTypes);
@@ -102,10 +125,26 @@ export class ProductionComponent {
       });
 
       
-    this.getLoggedUser();
+      this.getLoggedUser();
     
 
     }
+
+    updateForm(production: any) {
+      this.form.patchValue({
+        id: production.id,
+        title: production.title,
+        description: production.description,
+        type: production.type + "",
+        Project: {
+          id: production.Project.id,
+          name: production.Project.name,
+        },
+        Authors: production.Authors,
+      });
+      this.selectedAuthorsProduction = production.Authors;
+    }
+  
 
     createAuthorGroup(author: Person): FormGroup {
       return this.formBuilder.group({
@@ -118,6 +157,7 @@ export class ProductionComponent {
     openAuthor(row: any){
       //abrir autor
     }
+
     onProjectSelected(projectId: number): void {
       const selectedProject:any = this.projects.find((project: Project) => project.id === projectId);
       if (selectedProject) {
@@ -146,11 +186,11 @@ export class ProductionComponent {
 
     onSubmit(): void {      
 
-      if (this.editing && !this.selectedAuthors.some(author => author.id === this.loggedUser?.person?.id)) {
+      if (this.editing && !this.selectedAuthorsProduction.some(author => author.id === this.loggedUser?.person?.id)) {
         this.api.openSnackBar("Apenas os Autores podem editar Produções!.");
         return;
       }
-      // selectedAuthorsProduction
+      
       if (FormValidations.checkValidity(this.form)){
         const formValue = this.form.value;
         this.production.Authors = this.selectedAuthorsProduction;

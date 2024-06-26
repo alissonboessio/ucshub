@@ -15,7 +15,6 @@ namespace UcsHubAPI.Model.Models
         public string Description { get; set; }
         public DateTime DateCreated { get; set; }
         public ProductionTypeEnum Type { get; set; }
-        [JsonIgnore]
         public ProjectModel? Project { get; set; }
         public int ProjectId { get; set; }
         public List<PersonModel>? Authors { get; set; }

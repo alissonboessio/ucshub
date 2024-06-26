@@ -126,9 +126,9 @@ create table person_project(
 create table resource_request(
 	id int primary key auto_increment,
 	quantity decimal(12,2) not null,
-	filed_at datetime not null,
-	entry_at datetime not null,
-	created_at datetime not null,
+	filed_at datetime not null default CURRENT_TIMESTAMP,
+	entry_at datetime not null default CURRENT_TIMESTAMP,
+	created_at datetime not null default CURRENT_TIMESTAMP,
 	
 	person_id int not null,
 	project_id int not null,		

@@ -1,0 +1,54 @@
+<div>    
+    <h1 mat-dialog-title style="color: #545454; font-size: 24px;">Cadastro de Recurso</h1>
+    <div mat-dialog-content style="display: flex; flex-direction: column; padding-top: 16px;" [formGroup]="form">
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <mat-form-field appearance="outline" formGroupName="Institution" style="width: 500px;">
+                <mat-label>Selecione a Instituição</mat-label>
+                <mat-select formControlName="id" id="id">
+                    @for (inst of intitutions; track $index) {
+                        <mat-option [value]="inst.id">
+                            {{ inst.name }}
+                        </mat-option>
+                    }
+                    
+                </mat-select>             
+                @if (form.invalid) {<mat-error>{{getErrorMessage("Institution.id", "Instituição")}}</mat-error>}
+            </mat-form-field> 
+
+            <button mat-fab class="fab-button" (click)="addInstituicao()">
+                <mat-icon>add</mat-icon>
+            </button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <mat-form-field appearance="outline" formGroupName="Project" style="width: 500px;">
+                <mat-label>Selecione o Projeto</mat-label>
+                <mat-select formControlName="id" id="id">
+                    @for (inst of projects; track $index) {
+                        <mat-option [value]="inst.id">
+                            {{ inst.title }}
+                        </mat-option>
+                    }
+                    
+                </mat-select>             
+                @if (form.invalid) {<mat-error>{{getErrorMessage("Institution.id", "Instituição")}}</mat-error>}
+            </mat-form-field> 
+            
+            <mat-form-field appearance="outline" >
+                <mat-label>Total</mat-label>
+                <input matInput formControlName="quantity" id="total" currencyMask
+                [options]="{ align: 'left', prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: 'false' }">
+            </mat-form-field>
+
+        </div>
+        
+    </div>
+    <div matDialogActions style="justify-content: end !important;">
+        <cancel-confirm
+                cancelLabel="Cancelar"
+                confirmLabel="Confirmar"
+                (cancelClick)="cancelar()"
+                (confirmClick)="onSubmit()"
+            >
+        </cancel-confirm>
+    </div>
+</div>

@@ -16,6 +16,9 @@ import { Project } from "../models/Project";
 import { PeopleListResponse } from "./Responses/PeopleListResponse";
 import { ProjectListObjResponse } from "./Responses/ProjectListObjResponse";
 import { Production } from "../models/Production";
+import { ProductionResponse } from "./Responses/ProductionResponse";
+import { ResourceRequest } from "../models/ResourceRequest";
+import { ResourceRequestResponse } from "./Responses/ResourceRequestResponse";
 
 @Injectable({
     providedIn: 'root'
@@ -119,15 +122,36 @@ export class ApiService {
         );
     }
 
-    UpdateProduction(production: Production): Observable<ProjectResponse> { 
-        console.log({Production: production});
-        
+    UpdateProduction(production: Production): Observable<ProductionResponse> {
+        production.projectid = production.projectid ? production.Project?.id : null;
+        production.Project = null;
+
         return this.getHeaders().pipe(
             mergeMap(headers => {
-                return this.http.post<ProjectResponse>(environment.api_url + '/Production/update', {Production: production}, { headers: headers })
+                return this.http.post<ProductionResponse>(environment.api_url + '/Production/update', {Production: production}, { headers: headers })
             }),
             take(1),
-            catchError(this.handleError<ProjectResponse>('UpdateProject'))
+            catchError(this.handleError<ProductionResponse>('UpdateProject'))
+        );
+    }
+
+    GetProductionById(id: number): Observable<ProductionResponse | any> {              
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.get<ProductionResponse>(environment.api_url + `/Production/get_by_id/${id}`, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<ProductionResponse>('GetProductionById'))
+        );
+    } 
+    
+    DeleteProduction(id: number): Observable<BaseResponse> {              
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.delete<BaseResponse>(environment.api_url + `/Production/delete/${id}`, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<BaseResponse>('DeleteProduction'))
         );
     }
 
@@ -198,6 +222,27 @@ export class ApiService {
     }
 
     //#endregion
+
+
+    //#region Institution Endpoints
+
+    UpdateResourceRequest(resourceRequ: ResourceRequest): Observable<ResourceRequestResponse> {
+        resourceRequ.projectid = resourceRequ.projectid ? resourceRequ.Project?.id : null;
+        resourceRequ.Project = null;
+console.log(resourceRequ);
+
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.post<ResourceRequestResponse>(environment.api_url + '/ResourceRequest/update', {ResourceRequest: resourceRequ}, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<ResourceRequestResponse>('UpdateResourceRequest'))
+        );
+    }
+
+    //#endregion
+
+
 
     //#region Person Endpoints
 

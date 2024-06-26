@@ -9,9 +9,9 @@ export class Production{
     type: number | null= null;
 
     created_at: Date | null = null;
-    projectid: number | null = null;
+    projectid: number | null | undefined = null;
 
-    Project: Project = new Project();
+    Project: Project | null = new Project();
     Authors: Array<Person> = new Array<Person>();
 
 }

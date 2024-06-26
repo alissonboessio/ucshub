@@ -78,6 +78,26 @@ namespace UcsHubAPI.Service.Services
         }
 
 
+        public ProductionModel GetById(int id)
+        {
+            ProductionRepository productionRepository = new ProductionRepository(_appSettings.ConnString);
+
+            ProductionModel production = productionRepository.GetById(id);
+
+            if (production == null)
+            {
+                throw new HttpRequestException("Não encontrado", null, System.Net.HttpStatusCode.NotFound);
+            }
+
+            ProjectRepository ProjectRepository = new ProjectRepository(_appSettings.ConnString);
+            production.Project = ProjectRepository.GetById(production.ProjectId);
+
+            return production;
+
+        }
+
+
+
         public ProductionModel? UpdateProduction(ProductionModel Production)
         {
             ProductionRepository ProductionRepository = new ProductionRepository(_appSettings.ConnString);
@@ -110,6 +130,26 @@ namespace UcsHubAPI.Service.Services
             }
 
             return ProductionRepository.GetById((int)Production.Id);
+
+        }
+
+        public bool Delete(int id)
+        {
+            ProductionRepository prodRepository = new ProductionRepository(_appSettings.ConnString);
+
+            ProductionModel prod = prodRepository.GetById(id);
+
+            if (prod == null)
+            {
+                throw new HttpRequestException("produção não encontrada!", null, System.Net.HttpStatusCode.NotFound);
+            }
+
+            UserRepository UserRepository = new UserRepository(_appSettings.ConnString);
+
+
+            return prodRepository.Delete(prod);
+
+
 
         }
 

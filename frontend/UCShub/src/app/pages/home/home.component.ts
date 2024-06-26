@@ -16,7 +16,7 @@ import { IconCardComponent } from '../../../components/UI/IconCard/IconCard.comp
   imports: [MatInputModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule, SimpleCardComponent, IconCardComponent, RouterModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class HomeComponent {
 

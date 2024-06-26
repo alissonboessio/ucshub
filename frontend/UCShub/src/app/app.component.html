@@ -10,17 +10,13 @@
         <mat-icon>search</mat-icon>
         Pesquisa Avançada
       </button> -->
-      <button mat-stroked-button class="grey"  routerLinkActive="selected" routerLink="/resources">
-        <mat-icon>attach_money</mat-icon>
-        Cadastrar Recursos
-      </button>
-      <button mat-stroked-button class="grey"  routerLinkActive="selected" 
+      <button mat-stroked-button class="grey round"  routerLinkActive="selected" 
         [routerLink]="['/list-productions']" 
         [queryParams]="{ filter: (loggedUser?.person?.id || '') }">
         <mat-icon>list_alt</mat-icon>
         Minhas Produções
       </button>
-      <button mat-stroked-button class="grey"  routerLinkActive="selected" 
+      <button mat-stroked-button class="grey round"  routerLinkActive="selected" 
       [routerLink]="['/list-projects']" 
       [queryParams]="{ person_id: (loggedUser?.person?.id || '') }">
       <mat-icon>tab_group</mat-icon>
@@ -36,12 +32,16 @@
     </div>
   </mat-toolbar-row>
 
-  <mat-menu #menu="matMenu" class="menu">
-    <div class="buttons-media-query">
-      <button mat-menu-item routerLink="/resources">
-        <mat-icon>attach_money</mat-icon>
-        Cadastrar Recursos
-      </button>
+  <mat-menu #menu="matMenu" class="menu">    
+    <button mat-menu-item (click)="addResearcher()">
+      <mat-icon>group</mat-icon>
+      Cadastrar Pesquisador
+    </button>
+    <button mat-menu-item (click)="addResource()">
+      <mat-icon>attach_money</mat-icon>
+      Cadastrar Recurso
+    </button>
+    <div class="buttons-media-query">     
       <button mat-menu-item
         [routerLink]="['/list-productions']" 
         [queryParams]="{ person: (loggedUser?.person?.id || '') }">

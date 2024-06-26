@@ -20,6 +20,8 @@
         [tableColumns]="productionsTableColumns"
         (rowClick)="openProduction($event)"
         [isPageable]="true"
+        [rowActionIcon3]="rowAction3"
+        (rowAction3)="deleteProduction($event)"
         [paginationSizes]="[10,50,100]"
         [defaultPageSize]="10"
         (sort)="sortData($event)"

@@ -21,7 +21,7 @@
                 }
                 
             </mat-select>             
-            @if (form.invalid) {<mat-error>{{getErrorMessage("Institution.id", "Intituição")}}</mat-error>}
+            @if (form.invalid) {<mat-error>{{getErrorMessage("Institution.id", "Instituição")}}</mat-error>}
         </mat-form-field> 
 
         <mat-form-field appearance="outline" style="width: 250px;">
@@ -71,7 +71,7 @@
                 (cancelClick)="cancelar()"
                 (confirmClick)="onSubmit()"
             >
-        </cancel-confirm>
+            </cancel-confirm>
     </div>
 
    

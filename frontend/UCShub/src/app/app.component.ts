@@ -12,6 +12,7 @@ import { SimpleDialogComponent } from '../components/dialogs/simple-dialog/simpl
 import { MatDialog } from '@angular/material/dialog';
 import { RotinaService } from './rotinas/rotina.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { ResourceRequestComponent } from './pages/resource/registration/resource-request.component';
 
 @Component({
   selector: 'app-root',
@@ -62,6 +63,7 @@ export class AppComponent {
 
     
 }
+
 async handleLogout() {
   const dialogInterface: SimpleDialogInterface = {
       dialogHeader: 'Sair do perfil?',
@@ -80,5 +82,21 @@ async handleLogout() {
   });
 
 }
+
+addResearcher(){
+    
+}
+
+addResource(){
+    
+    const dialogRef = this.dialog.open(ResourceRequestComponent, {
+        width: '600px',
+        disableClose: true,
+        data: null 
+    });
+
+  
+}
+
 
 }
