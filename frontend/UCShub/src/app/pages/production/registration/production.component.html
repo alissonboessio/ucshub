@@ -52,13 +52,16 @@
 
     <div style="display: flex; flex-direction: column;">
         <span style="font-size: 18px;">Autores</span>
-        <mat-card appearance="outlined" class="authors-card" style="display: flex; flex-direction: column;">
-            @for (author of selectedAuthorsProduction; track $index) {
-                <div>
-                    {{author.name}}
-                </div>
-            }
-          </mat-card>
+            <material-table
+            [tableData]="selectedAuthorsProduction"
+            [tableColumns]="authorsColumns"
+            (rowClick)="openAuthor($event)"
+            [isPageable]="false"
+            [isSortable]="false"
+            [rowActionIcon3]="rowAction3"
+            (rowAction3)="deleteAuthor($event)"
+            >
+        </material-table>           
 
         <outline-button [disabled]="form.get('Project.id')?.invalid ? true : false" (onClick)="openAuthorSelectionDialog()"></outline-button>
       </div>

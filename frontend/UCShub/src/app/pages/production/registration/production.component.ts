@@ -23,6 +23,10 @@ import { Router } from '@angular/router';
 import { StorageService } from '../../../db/storage.service';
 import { User } from '../../../models/User';
 import { ApiService } from '../../../api/api.service';
+import { TableColumn } from '../../../../components/table/tableColumn';
+import Enum_PersonTitulation from '../../../models/enumerations/Enum_PersonTitulation.json';
+import { TableModule } from '../../../../components/table/table.module';
+import { TableIconColumn } from '../../../../components/table/tableIconColumn';
 
 @Component({
   selector: 'app-production',
@@ -35,7 +39,8 @@ import { ApiService } from '../../../api/api.service';
     MatInputModule,
     CancelConfirmComponent,
     OutlineButtonComponent,
-    MatCardModule ],
+    MatCardModule,
+    TableModule],
   templateUrl: './production.component.html',
   styleUrl: './production.component.scss'
 })
@@ -47,16 +52,35 @@ export class ProductionComponent {
     public production : Production = new Production();
     enumTypes: any = Enum_ProductionType;
     formattedEnumTypes! : string[] | null;
-
-    projects: Project[] = [];
+    editing: boolean = false;
+    projects: Project[] | any = [];
     private router = inject(Router);
     private storage = inject(StorageService);
     loggedUser : User | null = null;
     api: ApiService = inject(ApiService);
+    rowAction3: TableIconColumn = { iconName: 'delete', toolTip: 'Excluir Autor', show: true }
 
     selectedAuthors: Person[] = [];
     selectedAuthorsProduction: Person[] = [];
-
+    authorsColumns : TableColumn[] = [
+      {
+        name: 'Nome',
+        dataKey: 'name',
+        isSortable: false
+      },
+      {
+        name: 'Titulação',
+        dataKey: 'titulation',
+        isSortable: false,
+        enumColumn: true,
+        enumValue: Enum_PersonTitulation
+      },
+      // {
+      //   name: 'Instituição',
+      //   dataKey: 'institution.name',
+      //   isSortable: false,
+      // }
+    ]
     ngOnInit(): void {
       this.form = this.formBuilder.group({
         id: [this.production.id],
@@ -90,8 +114,12 @@ export class ProductionComponent {
       });
     }
     
+
+    openAuthor(row: any){
+      //abrir autor
+    }
     onProjectSelected(projectId: number): void {
-      const selectedProject = this.projects.find(project => project.id === projectId);
+      const selectedProject:any = this.projects.find((project: Project) => project.id === projectId);
       if (selectedProject) {
         this.selectedAuthors = selectedProject.Authors;
   
@@ -103,17 +131,46 @@ export class ProductionComponent {
   
         const authorsFormArray = this.form.get('Authors') as FormArray;
         authorsFormArray.clear();
-        selectedProject.Authors.forEach(author => {
+        
+        
+        selectedProject.peoplemodel.forEach((author: Person) => {
           authorsFormArray.push(this.createAuthorGroup(author));
         });
+        
+      }
+    }
+    deleteAuthor(row: any){
+      this.selectedAuthorsProduction = this.selectedAuthorsProduction.filter(author => author.id != row.id)
+    }
+
+
+    onSubmit(): void {      
+
+      if (this.editing && !this.selectedAuthors.some(author => author.id === this.loggedUser?.person?.id)) {
+        this.api.openSnackBar("Apenas os Autores podem editar Produções!.");
+        return;
+      }
+      // selectedAuthorsProduction
+      if (FormValidations.checkValidity(this.form)){
+        const formValue = this.form.value;
+        this.production.Authors = this.selectedAuthorsProduction;
+        this.production.Project = formValue.Project;
+        this.production.description = formValue.description;
+        this.production.title = formValue.title;
+        this.production.id = formValue.id;
+        this.production.type = +formValue.type;
+        this.production.projectid = formValue.Project.id;
+
+        this.api.UpdateProduction(this.production).subscribe(async resp => {
+          if (resp){
+            this.api.openSnackBar("Sucesso!")
+            this.router.navigate(['/list-productions'], { queryParams: { person: this.loggedUser?.person?.id } });        
+          }
+        });
+        
       }
     }
 
-    onSubmit(): void {      
-      if (FormValidations.checkValidity(this.form)){
-        const formValue = this.form.value;
-      }
-    }
     getLoggedUser(){
       this.storage.GetLoggedUserAsync().then(resp => {
         this.loggedUser = resp;
@@ -122,7 +179,7 @@ export class ProductionComponent {
       
     }
     getProjects(){
-      this.api.ListProjectsSimple("person_id:" + this.loggedUser?.person?.id).subscribe(async resp => {
+      this.api.ListProjectsSimple("?person_id=" + this.loggedUser?.person?.id).subscribe(async resp => {
         if (resp && resp.success) {
           this.projects = resp.projects ?? [];
           
@@ -136,7 +193,7 @@ export class ProductionComponent {
     openAuthorSelectionDialog(): void {
 
       let dialogData: ListDialogInterface = {
-        dialogList: this.projects.find(project => project.id === this.form.get('Project.id')?.value)?.Authors || [],
+        dialogList: this.projects.find((project: any) => project.id === this.form.get('Project.id')?.value)?.peoplemodel || [],
         cancelButtonLabel: "Cancelar",
         confirmButtonLabel: "Confimar",
         dialogHeader: "Selecione os Autores",

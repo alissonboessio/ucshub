@@ -1,5 +1,7 @@
 ﻿
+using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
+using System.Data;
 using UcsHubAPI.Model.HelperObjects;
 using UcsHubAPI.Model.Models;
 using UcsHubAPI.Shared;
@@ -178,15 +180,143 @@ namespace UcsHubAPI.Repository.Repositories
 
         public ProductionModel GetById(int id)
         {
-            throw new NotImplementedException();
+            ProductionModel production = null;
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                string query = @"
+            SELECT p.id, p.title, p.description, p.created_at, p.type,
+                   prj.id as project_id, prj.title as project_title,
+                   per.id as person_id, per.name as person_name
+            FROM production p
+            INNER JOIN project prj ON p.project_id = prj.id
+            LEFT JOIN person_production pp ON p.id = pp.production_id
+            LEFT JOIN person per ON pp.person_id = per.id
+            WHERE p.id = @Id;";
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Id", id);
+
+                connection.Open();
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    if (production == null)
+                    {
+                        production = new ProductionModel
+                        {
+                            Id = reader.GetInt32("id"),
+                            Title = reader.GetStringH("title"),
+                            Description = reader.GetStringH("description"),
+                            DateCreated = reader.GetDateTime("created_at"),
+                            Type = (Model.Enumerations.ProductionTypeEnum)reader.GetByte("type"),
+                            Project = new ProjectModel
+                            {
+                                Id = reader.GetInt32("project_id"),
+                                Title = reader.GetStringH("project_title")
+                            },
+                            Authors = new List<PersonModel>()
+                        };
+                    }
+
+                    if (reader.GetIntH("person_id") != null)
+                    {
+                        production.Authors.Add(new PersonModel
+                        {
+                            Id = reader.GetInt32("person_id"),
+                            Name = reader.GetStringH("person_name")
+                        });
+                    }
+                }
+
+                reader.Close();
+            }
+
+            return production;
         }
-        public bool Add(ProductionModel user)
+
+        public bool Add(ProductionModel production)
         {
-            throw new NotImplementedException();
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                string query = @"INSERT INTO Production (title, description, type, project_id)
+                                 VALUES (@Title, @Description, @Type, @ProjectId);
+                                 SELECT LAST_INSERT_ID();";
+
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@Title", production.Title);
+                command.Parameters.AddWithValue("@Description", production.Description);
+                command.Parameters.AddWithValue("@Type", production.Type);
+                command.Parameters.AddWithValue("@ProjectId", production.ProjectId);
+                
+                connection.Open();
+                int newProductionId = Convert.ToInt32(command.ExecuteScalar());
+                production.Id = newProductionId;
+                if (newProductionId > 0 && production.Authors != null && production.Authors.Count > 0)
+                {
+                    // Add authors
+                    foreach (var author in production.Authors)
+                    {
+                        AddAuthorForProduction(connection, newProductionId, author.Id);
+                    }
+                }
+
+                return true;
+            }
         }
-        public bool Update(ProductionModel user)
+        public bool Update(ProductionModel production)
         {
-            throw new NotImplementedException();
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                string updateQuery = @"UPDATE Production
+                                       SET title = @Title,
+                                           description = @Description,
+                                           type = @Type,
+                                           project_id = @ProjectId
+                                       WHERE Id = @Id;";
+
+                MySqlCommand updateCommand = new MySqlCommand(updateQuery, connection);
+                updateCommand.Parameters.AddWithValue("@Id", production.Id);
+                updateCommand.Parameters.AddWithValue("@Title", production.Title);
+                updateCommand.Parameters.AddWithValue("@Description", production.Description);
+                updateCommand.Parameters.AddWithValue("@Type", production.Type);
+                updateCommand.Parameters.AddWithValue("@ProjectId", production.ProjectId);
+
+                
+                connection.Open();
+                updateCommand.ExecuteNonQuery();
+
+                UpdateAuthorsForProduction(connection, (int)production.Id, production.Authors);
+
+                return true;
+               
+            }
+        }
+
+        private void AddAuthorForProduction(MySqlConnection connection, int productionId, int personId)
+        {
+            string insertAuthorQuery = @"INSERT INTO person_production (production_id, person_id)
+                                         VALUES (@ProductionId, @PersonId);";
+
+            MySqlCommand insertAuthorCommand = new MySqlCommand(insertAuthorQuery, connection);
+            insertAuthorCommand.Parameters.AddWithValue("@ProductionId", productionId);
+            insertAuthorCommand.Parameters.AddWithValue("@PersonId", personId);
+
+            insertAuthorCommand.ExecuteNonQuery();
+        }
+
+        private void UpdateAuthorsForProduction(MySqlConnection connection, int productionId, List<PersonModel> authors)
+        {
+            string deleteAuthorsQuery = @"DELETE FROM person_production WHERE production_id = @ProductionId;";
+            MySqlCommand deleteAuthorsCommand = new MySqlCommand(deleteAuthorsQuery, connection);
+            deleteAuthorsCommand.Parameters.AddWithValue("@ProductionId", productionId);
+            deleteAuthorsCommand.ExecuteNonQuery();
+
+            foreach (var author in authors)
+            {
+                AddAuthorForProduction(connection, productionId, author.Id);
+            }
         }
         public bool Delete(ProductionModel user)
         {

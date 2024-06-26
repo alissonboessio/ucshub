@@ -77,5 +77,41 @@ namespace UcsHubAPI.Service.Services
 
         }
 
+
+        public ProductionModel? UpdateProduction(ProductionModel Production)
+        {
+            ProductionRepository ProductionRepository = new ProductionRepository(_appSettings.ConnString);
+
+            bool ok = false;
+
+            try
+            {
+                if (Production.Id != null)
+                {
+                    ok = ProductionRepository.Update(Production);
+
+                }
+                else
+                {
+                    ok = ProductionRepository.Add(Production);
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                throw new HttpRequestException(message: "Produção não atualizada!", e.InnerException, statusCode: System.Net.HttpStatusCode.BadRequest);
+            }
+
+
+            if (!ok)
+            {
+                throw new HttpRequestException(message: "Produção não atualizada!", null, statusCode: System.Net.HttpStatusCode.BadRequest);
+            }
+
+            return ProductionRepository.GetById((int)Production.Id);
+
+        }
+
     }
 }

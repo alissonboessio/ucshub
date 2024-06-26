@@ -72,6 +72,7 @@ namespace UcsHubAPI.Repository.Repositories
                         if (!string.IsNullOrEmpty(personName))
                         {
                             projectsDict[projectId].people.Add(personName);
+                            projectsDict[projectId].peoplemodel.Add(new PersonModel(reader.GetInt32("person_id"), personName));
                         }
                     }
 

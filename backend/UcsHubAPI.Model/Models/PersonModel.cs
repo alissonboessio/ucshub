@@ -35,5 +35,11 @@ namespace UcsHubAPI.Model.Models
         {
             this.Id = id;
         }
+        public PersonModel(int id, string name)
+        {
+            this.Id = id;
+            this.Name = name;
+
+        }
     }
 }

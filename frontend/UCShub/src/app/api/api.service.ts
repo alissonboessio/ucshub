@@ -15,6 +15,7 @@ import { ProjectResponse } from "./Responses/ProjectResponse";
 import { Project } from "../models/Project";
 import { PeopleListResponse } from "./Responses/PeopleListResponse";
 import { ProjectListObjResponse } from "./Responses/ProjectListObjResponse";
+import { Production } from "../models/Production";
 
 @Injectable({
     providedIn: 'root'
@@ -117,6 +118,19 @@ export class ApiService {
             catchError(this.handleError<ProductionListObjResponse>('ListProductionsSimple'))
         );
     }
+
+    UpdateProduction(production: Production): Observable<ProjectResponse> { 
+        console.log({Production: production});
+        
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.post<ProjectResponse>(environment.api_url + '/Production/update', {Production: production}, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<ProjectResponse>('UpdateProject'))
+        );
+    }
+
 
     //#endregion
 

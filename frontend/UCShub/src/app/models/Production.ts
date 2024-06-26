@@ -2,13 +2,14 @@ import { Person } from "./Person";
 import { Project } from "./Project";
 
 export class Production{
-    id: number = 0;
+    id: number | null = null;
     title: string = '';
     description: string = '';
     
-    type: string = '';
+    type: number | null= null;
 
     created_at: Date | null = null;
+    projectid: number | null = null;
 
     Project: Project = new Project();
     Authors: Array<Person> = new Array<Person>();
