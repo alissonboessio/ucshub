@@ -39,13 +39,13 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 })
 export class InstitutionComponent {
 
-  total = new FormControl();
-
   api: ApiService = inject(ApiService);
   storage: StorageService = inject(StorageService);
   public form!: FormGroup; 
   formBuilder: FormBuilder = new FormBuilder();
   loggedUser : User | null = null;
+
+  mask_cnpj : string = "99-999-999-9999-99"
 
   constructor(public dialogRef: MatDialogRef<InstitutionComponent>, @Inject(MAT_DIALOG_DATA) public dialogData: any) {}
 
@@ -53,9 +53,8 @@ export class InstitutionComponent {
     this.form = this.formBuilder.group({
         id: [null],
         name: ["", [Validators.required]],
-        document: ["", [Validators.required]]
+        document: ["", [Validators.required, FormValidations.CNPJ]]
     });
-
 
     this.getLoggedUser();
    
@@ -66,10 +65,6 @@ export class InstitutionComponent {
       this.loggedUser = resp;
     })   
     
-  }
-
-  addInstituicao(){
-
   }
 
   cancelar(): void {

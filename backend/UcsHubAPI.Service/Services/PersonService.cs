@@ -39,7 +39,7 @@ namespace UcsHubAPI.Service.Services
                     person.KnowledgeArea = knowledgeAreaRepository.GetById((int)person.KnowledgeAreaId);
                     if(person.KnowledgeArea != null)
                     {
-                        person.KnowledgeArea.KnowledgeSubarea = null;
+                        person.KnowledgeArea.KnowledgeParentarea = null;
                     }
 
                 }

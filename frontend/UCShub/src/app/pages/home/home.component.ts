@@ -23,21 +23,37 @@ export class HomeComponent {
   api: ApiService = inject(ApiService)
   router: Router = new Router();
 
+  loading: boolean = false;
+
   searchField = new FormControl();
 
-  topContentProd1: SimpleCardInterface = { content: "6225", contentSize: "32"}
+  topContentProd1: SimpleCardInterface = { content: " ", contentSize: "32"}
   bottomContentProd1: SimpleCardInterface = { content: "Produções Acadêmicas", contentSize: "14"}
 
-  topContentProd2: SimpleCardInterface = { content: "3651", contentSize: "32"}
+  topContentProd2: SimpleCardInterface = { content: " ", contentSize: "32"}
   bottomContentProd2: SimpleCardInterface = { content: "Produções Técnicas", contentSize: "14"}
 
-  topContentIconCard3: IconCardInterface = { content: "9876", contentSize: "50"}
+  topContentIconCard3: IconCardInterface = { content: " ", contentSize: "50"}
   bottomContentIconCard3: IconCardInterface = { content: "Produções Submetidas", contentSize: "18"}
   IconCard3: string = "library_books"
 
-  topContentIconCard4: IconCardInterface = { content: "289", contentSize: "58"}
+  topContentIconCard4: IconCardInterface = { content: " ", contentSize: "58"}
   bottomContentIconCard4: IconCardInterface = { content: "Pesquisadores Cadastrados", contentSize: "28"}
   IconCard4: string = "person"
+
+  ngOnInit(): void {
+    this.loading = true;
+    this.api.ListHomeIndicators().subscribe(resp => {
+      if (resp && resp.success){
+        this.topContentProd1.content = resp.homeInfo.qtyAcademicProductions + '';
+        this.topContentProd2.content = resp.homeInfo.qtyTechnicalProductions + '';
+        this.topContentIconCard3.content = resp.homeInfo.qtyTotalProductions + '';
+        this.topContentIconCard4.content = resp.homeInfo.qtyTotalResearchers + '';
+        this.loading = false;
+      }
+    })
+    
+  }
 
   filterProductions(){    
     this.router.navigate(['/list-productions'], { queryParams: { title: this.searchField.value } });        

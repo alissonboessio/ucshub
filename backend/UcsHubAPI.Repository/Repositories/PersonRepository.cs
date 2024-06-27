@@ -53,6 +53,21 @@ namespace UcsHubAPI.Repository.Repositories
             return people;
         }
         
+        public int Count()
+        {
+            string query = $"SELECT count(*) as qtde FROM {this.Schema}";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                connection.Open();
+
+                object result = command.ExecuteScalar();
+                return Convert.ToInt32(result);
+            }
+        }
+
+        
         public PersonModel GetById(int id)
         {
             string query = $"SELECT * FROM {this.Schema} WHERE id = @id";

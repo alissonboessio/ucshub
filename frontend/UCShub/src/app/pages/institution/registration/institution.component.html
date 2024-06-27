@@ -5,11 +5,13 @@
             <mat-form-field appearance="outline" >
                 <mat-label>Nome</mat-label>
                 <input matInput formControlName="name" id="name">
+                @if (form.invalid) {<mat-error>{{getErrorMessage("name", "Nome")}}</mat-error>}
             </mat-form-field>
         
             <mat-form-field appearance="outline" >
                 <mat-label>CNPJ</mat-label>
-                <input matInput formControlName="document" id="document" type='text' mask="99999999999999">
+                <input matInput formControlName="document" id="document" id="document" type='text' [mask]="mask_cnpj">
+                @if (form.invalid) {<mat-error>{{getErrorMessage("document", "CNPJ")}}</mat-error>}
             </mat-form-field>
         
     </div>

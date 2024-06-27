@@ -12,6 +12,6 @@ namespace UcsHubAPI.Model.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string CodCnpq { get; set; }
-        public List<KnowledgeAreaModel>? KnowledgeSubarea { get; set; }
+        public List<KnowledgeAreaModel>? KnowledgeParentarea { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using MySql.Data.MySqlClient;
 using System.Data;
+using UcsHubAPI.Model.Enumerations;
 using UcsHubAPI.Model.HelperObjects;
 using UcsHubAPI.Model.Models;
 using UcsHubAPI.Shared;
@@ -234,6 +235,36 @@ namespace UcsHubAPI.Repository.Repositories
             }
 
             return production;
+        }
+
+        public int Count()
+        {
+            string query = $"SELECT count(*) as qtde FROM {this.Schema}";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                connection.Open();
+
+                object result = command.ExecuteScalar();
+                return Convert.ToInt32(result);
+            }
+        }
+        
+        public int Count(ProductionTypeEnum type)
+        {
+            string query = $"SELECT count(*) as qtde FROM {this.Schema} WHERE type = @type";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                connection.Open();
+
+                command.Parameters.AddWithValue("type", type.GetHashCode());
+
+                object result = command.ExecuteScalar();
+                return Convert.ToInt32(result);
+            }
         }
 
         public bool Add(ProductionModel production)

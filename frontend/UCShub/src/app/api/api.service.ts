@@ -21,6 +21,7 @@ import { ResourceRequest } from "../models/ResourceRequest";
 import { ResourceRequestResponse } from "./Responses/ResourceRequestResponse";
 import { Institution } from "../models/Institution";
 import { InstitutionResponse } from "./Responses/InstitutionResponse";
+import { HomeInfoResponse } from "./Responses/HomeInfoResponse";
 
 @Injectable({
     providedIn: 'root'
@@ -160,6 +161,21 @@ export class ApiService {
 
     //#endregion
 
+    //#region Home Endpoints
+
+    ListHomeIndicators(): Observable<HomeInfoResponse> {
+
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.get<HomeInfoResponse>(environment.api_url + '/Home/get_indicators', { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<HomeInfoResponse>('ListHomeIndicators'))
+        );
+    }
+
+    //#endregion
+
     //#region Projects Endpoints
 
     UpdateProject(project: Project): Observable<ProjectResponse> { 
@@ -237,7 +253,6 @@ console.log({Institution: institution});
 
     //#endregion
 
-
     //#region Institution Endpoints
 
     UpdateResourceRequest(resourceRequ: ResourceRequest): Observable<ResourceRequestResponse> {
@@ -254,8 +269,6 @@ console.log({Institution: institution});
     }
 
     //#endregion
-
-
 
     //#region Person Endpoints
 

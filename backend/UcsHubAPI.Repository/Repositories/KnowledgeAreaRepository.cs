@@ -37,7 +37,7 @@ namespace UcsHubAPI.Repository.Repositories
                             Id = reader.GetInt32("id"),
                             Name = reader.GetStringH("name"),
                             CodCnpq = reader.GetStringH("cod_cnpq"),
-                            KnowledgeSubarea = new List<KnowledgeAreaModel>()
+                            KnowledgeParentarea = new List<KnowledgeAreaModel>()
                         };
                             
                     }
@@ -62,7 +62,7 @@ namespace UcsHubAPI.Repository.Repositories
                 {
                     while (reader.Read())
                     {
-                        knowledgeArea.KnowledgeSubarea.Add(
+                        knowledgeArea.KnowledgeParentarea.Add(
                             new KnowledgeAreaModel
                             {
                                 Id = reader.GetInt32("id"),
