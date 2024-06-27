@@ -40,7 +40,12 @@ export class ListProductionComponent {
   rowAction3: TableIconColumn = { iconName: 'delete', toolTip: 'Excluir Produção', show: true }
   ngOnInit(){
     this.route.queryParams.subscribe(params => {
+      
       this.buildFilter(params['person'], 'person');
+      
+      if(params['title']){
+        this.searchField.patchValue(params['title']);
+      }
 
       this.api.ListProductionsSimple(this.filter).subscribe(async resp => {
         if (resp && resp.success) {
@@ -48,6 +53,8 @@ export class ListProductionComponent {
           this.filteredProductions = this.productions;
           this.title = "Minhas Produções"
           this.editing = true
+        this.filterProductions()
+
         }
       });
     });
@@ -57,7 +64,10 @@ export class ListProductionComponent {
   }
 
   buildFilter(filter: string, queryParam: string){
-    this.filter += `?${queryParam}=filter`;
+    if (!filter){
+      return;
+    }
+    this.filter += `?${queryParam}=${filter}`;
   }
 
   openProduction(row: any){
@@ -131,6 +141,7 @@ export class ListProductionComponent {
   }
 
   filterProductions(){   
+console.log("entrou");
 
     this.filteredProductions = []
 
@@ -139,6 +150,8 @@ export class ListProductionComponent {
             this.StringContains(p.title, this.searchField.value)
         ) {
             this.filteredProductions.push(p);
+            
+console.log(p.title, this.searchField.value);
         }
     })
 

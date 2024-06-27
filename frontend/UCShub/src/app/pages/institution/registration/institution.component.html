@@ -1,0 +1,25 @@
+<div>    
+    <h1 mat-dialog-title style="color: #545454; font-size: 24px;">Cadastro de Instituição</h1>
+    <div mat-dialog-content style="display: flex; flex-direction: column; padding-top: 16px;" [formGroup]="form">
+        
+            <mat-form-field appearance="outline" >
+                <mat-label>Nome</mat-label>
+                <input matInput formControlName="name" id="name">
+            </mat-form-field>
+        
+            <mat-form-field appearance="outline" >
+                <mat-label>CNPJ</mat-label>
+                <input matInput formControlName="document" id="document" type='text' mask="99999999999999">
+            </mat-form-field>
+        
+    </div>
+    <div matDialogActions style="justify-content: end !important;">
+        <cancel-confirm
+                cancelLabel="Cancelar"
+                confirmLabel="Confirmar"
+                (cancelClick)="cancelar()"
+                (confirmClick)="onSubmit()"
+            >
+        </cancel-confirm>
+    </div>
+</div>

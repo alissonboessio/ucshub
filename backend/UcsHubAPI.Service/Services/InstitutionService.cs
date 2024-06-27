@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using UcsHubAPI.Model.HelperObjects;
@@ -55,6 +56,40 @@ namespace UcsHubAPI.Service.Services
             response.Institutions = institutions;
 
             return response;
+
+        }
+        
+        public InstitutionModel? UpdateInstitution(InstitutionModel inst)
+        {
+            InstitutionRepository institutionRepository = new InstitutionRepository(_appSettings.ConnString);
+
+            bool ok = false;
+
+            try
+            {
+                if (inst.Id != null)
+                {
+                    ok = institutionRepository.Update(inst);
+
+                }
+                else
+                {
+                    ok = institutionRepository.Add(inst);
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new HttpRequestException(message: "Instituição não atualizada!", e.InnerException, statusCode: System.Net.HttpStatusCode.BadRequest);
+            }
+
+
+            if (!ok)
+            {
+                throw new HttpRequestException(message: "Instituição não atualizada!", null, statusCode: System.Net.HttpStatusCode.BadRequest);
+            }
+
+            return institutionRepository.GetById((int)inst.Id);
 
         }
 

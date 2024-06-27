@@ -83,13 +83,59 @@ namespace UcsHubAPI.Repository.Repositories
 
         public bool Add(InstitutionModel institution)
         {
-            throw new NotImplementedException();
+            string query = @"
+            INSERT INTO institution 
+            (name, document, address_id) 
+            VALUES 
+            (@name, @document, @address_id);
+            SELECT LAST_INSERT_ID();";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@name", institution.Name);
+                command.Parameters.AddWithValue("@document", institution.Document);
+                command.Parameters.AddWithValue("@address_id", institution.AddressId);
+
+                connection.Open();
+                var result = command.ExecuteScalar();
+                if (result != null)
+                {
+                    institution.Id = Convert.ToInt32(result);
+                    return true;
+                }
+
+                return false;
+            }
         }
+
 
         public bool Update(InstitutionModel institution)
         {
-            throw new NotImplementedException();
+            string query = @"
+    UPDATE institution 
+    SET 
+        name = @name, 
+        document = @document, 
+        address_id = @address_id 
+    WHERE 
+        id = @id";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@id", institution.Id);
+                command.Parameters.AddWithValue("@name", institution.Name);
+                command.Parameters.AddWithValue("@document", institution.Document);
+                command.Parameters.AddWithValue("@address_id", institution.AddressId);
+
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+
+                return rowsAffected > 0;
+            }
         }
+
 
         public bool Delete(InstitutionModel institution)
         {

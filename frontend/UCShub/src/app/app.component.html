@@ -12,7 +12,7 @@
       </button> -->
       <button mat-stroked-button class="grey round"  routerLinkActive="selected" 
         [routerLink]="['/list-productions']" 
-        [queryParams]="{ filter: (loggedUser?.person?.id || '') }">
+        [queryParams]="{ person: (loggedUser?.person?.id || '') }">
         <mat-icon>list_alt</mat-icon>
         Minhas Produções
       </button>
@@ -40,6 +40,10 @@
     <button mat-menu-item (click)="addResource()">
       <mat-icon>attach_money</mat-icon>
       Cadastrar Recurso
+    </button>
+    <button mat-menu-item (click)="addInstitution()">
+      <mat-icon>apartment</mat-icon>
+      Cadastrar Instituição
     </button>
     <div class="buttons-media-query">     
       <button mat-menu-item

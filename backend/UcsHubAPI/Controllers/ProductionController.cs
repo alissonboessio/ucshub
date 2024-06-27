@@ -56,12 +56,12 @@ namespace UcsHubAPI.Controllers
 
         [HttpGet("get_all_list")]
         [Produces(typeof(ProductionListObjResponse))]
-        public IActionResult ListAllSimple([FromQuery] string person_id = null, [FromQuery] string title = null)
+        public IActionResult ListAllSimple([FromQuery] string person = null, [FromQuery] string title = null)
         {
 
             try
             {
-                ProductionListObjResponse resp = _ProductionService.GetAllSimple(person_id, title);
+                ProductionListObjResponse resp = _ProductionService.GetAllSimple(person, title);
                 return Ok(resp);
 
             }

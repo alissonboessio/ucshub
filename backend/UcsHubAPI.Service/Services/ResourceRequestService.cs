@@ -11,7 +11,7 @@ namespace UcsHubAPI.Service.Services
         {            
         }
 
-        public ResourceRequestModel? UpdateResourceRequest(ResourceRequestModel resourceReq)
+        public ResourceRequestModel? UpdateResourceRequest(ResourceRequestModel res)
         {
             ResourceRequestRepository resourceRepository = new ResourceRequestRepository(_appSettings.ConnString);
 
@@ -19,14 +19,14 @@ namespace UcsHubAPI.Service.Services
 
             try
             {
-                if (resourceReq.Id != null)
+                if (res.Id != null)
                 {
-                    ok = resourceRepository.Update(resourceReq);
+                    ok = resourceRepository.Update(res);
 
                 }
                 else
                 {
-                    ok = resourceRepository.Add(resourceReq);
+                    ok = resourceRepository.Add(res);
                 }
                                
             }
@@ -38,10 +38,10 @@ namespace UcsHubAPI.Service.Services
 
             if (!ok)
             {
-                throw new HttpRequestException(message: "Recurso não atualizado!", null, statusCode: System.Net.HttpStatusCode.BadRequest);
+                throw new HttpRequestException(message: "Recusro não atualizado!", null, statusCode: System.Net.HttpStatusCode.BadRequest);
             }
 
-            return resourceRepository.GetById((int)resourceReq.Id);
+            return resourceRepository.GetById((int)res.Id);
 
         }
 

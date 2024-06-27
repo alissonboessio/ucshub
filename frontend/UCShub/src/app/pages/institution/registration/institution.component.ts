@@ -16,9 +16,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormValidations } from '../../../../utils/form-validations';
 import { CancelConfirmComponent } from '../../../../components/buttons/cancel-confirm/cancel-confirm.component';
 import { ResourceRequest } from '../../../models/ResourceRequest';
+import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
-  selector: 'app-institution-request',
+  selector: 'app-institution',
   standalone: true,
   imports: [MatDialogModule, 
     MatButtonModule,
@@ -30,9 +31,11 @@ import { ResourceRequest } from '../../../models/ResourceRequest';
     MatIconModule, 
     MatListModule,
     MatSelectModule,
-  CancelConfirmComponent],
-  templateUrl: './institution-request.component.html',
-  styleUrl: './institution-request.component.scss'
+    CancelConfirmComponent,
+    NgxMaskDirective],
+    providers: [provideNgxMask()],
+  templateUrl: './institution.component.html',
+  styleUrl: './institution.component.scss'
 })
 export class InstitutionComponent {
 
@@ -42,53 +45,27 @@ export class InstitutionComponent {
   storage: StorageService = inject(StorageService);
   public form!: FormGroup; 
   formBuilder: FormBuilder = new FormBuilder();
-  projects: Array<Project> = [];
-  intitutions: Array<Institution> = [];
   loggedUser : User | null = null;
 
   constructor(public dialogRef: MatDialogRef<InstitutionComponent>, @Inject(MAT_DIALOG_DATA) public dialogData: any) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      Institution: this.formBuilder.group({
-        id: [null, [Validators.required]],
-        name: [""],
-      }),
-      quantity: [0.0, Validators.required],
-      Project: this.formBuilder.group({
-        id: [null, [Validators.required]],
-        title: [null],
-      }),
+        id: [null],
+        name: ["", [Validators.required]],
+        document: ["", [Validators.required]]
     });
 
 
     this.getLoggedUser();
-    this.getInstitutions();
    
   }
 
   getLoggedUser(){
     this.storage.GetLoggedUserAsync().then(resp => {
       this.loggedUser = resp;
-      this.getProjects();
     })   
     
-  }
-
-  getInstitutions(){
-      this.api.ListInstitutionsSimple().subscribe(resp => {
-        if (resp && resp.success){
-          this.intitutions = resp.institutions;
-        }
-      })
-  }
-
-  getProjects(){
-    this.api.ListProjectsSimple("?person_id=" + this.loggedUser?.person?.id).subscribe(resp => {
-      if (resp && resp.success){
-        this.projects = resp.projects;
-      }
-    }) 
   }
 
   addInstituicao(){
@@ -104,18 +81,13 @@ export class InstitutionComponent {
       const formValue = this.form.value;
       console.log(formValue);
       
-      let institution: ResourceRequest = new ResourceRequest();
+      let institution: Institution = new Institution();
 
-      institution.Institution = formValue.Institution;
-      institution.Person = this.loggedUser?.person;
-      institution.Project = formValue.Project;
-      institution.projectid = formValue.Project?.id;
-      institution.institutionid = formValue.Institution?.id;
-      institution.personid = this.loggedUser?.person?.id;
-      institution.quantity = +formValue.quantity;
-      institution.id = !formValue.id ? null : formValue.id ;
+      institution.id = formValue.id;
+      institution.name = formValue.name;
+      institution.document = formValue.document;
 
-      this.api.UpdateResourceRequest(institution).subscribe(resp => {
+      this.api.UpdateInstitution(institution).subscribe(resp => {
         if(resp && resp.success){
           this.api.openSnackBar("Sucesso!")
           this.dialogRef.close();       

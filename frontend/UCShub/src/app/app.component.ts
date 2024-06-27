@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RotinaService } from './rotinas/rotina.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { ResourceRequestComponent } from './pages/resource/registration/resource-request.component';
+import { InstitutionComponent } from './pages/institution/registration/institution.component';
 
 @Component({
   selector: 'app-root',
@@ -85,6 +86,14 @@ async handleLogout() {
 
 addResearcher(){
     
+}
+
+addInstitution(){
+    const dialogRef = this.dialog.open(InstitutionComponent, {
+      width: '600px',
+      disableClose: true,
+      data: null 
+  });
 }
 
 addResource(){

@@ -16,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormValidations } from '../../../../utils/form-validations';
 import { CancelConfirmComponent } from '../../../../components/buttons/cancel-confirm/cancel-confirm.component';
 import { ResourceRequest } from '../../../models/ResourceRequest';
+import { InstitutionComponent } from '../../institution/registration/institution.component';
 
 @Component({
   selector: 'app-resource-request',
@@ -95,7 +96,7 @@ export class ResourceRequestComponent {
   }
 
   addInstituicao(){
-    const dialogRef = this.dialog.open(ResourceRequestComponent, {
+    const dialogRef = this.dialog.open(InstitutionComponent, {
       width: '600px',
       disableClose: true,
       data: null 

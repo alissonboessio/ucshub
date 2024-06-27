@@ -45,7 +45,36 @@ namespace UcsHubAPI.Controllers
                 }
             }
         }
-        
-     
+
+
+        [HttpPost("update")]
+        [Produces(typeof(InstitutionResponse))]
+        public IActionResult Update([FromBody] InstitutionUpdateRequest info)
+        {
+
+            try
+            {
+                InstitutionResponse resp = new InstitutionResponse();
+                resp.Institution = _institutionService.UpdateInstitution(info.Institution);
+
+                resp.Success = true;
+                resp.Message = "Criado com sucesso";
+
+                return Ok(resp);
+            }
+            catch (HttpRequestException ex)
+            {
+                if (ex.StatusCode.HasValue)
+                {
+                    return StatusCode((int)ex.StatusCode.Value, ex.Message);
+                }
+                else
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
+
+        }
+
     }
 }

@@ -40,7 +40,7 @@ export class HomeComponent {
   IconCard4: string = "person"
 
   filterProductions(){    
-    this.router.navigateByUrl("/list-productions")
+    this.router.navigate(['/list-productions'], { queryParams: { title: this.searchField.value } });        
   }
 
 

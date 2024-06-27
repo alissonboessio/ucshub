@@ -19,6 +19,8 @@ import { Production } from "../models/Production";
 import { ProductionResponse } from "./Responses/ProductionResponse";
 import { ResourceRequest } from "../models/ResourceRequest";
 import { ResourceRequestResponse } from "./Responses/ResourceRequestResponse";
+import { Institution } from "../models/Institution";
+import { InstitutionResponse } from "./Responses/InstitutionResponse";
 
 @Injectable({
     providedIn: 'root'
@@ -221,6 +223,18 @@ export class ApiService {
         );
     }
 
+    UpdateInstitution(institution: Institution): Observable<InstitutionResponse> {       
+console.log({Institution: institution});
+
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.post<InstitutionResponse>(environment.api_url + '/Institution/update', {Institution: institution}, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<InstitutionResponse>('UpdateResourceRequest'))
+        );
+    }
+
     //#endregion
 
 
@@ -229,7 +243,6 @@ export class ApiService {
     UpdateResourceRequest(resourceRequ: ResourceRequest): Observable<ResourceRequestResponse> {
         resourceRequ.projectid = resourceRequ.projectid ? resourceRequ.Project?.id : null;
         resourceRequ.Project = null;
-console.log(resourceRequ);
 
         return this.getHeaders().pipe(
             mergeMap(headers => {

@@ -2,7 +2,7 @@ import { Address } from "./Address";
 import { Project } from "./Project";
 
 export class Institution{
-    id: number = 0;
+    id: number | null = null;
     name: string = '';
     document: string = '';
 
