@@ -3,9 +3,9 @@ import { PersonType } from "./Enum_PersonType";
 export class Person{
     id: number = 0;
     name: string = '';
-    birth_date: Date | null = null;
+    BirthDate: Date | null = null;
     phone: string = '';
-    lattes_id: string = '';
+    LattesId: string = '';
     type: PersonType = PersonType.Aluno;
     titulation: string = ''; // enumeration (to-do)
 

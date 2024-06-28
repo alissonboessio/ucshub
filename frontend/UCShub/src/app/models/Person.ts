@@ -7,9 +7,9 @@ import { KnowledgeArea } from "./KnowledgeArea";
 export class Person{
     id: number | null = null;
     name: string = '';
-    birth_date: Date | null = null;
+    BirthDate: Date | null = null;
     phone: string = '';
-    lattes_id: string = '';
+    LattesId: string = '';
     type: PersonType = PersonType.Aluno;
     titulation: Titulation = Titulation.Graduação; 
 

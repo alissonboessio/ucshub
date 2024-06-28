@@ -22,6 +22,9 @@ import { ResourceRequestResponse } from "./Responses/ResourceRequestResponse";
 import { Institution } from "../models/Institution";
 import { InstitutionResponse } from "./Responses/InstitutionResponse";
 import { HomeInfoResponse } from "./Responses/HomeInfoResponse";
+import { KnowledgeAreasListResponse } from "./Responses/KnowledgeAreasListResponse";
+import { PersonResponse } from "./Responses/PersonResponse";
+import { Person } from "../models/Person";
 
 @Injectable({
     providedIn: 'root'
@@ -239,9 +242,7 @@ export class ApiService {
         );
     }
 
-    UpdateInstitution(institution: Institution): Observable<InstitutionResponse> {       
-console.log({Institution: institution});
-
+    UpdateInstitution(institution: Institution): Observable<InstitutionResponse> {      
         return this.getHeaders().pipe(
             mergeMap(headers => {
                 return this.http.post<InstitutionResponse>(environment.api_url + '/Institution/update', {Institution: institution}, { headers: headers })
@@ -253,7 +254,21 @@ console.log({Institution: institution});
 
     //#endregion
 
-    //#region Institution Endpoints
+    //#region Knowledge Endpoints
+
+    ListKnowledgeAreasSimple(): Observable<KnowledgeAreasListResponse> {
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.get<KnowledgeAreasListResponse>(environment.api_url + `/KnowledgeArea/get_all`, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<KnowledgeAreasListResponse>('ListKnowledgeAreasSimple'))
+        );
+    }
+
+    //#endregion
+
+    //#region Resource Endpoints
 
     UpdateResourceRequest(resourceRequ: ResourceRequest): Observable<ResourceRequestResponse> {
         resourceRequ.projectid = resourceRequ.projectid ? resourceRequ.Project?.id : null;
@@ -279,6 +294,18 @@ console.log({Institution: institution});
             }),
             take(1),
             catchError(this.handleError<PeopleListResponse>('ListPeopleSimple'))
+        );
+    }
+
+    UpdatePerson(person: Person): Observable<PersonResponse> {   
+        console.log({Person: person});
+           
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.post<PersonResponse>(environment.api_url + '/Person/update', {Person: person}, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<PersonResponse>('UpdateResourceRequest'))
         );
     }
 

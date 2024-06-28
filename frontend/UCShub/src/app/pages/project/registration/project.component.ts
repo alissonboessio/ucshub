@@ -25,6 +25,8 @@ import Enum_PersonTitulation from '../../../models/enumerations/Enum_PersonTitul
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../models/User';
 import { StorageService } from '../../../db/storage.service';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
+import { ResourceRequest } from '../../../models/ResourceRequest';
 
 @Component({
   selector: 'app-project',
@@ -38,7 +40,8 @@ import { StorageService } from '../../../db/storage.service';
     CancelConfirmComponent,
     OutlineButtonComponent,
     MatCardModule,
-    TableModule],
+    TableModule,
+    CurrencyMaskModule],
   templateUrl: './project.component.html',
   styleUrl: './project.component.scss'
 })
@@ -96,16 +99,14 @@ export class ProjectComponent {
       }),
       Authors: this.formBuilder.array(this.project.Authors.map(author => this.createAuthorGroup(author))),
       Productions: this.formBuilder.array(this.project.Productions.map(prod => this.createProductionGroup(prod))),
-      TotalRecursos: []
+      TotalRecursos: [0]
     });
 
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
         this.api.GetProjectById(+id).subscribe(resp => {
-          if (resp && resp.success) {      
-            console.log(resp.project.authors);
-                  
+          if (resp && resp.success) {                  
             this.project.id = resp.project.id;
             this.project.title = resp.project.title;
             this.project.description = resp.project.description;
@@ -113,7 +114,7 @@ export class ProjectComponent {
             this.project.Institution = resp.project.institution;
             this.project.Authors = resp.project.authors;
             this.project.Productions = resp.project.productions;
-            this.project.ResourceRequests = resp.project.resourceRequests;
+            this.project.ResourceRequests = resp.project.resources;            
             this.editing = true;
             this.updateForm(this.project);
           }else{
@@ -140,6 +141,9 @@ export class ProjectComponent {
       },
       Authors: project.Authors,
       Productions: project.Productions,
+      TotalRecursos: project.ResourceRequests?.reduce((total: number, resource: ResourceRequest) => {
+        return total + resource.quantity;
+      }, 0)
     });
     this.selectedAuthors = project.Authors;
   }
@@ -225,7 +229,7 @@ export class ProjectComponent {
 
   handleSelectedAuthor(selectedAuthors : Person[] | null){    
     if (selectedAuthors) {
-      this.selectedAuthors = selectedAuthors
+      this.selectedAuthors = [...this.selectedAuthors, ...selectedAuthors];
 
     }
   }

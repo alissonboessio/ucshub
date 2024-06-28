@@ -37,6 +37,12 @@
             @if (form.invalid) {<mat-error>{{getErrorMessage("status", "Status", true)}}</mat-error>}
         </mat-form-field>
 
+        <mat-form-field appearance="outline" style="min-width: 170px; max-width: 170px;">
+            <mat-label>Total de Fomento</mat-label>
+            <input [readonly]="true" matInput formControlName="TotalRecursos" id="total" currencyMask
+            [options]="{ align: 'left', prefix: 'R$ ', thousands: '.', decimal: ',', allowNegative: 'false' }">
+        </mat-form-field>
+
     </div>
    
 

@@ -11,6 +11,13 @@ import { StorageService } from '../../../db/storage.service';
 import { User } from '../../../models/User';
 import { Person } from '../../../models/Person';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import Enum_PersonTitulation from '../../../models/enumerations/Enum_PersonTitulation.json';
+import Enum_PersonType from '../../../models/enumerations/Enum_PersonType.json';
+import { MatSelectModule } from '@angular/material/select';
+import { Institution } from '../../../models/Institution';
+import { KnowledgeArea } from '../../../models/KnowledgeArea';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-person',
@@ -25,12 +32,17 @@ import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
     MatDialogActions,
     MatDialogClose,
     CancelConfirmComponent,
-    NgxMaskDirective],
+    NgxMaskDirective,
+    MatDatepickerModule,
+    MatNativeDateModule,
+  MatSelectModule],
     providers: [provideNgxMask()],
   templateUrl: './person.component.html',
   styleUrl: './person.component.scss'
 })
 export class PersonComponent {
+
+  title: string = "Cadastro de Pesquisador"
 
   api: ApiService = inject(ApiService);
   storage: StorageService = inject(StorageService);
@@ -42,6 +54,15 @@ export class PersonComponent {
 
   person: Person = new Person()
 
+  enumPersonType: any = Enum_PersonType;
+  formattedEnumPersonType : string[] | null = Object.keys(this.enumPersonType);
+
+  enumPersonTitulation: any = Enum_PersonTitulation;
+  formattedEnumPersonTitulation : string[] | null = Object.keys(this.enumPersonTitulation);
+
+  institutions: Array<Institution> = [];
+  knowledgeAreas: Array<KnowledgeArea> = [];
+
   constructor(public dialogRef: MatDialogRef<PersonComponent>, @Inject(MAT_DIALOG_DATA) public dialogData: any) {}
 
   ngOnInit(): void {
@@ -49,10 +70,10 @@ export class PersonComponent {
         id: [this.person.id],
         name: [this.person.name, [Validators.required]],
         phone: [this.person.phone, [Validators.required, FormValidations.DDD]],
-        birth_date: [this.person.birth_date, [Validators.required]],
-        titulation: [this.person.titulation, [Validators.required]],
+        BirthDate: [this.person.BirthDate, [Validators.required, FormValidations.validaDataNascimento]],
+        titulation: [this.person.titulation, []],
         type: [this.person.type, [Validators.required]],
-        lattes_id: [this.person.lattes_id, [Validators.required]],
+        LattesId: [this.person.LattesId, [Validators.required]],
         Institution: this.formBuilder.group({
           id: [this.person.Institution.id, [Validators.required]],
           name: [this.person.Institution.name],
@@ -65,6 +86,8 @@ export class PersonComponent {
     });
 
     this.getLoggedUser();
+    this.getInstitutions();
+    this.getKnowledgeAreas();
    
   }
 
@@ -75,6 +98,24 @@ export class PersonComponent {
     
   }
 
+  getInstitutions(){
+    this.api.ListInstitutionsSimple().subscribe(async resp => {
+      if (resp && resp.success) {
+        this.institutions = resp.institutions ?? [];
+        
+      }
+    });
+  }
+
+  getKnowledgeAreas(){
+    this.api.ListKnowledgeAreasSimple().subscribe(async resp => {
+      if (resp && resp.success) {
+        this.knowledgeAreas = resp.knowledgeAreas ?? [];
+        
+      }
+    });
+  }
+
   cancelar(): void {
     this.dialogRef.close();       
   }
@@ -82,21 +123,26 @@ export class PersonComponent {
   onSubmit(): void {
     if (FormValidations.checkValidity(this.form)){ 
       const formValue = this.form.value;
-      console.log(formValue);
       
-      // let institution: Institution = new Institution();
+      this.person.id = formValue.id
+      this.person.BirthDate = formValue.BirthDate
+      this.person.instituition_id = formValue.Institution.id
+      this.person.knowledge_area_id = formValue.KnowledgeArea.id
+      this.person.LattesId = formValue.LattesId
+      this.person.name = formValue.name
+      this.person.phone = formValue.phone
+      this.person.titulation = +formValue.titulation
+      this.person.type = +formValue.type
+      this.person.KnowledgeArea = formValue.KnowledgeArea
+      this.person.Institution = formValue.Institution
 
-      // institution.id = formValue.id;
-      // institution.name = formValue.name;
-      // institution.document = formValue.document;
+      this.api.UpdatePerson(this.person).subscribe(resp => {
+        if(resp && resp.success){
+          this.api.openSnackBar("Sucesso!")
+          this.dialogRef.close();       
 
-      // this.api.UpdateInstitution(institution).subscribe(resp => {
-      //   if(resp && resp.success){
-      //     this.api.openSnackBar("Sucesso!")
-      //     this.dialogRef.close();       
-
-      //   }
-      // })
+        }
+      })
     }
     
   }

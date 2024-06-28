@@ -39,7 +39,7 @@ namespace UcsHubAPI.Service.Services
                     person.KnowledgeArea = knowledgeAreaRepository.GetById((int)person.KnowledgeAreaId);
                     if(person.KnowledgeArea != null)
                     {
-                        person.KnowledgeArea.KnowledgeParentarea = null;
+                        person.KnowledgeArea.KnowledgeSubAreas = null;
                     }
 
                 }
@@ -50,6 +50,62 @@ namespace UcsHubAPI.Service.Services
             response.People = people;
 
             return response;
+
+        }
+
+        public PersonModel? UpdatePerson(PersonModel Person)
+        {
+            PersonRepository personRepository = new PersonRepository(_appSettings.ConnString);
+
+            bool ok = false;
+
+            try
+            {
+                if (Person.Id != null)
+                {
+                    ok = personRepository.Update(Person);
+
+                }
+                else
+                {
+                    ok = personRepository.Add(Person);
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                throw new HttpRequestException(message: "Cadastro não atualizado!", e.InnerException, statusCode: System.Net.HttpStatusCode.BadRequest);
+            }
+
+
+            if (!ok)
+            {
+                throw new HttpRequestException(message: "Cadastro não atualizado!", null, statusCode: System.Net.HttpStatusCode.BadRequest);
+            }
+
+            return personRepository.GetById((int)Person.Id);
+
+        }
+
+        public PersonModel? GetById(int id)
+        {
+            PersonRepository personRepository = new PersonRepository(_appSettings.ConnString);
+
+            PersonModel person = personRepository.GetById(id);
+
+            if (person == null)
+            {
+                return null;
+            }
+
+            InstitutionRepository InstitutionRepository = new InstitutionRepository(_appSettings.ConnString);
+            person.Institution = InstitutionRepository.GetById((int)person.InstitutionId);
+
+            KnowledgeAreaRepository knowledgeAreaRepository = new KnowledgeAreaRepository(_appSettings.ConnString);
+            person.KnowledgeArea = knowledgeAreaRepository.GetById((int)person.KnowledgeAreaId);
+
+            return person;
 
         }
 

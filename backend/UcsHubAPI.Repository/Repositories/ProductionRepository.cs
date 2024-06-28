@@ -286,10 +286,9 @@ namespace UcsHubAPI.Repository.Repositories
                 production.Id = newProductionId;
                 if (newProductionId > 0 && production.Authors != null && production.Authors.Count > 0)
                 {
-                    // Add authors
                     foreach (var author in production.Authors)
                     {
-                        AddAuthorForProduction(connection, newProductionId, author.Id);
+                        AddAuthorForProduction(connection, newProductionId, (int)author.Id);
                     }
                 }
 
@@ -346,7 +345,7 @@ namespace UcsHubAPI.Repository.Repositories
 
             foreach (var author in authors)
             {
-                AddAuthorForProduction(connection, productionId, author.Id);
+                AddAuthorForProduction(connection, productionId, (int)author.Id);
             }
         }
         public bool Delete(ProductionModel prod)

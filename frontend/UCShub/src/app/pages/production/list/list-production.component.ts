@@ -19,8 +19,7 @@ import { TableIconColumn } from '../../../../components/table/tableIconColumn';
   standalone: true,
   imports: [TableModule, MatInputModule, MatFormFieldModule, MatIconModule, ReactiveFormsModule, OutlineButtonComponent],
   templateUrl: './list-production.component.html',
-  styleUrl: './list-production.component.scss',
-  encapsulation: ViewEncapsulation.None
+  styleUrl: './list-production.component.scss'
 })
 export class ListProductionComponent {
   title = 'Produções';
@@ -48,12 +47,13 @@ export class ListProductionComponent {
       }
 
       this.api.ListProductionsSimple(this.filter).subscribe(async resp => {
+        
         if (resp && resp.success) {
           this.productions = resp.productions ?? [];
           this.filteredProductions = this.productions;
           this.title = "Minhas Produções"
           this.editing = true
-        this.filterProductions()
+          this.filterProductions()
 
         }
       });
@@ -141,19 +141,18 @@ export class ListProductionComponent {
   }
 
   filterProductions(){   
-console.log("entrou");
-
     this.filteredProductions = []
 
     this.productions.map(p => {
         if (
+            !this.searchField.value ||
             this.StringContains(p.title, this.searchField.value)
         ) {
             this.filteredProductions.push(p);
             
-console.log(p.title, this.searchField.value);
         }
     })
+
 
   }
 

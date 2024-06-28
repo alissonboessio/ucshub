@@ -20,6 +20,41 @@ namespace UcsHubAPI.Repository.Repositories
             Schema = "resource_request";
             this.ConnString = ConnString;
         }
+        public IEnumerable<ResourceRequestModel> GetAllByProjectId(int projectId)
+        {
+            List<ResourceRequestModel> resourceRequests = new List<ResourceRequestModel>();
+
+            string query = $"SELECT * FROM {this.Schema} WHERE project_id = @projectId";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@projectId", projectId);
+                connection.Open();
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ResourceRequestModel resourceRequest = new ResourceRequestModel
+                        {
+                            Id = reader.GetInt32("id"),
+                            Quantity = reader.GetDecimal("quantity"),
+                            FiledAt = reader.GetDateTimeH("filed_at"),
+                            EntryAt = reader.GetDateTimeH("entry_at"),
+                            CreatedAt = reader.GetDateTimeH("created_at"),
+                            PersonId = reader.GetIntH("person_id"),
+                            ProjectId = reader.GetIntH("project_id"),
+                            InstitutionId = reader.GetIntH("instituition_id")
+                        };
+
+                        resourceRequests.Add(resourceRequest);
+                    }
+                }
+            }
+
+            return resourceRequests;
+        }
 
         public IEnumerable<ResourceRequestModel> GetAll()
         {

@@ -5,6 +5,8 @@ export class KnowledgeArea{
     codCnpq: Date | null = null;
    
     KnowledgeParentArea: KnowledgeArea | null = null;
+   
+    KnowledgeSubAreas: Array<KnowledgeArea> | null = [];
 
 
 }

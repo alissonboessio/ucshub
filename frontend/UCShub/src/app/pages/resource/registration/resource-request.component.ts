@@ -111,7 +111,6 @@ export class ResourceRequestComponent {
   onSubmit(): void {
     if (FormValidations.checkValidity(this.form)){ 
       const formValue = this.form.value;
-      console.log(formValue);
       
       let resource: ResourceRequest = new ResourceRequest();
 

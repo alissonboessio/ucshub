@@ -5,7 +5,14 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideEnvironmentNgxMask } from 'ngx-mask';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideRouter(routes), provideAnimationsAsync(), provideHttpClient(), provideAnimationsAsync(), provideEnvironmentNgxMask()]
+  providers: [provideRouter(routes), 
+    provideAnimationsAsync(), 
+    provideHttpClient(), 
+    provideAnimationsAsync(), 
+    provideEnvironmentNgxMask(),
+    provideNativeDateAdapter(),
+    {provide: MAT_DATE_LOCALE, useValue: 'pt-BR'}]
 };

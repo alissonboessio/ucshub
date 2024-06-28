@@ -93,7 +93,9 @@ namespace UcsHubAPI.Repository.Repositories
                                 Phone = reader.GetStringH("phone"),
                                 LattesId = reader.GetStringH("lattes_id"),
                                 Type = (Model.Enumerations.PersonTypeEnum)Enum.ToObject(typeof(Model.Enumerations.PersonTypeEnum), reader.GetByteH("type", 0)!),
-                                Titulation = (Model.Enumerations.TitulationEnum)Enum.ToObject(typeof(Model.Enumerations.TitulationEnum), reader.GetByteH("titulation", 0)!)
+                                Titulation = (Model.Enumerations.TitulationEnum)Enum.ToObject(typeof(Model.Enumerations.TitulationEnum), reader.GetByteH("titulation", 0)!),
+                                KnowledgeAreaId = reader.GetIntH("knowledge_area_id"),
+                                InstitutionId = reader.GetIntH("instituition_id")
                             };
 
                             return person;
@@ -143,9 +145,37 @@ namespace UcsHubAPI.Repository.Repositories
             return true;
 
         }
-        public bool Update(PersonModel user)
+        public bool Update(PersonModel person)
         {
-            throw new NotImplementedException();
+
+            string query = $@"INSERT INTO {this.Schema}
+            (name, birth_date, phone, lattes_id, knowledge_area_id, instituition_id, address_id, type, titulation)
+            VALUES
+            (@Name, @BirthDate, @Phone, @LattesId, @KnowledgeAreaId, @InstituitionId, @AddressId, @Type, @Titulation) 
+            WHERE id = @id;";
+
+            using (MySqlConnection connection = new MySqlConnection(ConnString))
+            {
+                MySqlCommand command = new MySqlCommand(query, connection);
+
+                command.Parameters.AddWithValue("@Name", person.Name);
+                command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
+                command.Parameters.AddWithValue("@Phone", person.Phone);
+                command.Parameters.AddWithValue("@LattesId", person.LattesId);
+                command.Parameters.AddWithValue("@KnowledgeAreaId", null);
+                command.Parameters.AddWithValue("@InstituitionId", null);
+                command.Parameters.AddWithValue("@AddressId", null);
+                command.Parameters.AddWithValue("@Type", person.Type.GetHashCode());
+                command.Parameters.AddWithValue("@Titulation", person.Titulation.GetHashCode());
+                command.Parameters.AddWithValue("@Id", person.Id);
+
+                connection.Open();
+                return command.ExecuteNonQuery() > 0;
+
+
+            }
+
+            return true;
         }
         public bool Delete(PersonModel user)
         {

@@ -36,7 +36,7 @@ namespace UcsHubAPI.Repository.Repositories
 
             if (Person != null)
             {
-                query += " WHERE pp.person_id = @personId";
+                query += " WHERE p.id IN (SELECT project_id FROM person_project WHERE person_id = @personId)";
             }
 
             using (MySqlConnection connection = new MySqlConnection(ConnString))
@@ -64,7 +64,9 @@ namespace UcsHubAPI.Repository.Repositories
                             {
                                 Id = projectId,
                                 Title = reader.GetStringH("title"),
-                                DateCreated = reader.GetDateTime("created_at")
+                                DateCreated = reader.GetDateTime("created_at"),
+                                people = new List<string>(),
+                                peoplemodel = new List<PersonModel>()
                             };
                             projectsDict.Add(projectId, project);
                         }

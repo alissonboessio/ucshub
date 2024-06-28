@@ -15,7 +15,6 @@ import { StorageService } from '../../../db/storage.service';
 import { MatSelectModule } from '@angular/material/select';
 import { FormValidations } from '../../../../utils/form-validations';
 import { CancelConfirmComponent } from '../../../../components/buttons/cancel-confirm/cancel-confirm.component';
-import { ResourceRequest } from '../../../models/ResourceRequest';
 import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
 
 @Component({
@@ -45,7 +44,7 @@ export class InstitutionComponent {
   formBuilder: FormBuilder = new FormBuilder();
   loggedUser : User | null = null;
 
-  mask_cnpj : string = "99-999-999-9999-99"
+  mask_cnpj : string = "99999999999999"
 
   constructor(public dialogRef: MatDialogRef<InstitutionComponent>, @Inject(MAT_DIALOG_DATA) public dialogData: any) {}
 
@@ -74,7 +73,6 @@ export class InstitutionComponent {
   onSubmit(): void {
     if (FormValidations.checkValidity(this.form)){ 
       const formValue = this.form.value;
-      console.log(formValue);
       
       let institution: Institution = new Institution();
 

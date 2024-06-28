@@ -25,7 +25,7 @@ namespace UcsHubAPI.Service.Services
             }
 
             if (user.Person != null) {
-                PersonModel? person = personRepository.GetById(user.Person.Id);
+                PersonModel? person = personRepository.GetById((int)user.Person.Id);
 
                 user.Person = person;
             }            

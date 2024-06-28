@@ -1,32 +1,104 @@
-<h1 mat-dialog-title>Registrar-se</h1>
+<h1 mat-dialog-title>{{ title }}</h1>
 <div mat-dialog-content>
     @if (form) {
-        <form class="form-signup"[formGroup]="form">
-            <mat-form-field appearance="outline">
-              <mat-label>Nome</mat-label>
-              <input matInput formControlName="name" name="name">
-              @if (form.invalid) {<mat-error>{{getErrorMessage("name", "Nome")}}</mat-error>}
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Fone</mat-label>
-              <input matInput formControlName="phone" name="phone" type="tel" [mask]="mascara_tel">
-              @if (form.invalid) {<mat-error>{{getErrorMessage("phone", "Telefone")}}</mat-error>}
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Cód Lattes</mat-label>
-              <input matInput formControlName="lattes_id" name="lattes_id">
-              @if (form.invalid) {<mat-error>{{getErrorMessage("lattes_id", "Cód Lattes")}}</mat-error>}
-            </mat-form-field>
-            <!-- <mat-form-field appearance="outline">
-              <mat-label>Senha</mat-label>
-              <input matInput formControlName="password" name="password" type="password">
-              @if (form.invalid) {<mat-error>{{getErrorMessage("password", "Senha")}}</mat-error>}
-            </mat-form-field> -->
+        <form class="form" [formGroup]="form">
+
+            <div class="gapped">
+
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Nome</mat-label>
+                    <input matInput formControlName="name" name="name">
+                    @if (form.invalid) {<mat-error>{{getErrorMessage("name", "Nome")}}</mat-error>}
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" style="min-width: 250px;">
+                    <mat-label>Data de nascimento</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="BirthDate" id="BirthDate">
+                    <mat-hint>DD/MM/AAAA</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                    @if (form.invalid) {<mat-error>{{getErrorMessage("BirthDate", "Data de nascimento", true)}}</mat-error>}
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" style="min-width: 150px;">
+                    <mat-label>Pessoa é</mat-label>
+                    <mat-select formControlName="type" id="type">
+                        @for (type of formattedEnumPersonType; track $index) {
+                            <mat-option [value]="type">
+                                {{ enumPersonType[type] }}
+                            </mat-option>
+                        }                        
+                    </mat-select>
+                    @if (form.invalid) {<mat-error>{{getErrorMessage("type", "", true)}}</mat-error>}
+                </mat-form-field> 
+
+            </div>
+
+            <div class="gapped">
+               
+    
+                <mat-form-field appearance="outline" style="min-width: 250px;">
+                  <mat-label>Fone</mat-label>
+                  <input matInput formControlName="phone" name="phone" type="tel" [mask]="mascara_tel">
+                  @if (form.invalid) {<mat-error>{{getErrorMessage("phone", "Telefone")}}</mat-error>}
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" formGroupName="Institution" style="width: 100%">
+                    <mat-label>Selecione sua Instituição</mat-label>
+                    <mat-select formControlName="id" id="id">
+                        @for (inst of institutions; track $index) {
+                            <mat-option [value]="inst.id">
+                                {{ inst.name }}
+                            </mat-option>
+                        }
+                        
+                    </mat-select>             
+                    @if (form.invalid) {<mat-error>{{getErrorMessage("Institution.id", "Instituição")}}</mat-error>}
+                </mat-form-field>
+                
+                <mat-form-field appearance="outline" style="min-width: 250px;">
+                    <mat-label>Titulação</mat-label>
+                    <mat-select formControlName="titulation" id="titulation">
+                        @for (titul of formattedEnumPersonTitulation; track $index) {
+                            <mat-option [value]="titul">
+                                {{ enumPersonTitulation[titul] }}
+                            </mat-option>
+                        }
+                        
+                    </mat-select>
+                    @if (form.invalid) {<mat-error>{{getErrorMessage("type", "", true)}}</mat-error>}
+                </mat-form-field> 
+
+            </div>
+           
+            <div class="gapped">
+                <mat-form-field appearance="outline" style="width: 100%;">
+                    <mat-label>Cód Lattes</mat-label>
+                    <input matInput formControlName="LattesId" name="LattesId">
+                    @if (form.invalid) {<mat-error>{{getErrorMessage("LattesId", "Cód Lattes")}}</mat-error>}
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" formGroupName="KnowledgeArea" style="width: 100%;">
+                    <mat-label>Selecione sua principal Área</mat-label>
+                    <mat-select formControlName="id" id="id">
+                        @for (area of knowledgeAreas; track $index) {
+                            <mat-option [value]="area.id">
+                                {{ area.name }} - {{ area.codCnpq }}
+                            </mat-option>
+                        }
+                        
+                    </mat-select>             
+                    @if (form.invalid) {<mat-error>{{getErrorMessage("KnowledgeArea.id", "Área")}}</mat-error>}
+                </mat-form-field>
+
+            </div>
+
+            
           </form>
     }
   
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions style="justify-content: end;">
   <cancel-confirm
     cancelLabel="Cancelar"
     confirmLabel="Registrar"

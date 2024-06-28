@@ -58,7 +58,6 @@ namespace UcsHubAPI.Service.Services
 
         }
 
-
         public ProjectModel GetById(int id)
         {
             ProjectRepository projectRepository = new ProjectRepository(_appSettings.ConnString);
@@ -73,9 +72,11 @@ namespace UcsHubAPI.Service.Services
             InstitutionRepository InstitutionRepository = new InstitutionRepository(_appSettings.ConnString);
             project.Institution = InstitutionRepository.GetById((int)project.Institution.Id);
 
-
             ProductionRepository productionRepository = new ProductionRepository(_appSettings.ConnString);
             project.Productions = (List<ProductionModel>)productionRepository.GetAllByProjectId((int)project.Id);
+
+            ResourceRequestRepository resourceRequestRepository = new ResourceRequestRepository(_appSettings.ConnString);
+            project.Resources = (List<ResourceRequestModel>)resourceRequestRepository.GetAllByProjectId((int)project.Id);
 
             return project;
 

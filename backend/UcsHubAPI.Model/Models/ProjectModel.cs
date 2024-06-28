@@ -19,7 +19,7 @@ namespace UcsHubAPI.Model.Models
         public DateTime? EndedAt { get; set; }
         public InstitutionModel Institution { get; set; }
         public List<PersonModel> Authors { get; set; }
-        //public List<ResourceRequests> Resources { get; set; }
+        public List<ResourceRequestModel>? Resources { get; set; }
         public int? InstitutionId { get; set; }
         public List<ProductionModel>? Productions { get; set; }
 

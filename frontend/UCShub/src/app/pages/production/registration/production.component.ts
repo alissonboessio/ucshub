@@ -231,9 +231,16 @@ export class ProductionComponent {
     }
 
     openAuthorSelectionDialog(): void {
+      
+
+      let projectAuthors = this.projects.find((project: any) => project.id === this.form.get('Project.id')?.value)?.peoplemodel || [];
+      
+      const filteredAuthors = projectAuthors.filter((author: { id: number | null; }) => 
+        !this.selectedAuthorsProduction.some(selectedAuthor => selectedAuthor.id === author.id)
+      );
 
       let dialogData: ListDialogInterface = {
-        dialogList: this.projects.find((project: any) => project.id === this.form.get('Project.id')?.value)?.peoplemodel || [],
+        dialogList: filteredAuthors,
         cancelButtonLabel: "Cancelar",
         confirmButtonLabel: "Confimar",
         dialogHeader: "Selecione os Autores",
@@ -250,7 +257,7 @@ export class ProductionComponent {
 
     handleSelectedAuthor(selectedAuthors : Person[] | null){
       if (selectedAuthors) {
-        this.selectedAuthorsProduction = selectedAuthors
+        this.selectedAuthorsProduction = [...this.selectedAuthorsProduction, ...selectedAuthors];
 
 
       }
