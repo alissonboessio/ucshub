@@ -147,12 +147,17 @@ namespace UcsHubAPI.Repository.Repositories
         }
         public bool Update(PersonModel person)
         {
-
-            string query = $@"INSERT INTO {this.Schema}
-            (name, birth_date, phone, lattes_id, knowledge_area_id, instituition_id, address_id, type, titulation)
-            VALUES
-            (@Name, @BirthDate, @Phone, @LattesId, @KnowledgeAreaId, @InstituitionId, @AddressId, @Type, @Titulation) 
-            WHERE id = @id;";
+            string query = $@"UPDATE {this.Schema} SET
+                name = @Name,
+                birth_date = @BirthDate,
+                phone = @Phone,
+                lattes_id = @LattesId,
+                knowledge_area_id = @KnowledgeAreaId,
+                instituition_id = @InstituitionId,
+                address_id = @AddressId,
+                type = @Type,
+                titulation = @Titulation
+            WHERE id = @Id;";
 
             using (MySqlConnection connection = new MySqlConnection(ConnString))
             {
@@ -162,21 +167,18 @@ namespace UcsHubAPI.Repository.Repositories
                 command.Parameters.AddWithValue("@BirthDate", person.BirthDate);
                 command.Parameters.AddWithValue("@Phone", person.Phone);
                 command.Parameters.AddWithValue("@LattesId", person.LattesId);
-                command.Parameters.AddWithValue("@KnowledgeAreaId", null);
-                command.Parameters.AddWithValue("@InstituitionId", null);
-                command.Parameters.AddWithValue("@AddressId", null);
+                command.Parameters.AddWithValue("@KnowledgeAreaId", person.KnowledgeArea?.Id);
+                command.Parameters.AddWithValue("@InstituitionId", person.Institution?.Id);
+                command.Parameters.AddWithValue("@AddressId", null); // Assuming address is null, adjust as needed
                 command.Parameters.AddWithValue("@Type", person.Type.GetHashCode());
                 command.Parameters.AddWithValue("@Titulation", person.Titulation.GetHashCode());
                 command.Parameters.AddWithValue("@Id", person.Id);
 
                 connection.Open();
                 return command.ExecuteNonQuery() > 0;
-
-
             }
-
-            return true;
         }
+
         public bool Delete(PersonModel user)
         {
             throw new NotImplementedException();

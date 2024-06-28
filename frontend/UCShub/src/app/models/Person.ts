@@ -10,7 +10,7 @@ export class Person{
     BirthDate: Date | null = null;
     phone: string = '';
     LattesId: string = '';
-    type: PersonType = PersonType.Aluno;
+    type: PersonType | null = null;
     titulation: Titulation = Titulation.Graduação; 
 
     instituition_id: number | null = null;

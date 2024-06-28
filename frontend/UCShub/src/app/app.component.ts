@@ -93,6 +93,14 @@ addResearcher(){
     });
 }
 
+myData(){
+    const dialogRef = this.dialog.open(PersonComponent, {
+        width: '800px',
+        disableClose: true,
+        data: {id : this.loggedUser?.person?.id} 
+    });
+}
+
 addInstitution(){
     const dialogRef = this.dialog.open(InstitutionComponent, {
       width: '600px',

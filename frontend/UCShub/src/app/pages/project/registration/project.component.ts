@@ -196,7 +196,7 @@ export class ProjectComponent {
   onSubmit(): void {       
 
     if (this.editing && !this.selectedAuthors.some(author => author.id === this.loggedUser?.person?.id)) {
-      this.api.openSnackBar("Apenas os Autores podem editar Projetos!.");
+      this.api.openSnackBar("Apenas os Autores podem editar Projetos!");
       return;
     }
   

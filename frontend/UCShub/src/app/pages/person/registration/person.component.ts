@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Institution } from '../../../models/Institution';
 import { KnowledgeArea } from '../../../models/KnowledgeArea';
 import { MatNativeDateModule } from '@angular/material/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-person',
@@ -44,6 +45,8 @@ export class PersonComponent {
 
   title: string = "Cadastro de Pesquisador"
 
+  editing: boolean = false
+
   api: ApiService = inject(ApiService);
   storage: StorageService = inject(StorageService);
   public form!: FormGroup; 
@@ -54,6 +57,9 @@ export class PersonComponent {
 
   person: Person = new Person()
 
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
   enumPersonType: any = Enum_PersonType;
   formattedEnumPersonType : string[] | null = Object.keys(this.enumPersonType);
 
@@ -63,7 +69,7 @@ export class PersonComponent {
   institutions: Array<Institution> = [];
   knowledgeAreas: Array<KnowledgeArea> = [];
 
-  constructor(public dialogRef: MatDialogRef<PersonComponent>, @Inject(MAT_DIALOG_DATA) public dialogData: any) {}
+  constructor(public dialogRef: MatDialogRef<PersonComponent>, @Inject(MAT_DIALOG_DATA) public dialogData: {id: number} | null) {}
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -73,7 +79,7 @@ export class PersonComponent {
         BirthDate: [this.person.BirthDate, [Validators.required, FormValidations.validaDataNascimento]],
         titulation: [this.person.titulation, []],
         type: [this.person.type, [Validators.required]],
-        LattesId: [this.person.LattesId, [Validators.required]],
+        LattesId: [this.person.LattesId],
         Institution: this.formBuilder.group({
           id: [this.person.Institution.id, [Validators.required]],
           name: [this.person.Institution.name],
@@ -85,10 +91,53 @@ export class PersonComponent {
         }),
     });
 
+    if(this.dialogData){
+      this.api.GetPersonById(+this.dialogData.id).subscribe(resp => {
+        if (resp && resp.success) {
+          this.person.id = resp.person.id;
+          this.person.name = resp.person.name;
+          this.person.BirthDate = resp.person.birthDate;
+          this.person.phone = resp.person.phone;
+          this.person.LattesId = resp.person.lattesId;
+          this.person.knowledge_area_id = resp.person.knowledgeAreaId;
+          this.person.Institution = resp.person.institution;
+          this.person.KnowledgeArea = resp.person.knowledgeArea;
+          this.person.instituition_id = resp.person.institutionId;
+          this.person.type = resp.person.type;
+          this.person.titulation = resp.person.titulation;
+          this.editing = true;
+          this.updateForm(this.person);
+        }else{
+          this.router.navigateByUrl("person")
+        }
+      });
+    }
+
     this.getLoggedUser();
     this.getInstitutions();
     this.getKnowledgeAreas();
    
+  }
+
+  updateForm(person: any) {
+    this.form.patchValue({
+      id: person.id,
+        name: person.name,
+        phone: person.phone,
+        BirthDate: person.BirthDate,
+        titulation: person.titulation + "",
+        type: person.type + "",
+        LattesId: person.LattesId,
+        Institution: {
+          id: person.Institution.id,
+          name: person.Institution.name,
+        },
+        KnowledgeArea: {
+          id: person.KnowledgeArea.id,
+          name: person.KnowledgeArea.name,
+          codCnpq: person.KnowledgeArea.codCnpq
+        }
+    })
   }
 
   getLoggedUser(){
@@ -117,10 +166,15 @@ export class PersonComponent {
   }
 
   cancelar(): void {
-    this.dialogRef.close();       
+    this.dialogRef.close();
   }
 
   onSubmit(): void {
+    if (this.editing && this.person.id !== this.loggedUser?.person?.id) {
+      this.api.openSnackBar("Apenas a pessoa pode atualizar seus dados!");
+      return;
+    }
+
     if (FormValidations.checkValidity(this.form)){ 
       const formValue = this.form.value;
       

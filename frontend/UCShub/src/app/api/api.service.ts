@@ -297,15 +297,24 @@ export class ApiService {
         );
     }
 
-    UpdatePerson(person: Person): Observable<PersonResponse> {   
-        console.log({Person: person});
-           
+    UpdatePerson(person: Person): Observable<PersonResponse> {
         return this.getHeaders().pipe(
             mergeMap(headers => {
                 return this.http.post<PersonResponse>(environment.api_url + '/Person/update', {Person: person}, { headers: headers })
             }),
             take(1),
             catchError(this.handleError<PersonResponse>('UpdateResourceRequest'))
+        );
+    }
+
+    
+    GetPersonById(id: number): Observable<PersonResponse | any> {              
+        return this.getHeaders().pipe(
+            mergeMap(headers => {
+                return this.http.get<PersonResponse>(environment.api_url + `/Person/get_by_id/${id}`, { headers: headers })
+            }),
+            take(1),
+            catchError(this.handleError<PersonResponse>('GetPersonById'))
         );
     }
 

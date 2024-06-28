@@ -23,7 +23,6 @@ export class RotinaService {
   async showMensagem(codErro: number | null = null, mensagemErro: string | null = null, toastType: string, msgToast: string, horizontalPosition: MatSnackBarHorizontalPosition = 'right', verticalPosition: MatSnackBarVerticalPosition = 'top') {
 
       if (codErro) {
-      //   console.error(TradutorErrors.getString(codErro) + " " + mensagemErro);
       }
 
       this.snackBar.open(msgToast, 'Ok', {

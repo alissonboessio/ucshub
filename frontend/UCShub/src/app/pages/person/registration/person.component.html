@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{ title }}</h1>
+<h1 mat-dialog-title>{{ editing ? "Meus Dados" : title }}</h1>
 <div mat-dialog-content>
     @if (form) {
         <form class="form" [formGroup]="form">
@@ -101,7 +101,7 @@
 <div mat-dialog-actions style="justify-content: end;">
   <cancel-confirm
     cancelLabel="Cancelar"
-    confirmLabel="Registrar"
+    confirmLabel="Confirmar"
     (cancelClick)="cancelar()"
     (confirmClick)="onSubmit()"
   >

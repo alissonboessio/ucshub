@@ -84,7 +84,7 @@ namespace UcsHubAPI.Repository.Repositories
         {
             var knowledgeAreas = new List<KnowledgeAreaModel>();
 
-            string query = "SELECT id FROM knowledge_area";
+            string query = "SELECT id FROM knowledge_area ORDER BY cod_cnpq";
 
             using (MySqlConnection connection = new MySqlConnection(ConnString))
             {
