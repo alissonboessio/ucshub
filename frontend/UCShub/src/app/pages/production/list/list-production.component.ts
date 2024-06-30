@@ -13,6 +13,8 @@ import Enum_ProductionType from '../../../models/enumerations/Enum_ProductionTyp
 import { ActivatedRoute, Router } from '@angular/router';
 import { OutlineButtonComponent } from '../../../../components/buttons/outline-button/outline-button.component';
 import { TableIconColumn } from '../../../../components/table/tableIconColumn';
+import { StorageService } from '../../../db/storage.service';
+import { User } from '../../../models/User';
 
 @Component({
   selector: 'app-list-production',
@@ -36,6 +38,9 @@ export class ListProductionComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
+  loggedUser : User | null = null;
+  private storage = inject(StorageService);
+
   rowAction3: TableIconColumn = { iconName: 'delete', toolTip: 'Excluir Produção', show: true }
   ngOnInit(){
     this.route.queryParams.subscribe(params => {
@@ -45,6 +50,8 @@ export class ListProductionComponent {
       if(params['title']){
         this.searchField.patchValue(params['title']);
       }
+
+      this.getLoggedUser();
 
       this.api.ListProductionsSimple(this.filter).subscribe(async resp => {
         
@@ -63,6 +70,13 @@ export class ListProductionComponent {
     this.initColumnsTabs()
   }
 
+  getLoggedUser(){
+    this.storage.GetLoggedUserAsync().then(resp => {
+      this.loggedUser = resp;
+    })   
+    
+  }
+
   buildFilter(filter: string, queryParam: string){
     if (!filter){
       return;
@@ -75,6 +89,10 @@ export class ListProductionComponent {
   }
    
   deleteProduction(row: any){
+    if(!row.people.includes(this.loggedUser?.person?.name)){
+      this.api.openSnackBar("Você pode excluir apenas suas produções!");
+      return;
+    }
 
     this.api.DeleteProduction(row.id).subscribe(async resp => {
       if (resp && resp.success) {

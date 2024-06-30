@@ -11,6 +11,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { TableIconColumn } from '../../../../components/table/tableIconColumn';
 import { OutlineButtonComponent } from '../../../../components/buttons/outline-button/outline-button.component';
+import { User } from '../../../models/User';
+import { StorageService } from '../../../db/storage.service';
 
 @Component({
   selector: 'app-list-projects',
@@ -34,6 +36,9 @@ export class ListProjectsComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
+  loggedUser : User | null = null;
+  private storage = inject(StorageService);
+
   ngOnInit(){
     this.route.queryParams.subscribe(params => {
       this.buildFilter(params['person_id'], 'person_id');
@@ -46,8 +51,15 @@ export class ListProjectsComponent {
       });
     });
 
-
+    this.getLoggedUser();
     this.initColumnsTabs()
+  }
+  
+  getLoggedUser(){
+    this.storage.GetLoggedUserAsync().then(resp => {
+      this.loggedUser = resp;
+    })   
+    
   }
 
   buildFilter(filter: string, queryParam: string){
@@ -64,6 +76,11 @@ export class ListProjectsComponent {
   }
    
   deleteProject(row: any){
+
+    if(!row.people.includes(this.loggedUser?.person?.name)){
+      this.api.openSnackBar("Você pode excluir apenas seus projetos!");
+      return;
+    }
 
     this.api.DeleteProject(row.id).subscribe(async resp => {
       if (resp && resp.success) {
