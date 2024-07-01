@@ -50,6 +50,10 @@ export class ListProductionComponent {
       if(params['title']){
         this.searchField.patchValue(params['title']);
       }
+      
+      if(params['person']){
+        this.title = "Minhas Produções"
+      }
 
       this.getLoggedUser();
 
@@ -58,7 +62,6 @@ export class ListProductionComponent {
         if (resp && resp.success) {
           this.productions = resp.productions ?? [];
           this.filteredProductions = this.productions;
-          this.title = "Minhas Produções"
           this.editing = true
           this.filterProductions()
 
