@@ -2,61 +2,62 @@
 using UcsHubAPI.Model.Models;
 using UcsHubAPI.Repository;
 
-[TestFixture]
-public class UserRepositoryTests
+namespace UcsHubAPI.Tests
 {
-    private Mock<IRepository<UserModel>> _mockUserRepository;
 
-    [SetUp]
-    public void Setup()
+    [TestFixture]
+    public class UserRepositoryTests
     {
-        _mockUserRepository = new Mock<IRepository<UserModel>>();
-    }
+        private Mock<IRepository<UserModel>> _mockUserRepository;
 
-    [Test]
-    public void GetById_IdValido_RetornaUser()
-    {
-        var user = new UserModel { Id = 1, Email = "test@ucs.br", Password = "password", Person = new PersonModel { Id = 1 } };
-        _mockUserRepository.Setup(repo => repo.GetById(1)).Returns(user);
+        [SetUp]
+        public void Setup()
+        {
+            _mockUserRepository = new Mock<IRepository<UserModel>>();
+        }
 
-        var result = _mockUserRepository.Object.GetById(1);
+        [Test]
+        public void GetById_IdValido_RetornaUser()
+        {
+            var user = new UserModel { Id = 1, Email = "test@ucs.br", Password = "password", Person = new PersonModel { Id = 1 } };
+            _mockUserRepository.Setup(repo => repo.GetById(1)).Returns(user);
 
-        Assert.IsNotNull(result);
-        Assert.AreEqual(user.Email, result.Email);
-    }
+            var result = _mockUserRepository.Object.GetById(1);
 
-    [Test]
-    public void GetById_IdInvalido_ReturnsNull()
-    {
-        _mockUserRepository.Setup(repo => repo.GetById(2)).Returns((UserModel)null);
+            Assert.IsNotNull(result);
+            Assert.AreEqual(user.Email, result.Email);
+        }
 
-        var result = _mockUserRepository.Object.GetById(2);
+        [Test]
+        public void GetById_IdInvalido_ReturnsNull()
+        {
+            _mockUserRepository.Setup(repo => repo.GetById(2)).Returns((UserModel)null);
 
-        Assert.IsNull(result);
-    }
+            var result = _mockUserRepository.Object.GetById(2);
 
-    [Test]
-    public void Add_UserValido_RetornaTrue()
-    {
-        var user = new UserModel { Id = 1, Email = "test@example.com", Password = "password", Person = new PersonModel { Id = 1 } };
-        _mockUserRepository.Setup(repo => repo.Add(user)).Returns(true);
+            Assert.IsNull(result);
+        }
 
-        var result = _mockUserRepository.Object.Add(user);
+        [Test]
+        public void Add_UserValido_RetornaTrue()
+        {
+            var user = new UserModel { Id = 1, Email = "test@example.com", Password = "password", Person = new PersonModel { Id = 1 } };
+            _mockUserRepository.Setup(repo => repo.Add(user)).Returns(true);
 
-        Assert.IsTrue(result);
-    }
+            var result = _mockUserRepository.Object.Add(user);
 
-    [Test]
-    public void Update_UserValido_RetornaTrue()
-    {
-        // Arrange
-        var user = new UserModel { Id = 1, Email = "test@example.com", Password = "password", Person = new PersonModel { Id = 1 } };
-        _mockUserRepository.Setup(repo => repo.Update(user)).Returns(true);
+            Assert.IsTrue(result);
+        }
 
-        // Act
-        var result = _mockUserRepository.Object.Update(user);
+        [Test]
+        public void Update_UserValido_RetornaTrue()
+        {
+            var user = new UserModel { Id = 1, Email = "test@example.com", Password = "password", Person = new PersonModel { Id = 1 } };
+            _mockUserRepository.Setup(repo => repo.Update(user)).Returns(true);
 
-        // Assert
-        Assert.IsTrue(result);
+            var result = _mockUserRepository.Object.Update(user);
+
+            Assert.IsTrue(result);
+        }
     }
 }

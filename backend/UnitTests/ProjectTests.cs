@@ -21,7 +21,7 @@ namespace UcsHubAPI.Tests
         [Test]
         public void GetById_IdValido_RetornaProject()
         {
-            var project = new ProjectModel { Id = 1, Title = "Test Project", Description = "Test Description" };
+            var project = new ProjectModel { Id = 1, Title = "Projeto teste", Description = "Descricao" };
             _mockProjectRepository.Setup(repo => repo.GetById(1)).Returns(project);
 
             var result = _mockProjectRepository.Object.GetById(1);
@@ -43,7 +43,7 @@ namespace UcsHubAPI.Tests
         [Test]
         public void Add_ProjectValido_RetornaTrue()
         {
-            var project = new ProjectModel { Id = 1, Title = "Test Project", Description = "Test Description" };
+            var project = new ProjectModel { Id = 1, Title = "Projeto Teste", Description = "Descricao" };
             _mockProjectRepository.Setup(repo => repo.Add(project)).Returns(true);
 
             var result = _mockProjectRepository.Object.Add(project);
@@ -54,7 +54,7 @@ namespace UcsHubAPI.Tests
         [Test]
         public void Update_ProjectValido_RetornaTrue()
         {
-            var project = new ProjectModel { Id = 1, Title = "Test Project", Description = "Test Description" };
+            var project = new ProjectModel { Id = 1, Title = "Projeto Teste", Description = "Descricao" };
             _mockProjectRepository.Setup(repo => repo.Update(project)).Returns(true);
 
             var result = _mockProjectRepository.Object.Update(project);

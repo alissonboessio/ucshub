@@ -129,13 +129,13 @@ export class PersonComponent {
         type: person.type + "",
         LattesId: person.LattesId,
         Institution: {
-          id: person.Institution.id,
-          name: person.Institution.name,
+          id: person?.Institution?.id,
+          name: person?.Institution?.name,
         },
         KnowledgeArea: {
-          id: person.KnowledgeArea.id,
-          name: person.KnowledgeArea.name,
-          codCnpq: person.KnowledgeArea.codCnpq
+          id: person?.KnowledgeArea?.id,
+          name: person?.KnowledgeArea?.name,
+          codCnpq: person?.KnowledgeArea?.codCnpq
         }
     })
   }

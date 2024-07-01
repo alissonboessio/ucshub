@@ -100,10 +100,31 @@ namespace UcsHubAPI.Service.Services
             }
 
             InstitutionRepository InstitutionRepository = new InstitutionRepository(_appSettings.ConnString);
-            person.Institution = InstitutionRepository.GetById((int)person.InstitutionId);
+            if(person.InstitutionId != null)
+            {
+                person.Institution = InstitutionRepository.GetById((int)person.InstitutionId);
+
+            }else
+            {
+                person.Institution = null;
+
+            }
+
 
             KnowledgeAreaRepository knowledgeAreaRepository = new KnowledgeAreaRepository(_appSettings.ConnString);
-            person.KnowledgeArea = knowledgeAreaRepository.GetById((int)person.KnowledgeAreaId);
+
+            if (person.KnowledgeAreaId != null)
+            {
+                person.KnowledgeArea = knowledgeAreaRepository.GetById((int)person.KnowledgeAreaId);
+
+            }
+            else
+            {
+                person.KnowledgeArea = null;
+
+            }
+
+
 
             return person;
 
